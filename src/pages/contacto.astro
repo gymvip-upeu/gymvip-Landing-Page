@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Canales Oficiales de Contacto"
+  description="Canales de atención presencial, soporte técnico, mensajería oficial y ejercicio de derechos ARCO de VIP CENTER FIT."
+  canonicalPath="/contacto"
+>
+  <div class="contact-page-wrapper">
+    <div class="container contact-container">
+      <header class="contact-header">
+        <span class="badge">Atención Directa</span>
+        <h1 class="page-title">Canales Oficiales de Contacto</h1>
+        <p class="page-subtitle">
+          Atención presencial en nuestra sede de Juliaca, soporte digital y ejercicio de derechos ARCO.
+        </p>
+      </header>
+
+      <div class="grid grid-2 contact-grid">
+        <div class="card channel-card">
+          <div class="channel-icon" aria-hidden="true">📍</div>
+          <h2 class="channel-title">Sede Presencial Principal</h2>
+          <p class="channel-desc">
+            Recepción central de VIP Center Fit (GYM VIP).<br />
+            <strong>Ubicación:</strong> Juliaca, San Román, Puno — Perú.
+          </p>
+          <div class="channel-alert">
+            Cobros, pagos en efectivo/POS, comprobantes de pago y altas de socios se realizan exclusivamente en recepción.
+          </div>
+        </div>
+
+        <div class="card channel-card">
+          <div class="channel-icon" aria-hidden="true">⏰</div>
+          <h2 class="channel-title">Horarios de Atención en Recepción</h2>
+          <ul class="schedule-ul">
+            <li><strong>Lunes a Viernes:</strong> 06:00 a 22:00</li>
+            <li><strong>Sábados:</strong> 07:00 a 20:00</li>
+            <li><strong>Domingos:</strong> 08:00 a 14:00</li>
+            <li><strong>Feriados:</strong> 08:00 a 12:00</li>
+          </ul>
+          <p class="sub-note">Ingreso a sala de pesas hasta 45 minutos antes del cierre.</p>
+        </div>
+
+        <div class="card channel-card">
+          <div class="channel-icon" aria-hidden="true">💬</div>
+          <h2 class="channel-title">Canal WhatsApp Institucional</h2>
+          <p class="channel-desc">
+            Canal automatizado para confirmación de pagos, bienvenida a nuevos socios y recordatorios de renovación de membresía.
+          </p>
+          <p class="channel-highlight">
+            WhatsApp Oficial: +51 987 654 321<br />
+            <small>(Solo mensajes autorizados y notificaciones de servicio; no realiza cobros directos)</small>
+          </p>
+        </div>
+
+        <div class="card channel-card">
+          <div class="channel-icon" aria-hidden="true">📧</div>
+          <h2 class="channel-title">Soporte y Ejercicio de Derechos ARCO</h2>
+          <p class="channel-desc">
+            Consultas técnicas, incidencias con la app móvil y solicitudes de Acceso, Rectificación, Cancelación y Oposición.
+          </p>
+          <p class="channel-highlight">
+            Correo Oficial: <a href="mailto:soporte@gymvip.pe">soporte@gymvip.pe</a><br />
+            <small>Plazo legal de respuesta: Máximo 10 días hábiles conforme a la Ley N° 29733.</small>
+          </p>
+        </div>
+
+        <div class="card channel-card dev-channel-card">
+          <div class="channel-icon" aria-hidden="true">💻</div>
+          <h2 class="channel-title">Equipo de Desarrollo de Software</h2>
+          <p class="channel-desc">
+            Desarrollado y mantenido por <strong>VIP DevStudio</strong>.<br />
+            <strong>Sede de Desarrollo:</strong> Sede en Ñaña — Campus Universitario UPeU (Km 19 Carretera Central, Lurigancho-Chosica, Lima — Perú).
+          </p>
+          <p class="channel-highlight">
+            Contacto de Ingeniería: <a href="mailto:devteam@gymvip.pe">devteam@gymvip.pe</a><br />
+            <small>Organización GitHub: <a href="https://github.com/gymvip-upeu" target="_blank" rel="noopener noreferrer">github.com/gymvip-upeu</a></small>
+          </p>
+        </div>
+      </div>
+
+      <div class="arco-cta-card card">
+        <div class="arco-cta-content">
+          <h2 class="arco-cta-title">¿Deseas solicitar la eliminación de tu cuenta o datos?</h2>
+          <p class="arco-cta-desc">
+            Puedes tramitar tu solicitud de supresión de datos de forma inmediata y obtener un código de seguimiento auditado a través de nuestro formulario en línea.
+          </p>
+        </div>
+        <a href="/eliminar-cuenta" class="btn btn-primary arco-cta-btn">
+          Ir al Formulario de Supresión (ARCO)
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-page-wrapper {
+    padding: 60px 0 80px 0;
+  }
+
+  .contact-container {
+    max-width: 960px;
+  }
+
+  .contact-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 48px auto;
+  }
+
+  .page-title {
+    font-size: 38px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+  }
+
+  .contact-grid {
+    margin-bottom: 36px;
+  }
+
+  .channel-card {
+    background: var(--bg-card);
+  }
+
+  .channel-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .channel-title {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .channel-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .channel-alert {
+    background: var(--bg-surface);
+    border-left: 3px solid var(--gold-primary);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--gold-hover);
+    border-radius: var(--radius-sm);
+  }
+
+  .schedule-ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .sub-note {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .channel-highlight {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gold-primary);
+  }
+
+  .channel-highlight small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .arco-cta-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background: radial-gradient(circle at 10% 50%, rgba(212, 175, 55, 0.1) 0%, var(--bg-card) 60%);
+    border-color: var(--gold-primary);
+    padding: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .arco-cta-card {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  .arco-cta-title {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .arco-cta-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 580px;
+    line-height: 1.5;
+  }
+
+  .arco-cta-btn {
+    flex-shrink: 0;
+  }
+</style>

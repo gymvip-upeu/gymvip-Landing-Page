@@ -1,0 +1,111 @@
+---
+const faqs = [
+  {
+    q: '¿Cómo obtengo mi código QR para ingresar al gimnasio?',
+    a: 'Al inscribirte en la recepción de VIP Center Fit, nuestro personal registrará tu documento y te entregará tus credenciales de acceso inicial. Una vez descargada la App Móvil oficial o ingresando al portal web, tu pantalla principal generará tu código QR dinámico criptográfico para pasar por los torniquetes.'
+  },
+  {
+    q: '¿Dónde y cómo se realizan los pagos de las membresías?',
+    a: 'Todos los pagos y renovaciones se realizan de forma presencial en el mostrador de recepción en Juliaca mediante Efectivo, Yape, Plin o Transferencia Bancaria. No realizamos cobros recurrentes automáticos ni guardamos datos bancarios.'
+  },
+  {
+    q: '¿Cuáles son los requisitos para registrarme como socio?',
+    a: 'Solo requieres presentar tu documento de identidad vigente (DNI o Carnet de Extranjería) en recepción, seleccionar la modalidad de membresía que mejor se adapte a tus objetivos y registrar un número de teléfono de contacto.'
+  },
+  {
+    q: '¿La aplicación móvil funciona en cualquier teléfono Android?',
+    a: 'Sí, la aplicación GYM VIP Mobile es compatible con dispositivos Android con versión 7.0 (Nougat, API 24) o superior. Puedes descargarla directamente en la sección de Descargas de este portal.'
+  },
+  {
+    q: '¿Puedo solicitar la eliminación de mi cuenta y datos personales?',
+    a: 'Por supuesto. En cumplimiento estricto de la Ley N° 29733 de Protección de Datos Personales de Perú, disponemos de un formulario en línea para el ejercicio de derechos ARCO en la sección Eliminación de Cuenta, donde podrás tramitar la baja y obtener un código de seguimiento auditado.'
+  }
+];
+---
+
+<section id="preguntas" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Dudas Frecuentes</span>
+      <h2 class="section-title">Preguntas Frecuentes</h2>
+      <p class="section-subtitle">
+        Respuestas claras sobre la operativa de VIP Center Fit y el uso de nuestras plataformas.
+      </p>
+    </div>
+
+    <div class="faq-container">
+      {faqs.map((faq, index) => (
+        <details class="faq-item card" open={index === 0}>
+          <summary class="faq-question">
+            <span>{faq.q}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-icon" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>{faq.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-item {
+    padding: 0;
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--transition-fast);
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question:hover {
+    color: var(--gold-primary);
+  }
+
+  .faq-icon {
+    color: var(--gold-primary);
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  details[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    padding: 0 24px 20px 24px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+  }
+
+  .faq-answer p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+</style>

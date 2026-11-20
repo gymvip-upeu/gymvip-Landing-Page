@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud de Eliminación de Cuenta — VIP CENTER FIT</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+  <script src="config.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-badge">VIP</span>
+        <span class="brand-title">VIP CENTER FIT</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="privacidad.html" class="nav-link">Privacidad</a>
+        <a href="terminos.html" class="nav-link">Términos</a>
+        <a href="eliminar-cuenta.html" class="nav-link active">Eliminar Cuenta</a>
+        <a href="#portal" data-portal-link class="btn-primary">Acceso Personal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 48px; padding-bottom: 60px;">
+    <div class="legal-content">
+      <h1 style="color: var(--gold-primary); font-size: 32px; margin-bottom: 16px;">Solicitud de Eliminación de Cuenta y Datos Personales</h1>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">
+        En cumplimiento de los requerimientos de Google Play Store, Apple App Store y el Artículo 55 del Reglamento de la Ley N° 29733 (Ley de Protección de Datos Personales del Perú), cualquier socio o usuario registrado puede solicitar en cualquier momento la eliminación definitiva de su cuenta y la supresión de sus datos personales.
+      </p>
+
+      <div class="alert-box alert-warning">
+        <strong>⚠️ Información Importante sobre la Eliminación:</strong>
+        <p style="margin-top: 6px; font-size: 13px;">
+          Al proceder con la eliminación, se revocarán todos los accesos digitales y credenciales móviles, se cancelará la rotación de códigos QR y se anonimizarán sus datos de contacto en los registros del gimnasio. Si mantiene una membresía activa, no habrá reembolsos de períodos no consumidos conforme a los términos aceptados. Aquellos comprobantes fiscales de pago emitidos previamente se conservarán durante el período legal exigido por la normativa tributaria de SUNAT antes de su purga definitiva.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h2>Formulario de Solicitud de Supresión</h2>
+          <form id="delete-form" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label for="dni">Número de DNI o Carné de Extranjería *</label>
+              <input type="text" id="dni" class="form-control" required placeholder="Ej. 70123456" maxlength="12" pattern="[0-9A-Za-z]{8,12}">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Correo Electrónico Registrado *</label>
+              <input type="email" id="email" class="form-control" required placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Teléfono / WhatsApp Registrado</label>
+              <input type="tel" id="phone" class="form-control" placeholder="Ej. +51 987 654 321">
+            </div>
+
+            <div class="form-group">
+              <label for="reason">Motivo de la Solicitud (Opcional)</label>
+              <textarea id="reason" class="form-control" placeholder="Indique brevemente el motivo de su solicitud para ayudarnos a mejorar nuestro servicio."></textarea>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-top: 10px;">
+              <input type="checkbox" id="confirm" required style="margin-top: 4px;">
+              <label for="confirm" style="font-weight: normal; font-size: 13px; color: var(--text-secondary);">
+                Entiendo que esta acción es irreversible y autorizo a VIP Center Fit a proceder con la desactivación y purga de mis datos personales en un plazo de hasta 10 días hábiles.
+              </label>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Enviar Solicitud de Eliminación</button>
+          </form>
+
+          <div id="success-message" style="display: none; margin-top: 20px;" class="alert-box alert-info">
+            <strong>✅ Solicitud Registrada Correctamente:</strong>
+            <p style="margin-top: 6px; font-size: 13px;">
+              Su requerimiento ha sido ingresado en nuestro registro de auditoría con código de seguimiento <code id="tracking-code">GYM-DEL-2026-XXXX</code>. Un oficial de protección de datos verificará su identidad y completará el proceso en un plazo máximo de 10 días hábiles. Se enviará una confirmación al correo electrónico ingresado.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h2>Procedimiento y Plazos</h2>
+          <div class="card" style="margin-bottom: 20px;">
+            <h4 style="color: var(--gold-primary); margin-bottom: 8px;">1. Recepción y Validación</h4>
+            <p class="card-text">
+              Verificamos que el documento y correo coincidan con un registro existente en la base de datos de socios o cuentas de usuario.
+            </p>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px;">
+            <h4 style="color: var(--gold-primary); margin-bottom: 8px;">2. Revocación de Accesos</h4>
+            <p class="card-text">
+              Se invalidan de inmediato las sesiones activas en la app móvil y el código QR de acceso a torniquetes pasa a estado INACTIVO / BLOQUEADO.
+            </p>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px;">
+            <h4 style="color: var(--gold-primary); margin-bottom: 8px;">3. Supresión y Anonimización</h4>
+            <p class="card-text">
+              Los datos sensibles de contacto y consentimientos son disociados o eliminados, preservando únicamente logs de auditoría técnica sin datos personales identificables conforme a ley.
+            </p>
+          </div>
+
+          <div class="card">
+            <h4 style="color: var(--gold-primary); margin-bottom: 8px;">Canal Alternativo Presencial</h4>
+            <p class="card-text">
+              También puede presentar su solicitud física directamente en el mostrador de recepción de VIP Center Fit exhibiendo su documento de identidad original.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-links" style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+      <a href="index.html">Inicio</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos y Condiciones</a>
+      <a href="aviso-legal.html">Aviso Legal</a>
+      <a href="atribuciones.html">Atribuciones</a>
+      <a href="licencias.html">Licencias</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="eliminar-cuenta.html">Eliminar Cuenta</a>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 VIP Center Fit — GYM VIP. Procedimiento de Supresión y Derechos ARCO conforme a la Ley N° 29733.</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const code = 'GYM-DEL-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('tracking-code').textContent = code;
+      document.getElementById('delete-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

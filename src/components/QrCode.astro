@@ -1,0 +1,69 @@
+---
+import QRCode from 'qrcode';
+
+interface Props {
+  url: string;
+  size?: number;
+  label?: string;
+}
+
+const { url, size = 180, label = 'Código QR para descargar GYM VIP' } = Astro.props;
+
+let svgQr = '';
+try {
+  svgQr = await QRCode.toString(url, {
+    type: 'svg',
+    margin: 1,
+    width: size,
+    color: {
+      dark: '#0a0a0c',
+      light: '#ffffff'
+    }
+  });
+} catch {
+  svgQr = '';
+}
+---
+
+<div class="qr-container" style={`width: ${size}px; height: ${size}px;`}>
+  {svgQr ? (
+    <div class="qr-svg-wrapper" set:html={svgQr} role="img" aria-label={label} />
+  ) : (
+    <div class="qr-fallback">
+      <span>QR no disponible</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .qr-container {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--gold-primary);
+  }
+
+  .qr-svg-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-svg-wrapper :global(svg) {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+
+  .qr-fallback {
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+  }
+</style>

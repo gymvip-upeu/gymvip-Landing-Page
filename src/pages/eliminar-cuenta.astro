@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AccountDeletionForm from '../components/AccountDeletionForm.astro';
+---
+
+<BaseLayout
+  title="Solicitud de Eliminación de Cuenta y Datos (ARCO)"
+  description="Procedimiento formal de supresión de cuenta, revocación de credenciales y cancelación de datos personales conforme a la Ley N° 29733 de Protección de Datos Personales."
+  canonicalPath="/eliminar-cuenta"
+>
+  <div class="deletion-page-wrapper">
+    <div class="container deletion-container">
+      <header class="deletion-header">
+        <span class="badge">Derechos ARCO — Ley N° 29733</span>
+        <h1 class="page-title">Solicitud de Eliminación de Cuenta y Datos</h1>
+        <p class="page-subtitle">
+          Tramita la supresión de tu cuenta en la app móvil y la cancelación de tus datos personales conforme a la legislación peruana.
+        </p>
+      </header>
+
+      <div class="deletion-grid">
+        <!-- Columna de Formulario Interactivo -->
+        <div class="card form-card">
+          <h2 class="section-heading">Formulario de Solicitud en Línea</h2>
+          <p class="section-lead">
+            Completa los datos con los que te registraste en recepción o en la aplicación móvil para generar tu código de seguimiento auditado.
+          </p>
+          <AccountDeletionForm />
+        </div>
+
+        <!-- Columna de Explicación del Procedimiento y Plazos -->
+        <div class="info-column">
+          <div class="card procedure-card">
+            <h2 class="section-heading">Procedimiento y Plazos Legales</h2>
+
+            <div class="procedure-step">
+              <div class="step-badge">Paso 1</div>
+              <div class="step-content">
+                <h3>Recepción y Validación</h3>
+                <p>Verificamos que el documento y correo ingresados coincidan con el registro activo de la base de datos de socios o usuarios.</p>
+              </div>
+            </div>
+
+            <div class="procedure-step">
+              <div class="step-badge">Paso 2</div>
+              <div class="step-content">
+                <h3>Revocación Inmediata de Accesos</h3>
+                <p>Se invalidan de forma inmediata las sesiones activas en la aplicación móvil y el código QR de acceso a torniquetes pasa a estado INACTIVO / BLOQUEADO.</p>
+              </div>
+            </div>
+
+            <div class="procedure-step">
+              <div class="step-badge">Paso 3</div>
+              <div class="step-content">
+                <h3>Supresión y Anonimización</h3>
+                <p>Los datos de contacto y consentimientos son disociados o eliminados en un plazo máximo de 10 días hábiles, preservando únicamente registros contables exigidos por SUNAT sin datos de telemetría.</p>
+              </div>
+            </div>
+
+            <div class="alternative-channel">
+              <h4>Canal Alternativo Presencial</h4>
+              <p>
+                También puedes presentar tu solicitud de cancelación de forma presencial en el mostrador de recepción en Juliaca exhibiendo tu documento de identidad original.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .deletion-page-wrapper {
+    padding: 60px 0 80px 0;
+  }
+
+  .deletion-container {
+    max-width: 1040px;
+  }
+
+  .deletion-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 48px auto;
+  }
+
+  .page-title {
+    font-size: 38px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .deletion-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  @media (min-width: 900px) {
+    .deletion-grid {
+      grid-template-columns: 1.25fr 1fr;
+    }
+  }
+
+  .form-card {
+    background: var(--bg-card);
+    padding: 32px;
+  }
+
+  .section-heading {
+    font-size: 20px;
+    color: var(--gold-primary);
+    margin-bottom: 8px;
+  }
+
+  .section-lead {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .procedure-card {
+    background: var(--bg-card);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .procedure-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .step-badge {
+    background: var(--gold-muted);
+    color: var(--gold-primary);
+    border: 1px solid var(--gold-primary);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content h3 {
+    font-size: 15px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .step-content p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .alternative-channel {
+    border-top: 1px solid var(--border-color);
+    padding-top: 18px;
+    margin-top: 8px;
+  }
+
+  .alternative-channel h4 {
+    font-size: 14px;
+    color: var(--gold-primary);
+    margin-bottom: 6px;
+  }
+
+  .alternative-channel p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+</style>

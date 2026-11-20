@@ -1,0 +1,206 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
+---
+
+<header class="site-header">
+  <div class="container header-container">
+    <a href="/" class="brand-logo" aria-label="VIP CENTER FIT - Inicio">
+      <span class="brand-badge">VIP</span>
+      <span class="brand-title">VIP CENTER FIT</span>
+    </a>
+
+    <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
+      <a href="/#horarios" class={`nav-link ${currentPath === '/#horarios' ? 'active' : ''}`}>Horarios</a>
+      <a href="/#membresias" class={`nav-link ${currentPath === '/#membresias' ? 'active' : ''}`}>Membresías</a>
+      <a href="/#beneficios" class={`nav-link ${currentPath === '/#beneficios' ? 'active' : ''}`}>Beneficios</a>
+      <a href="/#preguntas" class={`nav-link ${currentPath === '/#preguntas' ? 'active' : ''}`}>Preguntas</a>
+      <a href="/descargar" class={`nav-link ${currentPath === '/descargar' ? 'active' : ''}`}>Descargar App</a>
+      <a href="/contacto" class={`nav-link ${currentPath === '/contacto' ? 'active' : ''}`}>Contacto</a>
+
+      <div class="nav-cta-wrapper">
+        <a 
+          href={WEB_APP_URL} 
+          class="btn btn-primary nav-btn-cta" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="Acceso al portal web de socios y administración"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Ingresar al Sistema
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const siteNav = document.getElementById('site-nav');
+
+  if (toggleBtn && siteNav) {
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+      siteNav.classList.toggle('nav-open');
+    });
+
+    // Cerrar al pulsar un enlace de navegación
+    siteNav.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        siteNav.classList.remove('nav-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 0;
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+
+  .brand-badge {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    color: #000;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+  }
+
+  .brand-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-link {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    padding: 6px 0;
+    position: relative;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--gold-primary);
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gold-primary);
+    border-radius: 2px;
+  }
+
+  .nav-btn-cta {
+    padding: 8px 18px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .hamburger-bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+  }
+
+  @media (max-width: 899px) {
+    .menu-toggle {
+      display: flex;
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      flex-direction: column;
+      padding: 24px;
+      gap: 16px;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .site-nav.nav-open {
+      display: flex;
+    }
+
+    .nav-cta-wrapper {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .nav-btn-cta {
+      width: 100%;
+    }
+  }
+</style>

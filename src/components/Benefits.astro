@@ -1,0 +1,71 @@
+---
+const benefits = [
+  {
+    icon: '⚡',
+    title: 'Acceso Instantáneo con QR Dinámico',
+    desc: 'Tu teléfono genera un código QR rotativo y cifrado cada 30 segundos. Olvídate de carnets físicos extraviados o demoras en el molinete de entrada.'
+  },
+  {
+    icon: '🛡️',
+    title: 'Liquidación Transparente y Segura',
+    desc: 'Pagos presenciales en caja mediante Efectivo, Yape, Plin o Transferencia. Sin comisiones ocultas ni cobros automáticos a tarjetas de crédito.'
+  },
+  {
+    icon: '📱',
+    title: 'App Móvil para el Socio',
+    desc: 'Revisa el estado de tu membresía, días restantes, avisos de mantenimiento, catálogo de suplementos deportivos y promociones exclusivas.'
+  },
+  {
+    icon: '🔐',
+    title: 'Privacidad y Protección de Datos',
+    desc: 'Tus datos están protegidos bajo la Ley N° 29733 (Perú). Cuentas con derecho de acceso, rectificación y eliminación inmediata de tu registro cuando lo desees.'
+  }
+];
+---
+
+<section id="beneficios" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Propuesta de Valor</span>
+      <h2 class="section-title">Tecnología Diseñada para tu Entrenamiento</h2>
+      <p class="section-subtitle">
+        Eliminamos la fricción administrativa para que tu única preocupación sea alcanzar tus objetivos físicos.
+      </p>
+    </div>
+
+    <div class="grid grid-2">
+      {benefits.map(b => (
+        <div class="card benefit-card">
+          <div class="benefit-icon-wrapper" aria-hidden="true">{b.icon}</div>
+          <h3 class="benefit-title">{b.title}</h3>
+          <p class="benefit-desc">{b.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefit-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-card);
+  }
+
+  .benefit-icon-wrapper {
+    font-size: 32px;
+    margin-bottom: 4px;
+  }
+
+  .benefit-title {
+    font-size: 20px;
+    color: var(--text-primary);
+  }
+
+  .benefit-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+</style>

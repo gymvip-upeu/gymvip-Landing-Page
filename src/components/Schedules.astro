@@ -1,0 +1,118 @@
+---
+const schedules = [
+  { day: 'Lunes a Viernes', hours: '06:00 – 22:00', note: 'Horario continuado' },
+  { day: 'Sábados', hours: '07:00 – 20:00', note: 'Turno mañana y tarde' },
+  { day: 'Domingos', hours: '08:00 – 14:00', note: 'Turno matutino' },
+  { day: 'Feriados', hours: '08:00 – 12:00', note: 'Horario especial' }
+];
+---
+
+<section id="horarios" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Sede Presencial</span>
+      <h2 class="section-title">Horarios de Entrenamiento y Atención</h2>
+      <p class="section-subtitle">
+        Instalaciones equipadas en Juliaca para tu rutina diaria con asistencia técnica de sala y recepción permanente.
+      </p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card schedule-card">
+        <h3 class="card-subtitle">Horario de Salas y Entrenamiento</h3>
+        <ul class="schedule-list">
+          {schedules.map(s => (
+            <li class="schedule-item">
+              <span class="schedule-day">{s.day}</span>
+              <span class="schedule-hours">{s.hours}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="schedule-note">
+          El ingreso se realiza mediante escaneo de código QR personal hasta 45 minutos antes del cierre.
+        </p>
+      </div>
+
+      <div class="card location-card">
+        <h3 class="card-subtitle">Sede Central y Recepción</h3>
+        <p class="location-address">
+          <strong>VIP CENTER FIT</strong><br />
+          Ciudad de Juliaca, Provincia de San Román, Departamento de Puno — Perú.
+        </p>
+
+        <div class="location-details">
+          <p><strong>Registro de Nuevos Socios:</strong> En mostrador con DNI/CE.</p>
+          <p><strong>Medios de Pago:</strong> Efectivo, Yape, Plin y Transferencia Bancaria.</p>
+          <p><strong>Canal de Consultas:</strong> <a href="mailto:soporte@gymvip.pe">soporte@gymvip.pe</a></p>
+        </div>
+
+        <div class="location-actions">
+          <a href="/contacto" class="btn btn-secondary" style="width: 100%;">
+            Ver Canales de Contacto Oficial
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-subtitle {
+    font-size: 20px;
+    color: var(--gold-primary);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+  }
+
+  .schedule-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .schedule-day {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .schedule-hours {
+    font-weight: 700;
+    color: var(--gold-primary);
+  }
+
+  .schedule-note {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .location-address {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .location-details a {
+    color: var(--gold-primary);
+  }
+</style>

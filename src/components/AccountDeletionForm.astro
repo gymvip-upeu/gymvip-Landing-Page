@@ -1,0 +1,260 @@
+---
+// Formulario interactivo ARCO para solicitud de supresión de datos
+---
+
+<div class="deletion-form-container">
+  <form id="deletion-form" class="deletion-form" novalidate>
+    <div id="form-error" class="alert alert-error" style="display: none;" role="alert"></div>
+
+    <div class="form-group">
+      <label for="docNumber" class="form-label">Número de Documento (DNI o Carnet de Extranjería) *</label>
+      <input 
+        type="text" 
+        id="docNumber" 
+        name="docNumber" 
+        class="form-control" 
+        required 
+        placeholder="Ej. 70123456" 
+        maxlength="15"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="fullName" class="form-label">Nombres y Apellidos Completos *</label>
+      <input 
+        type="text" 
+        id="fullName" 
+        name="fullName" 
+        class="form-control" 
+        required 
+        placeholder="Ej. Juan Pérez Mendoza"
+        autocomplete="name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email" class="form-label">Correo Electrónico Registrado en GYM VIP *</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        class="form-control" 
+        required 
+        placeholder="ejemplo@correo.com"
+        autocomplete="email"
+      />
+      <small class="form-help">Utilizado para enviar la confirmación y el código de seguimiento.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="phone" class="form-label">Teléfono / WhatsApp de Contacto (Opcional)</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        name="phone" 
+        class="form-control" 
+        placeholder="Ej. +51 987 654 321"
+        autocomplete="tel"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="reason" class="form-label">Motivo de la Solicitud (Opcional)</label>
+      <textarea 
+        id="reason" 
+        name="reason" 
+        class="form-control" 
+        placeholder="Indique brevemente el motivo de su solicitud para auditoría de calidad de servicio."
+      ></textarea>
+    </div>
+
+    <div class="form-group consent-group">
+      <input type="checkbox" id="consent" name="consent" required class="form-checkbox" />
+      <label for="consent" class="consent-label">
+        Entiendo que esta acción es irreversible y autorizo a VIP CENTER FIT a proceder con la desactivación de mi cuenta y la supresión/disociación de mis datos personales en un plazo máximo de hasta 10 días hábiles conforme a la Ley N° 29733.
+      </label>
+    </div>
+
+    <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%;">
+      <span id="btn-text">Enviar Solicitud de Supresión</span>
+      <span id="btn-loading" style="display: none;">Procesando...</span>
+    </button>
+  </form>
+
+  <div id="success-panel" class="alert alert-success success-card" style="display: none;">
+    <div class="success-header">
+      <span class="success-badge">✅ Solicitud Registrada</span>
+      <h3>Requerimiento Ingresado en Auditoría</h3>
+    </div>
+    <p>
+      Su solicitud de derechos ARCO ha sido registrada con el código de seguimiento único:
+    </p>
+    <div class="tracking-display">
+      <code id="tracking-result">GYM-DEL-2026-XXXXXX</code>
+    </div>
+    <div class="tracking-details">
+      <p><strong>Plazo legal de atención:</strong> Máximo 10 días hábiles conforme a la Ley N° 29733.</p>
+      <p><strong>Efectos inmediatos:</strong> Se procede a invalidar el acceso mediante código QR dinámico a torniquetes.</p>
+      <p><strong>Confirmación:</strong> Conserve este código de seguimiento. Si tiene consultas adicionales, puede escribir a <a href="mailto:soporte@gymvip.pe" style="color: var(--gold-primary);">soporte@gymvip.pe</a> indicando su código.</p>
+    </div>
+    <button type="button" id="reset-btn" class="btn btn-secondary" style="margin-top: 20px;">
+      Registrar otra consulta
+    </button>
+  </div>
+</div>
+
+<script>
+  import { SubmitAccountDeletionUseCase } from '../core/usecases/SubmitAccountDeletionUseCase';
+  import { LocalAccountDeletionAdapter } from '../core/adapters/LocalAccountDeletionAdapter';
+
+  const form = document.getElementById('deletion-form') as HTMLFormElement | null;
+  const errorBox = document.getElementById('form-error');
+  const successPanel = document.getElementById('success-panel');
+  const trackingResult = document.getElementById('tracking-result');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const btnText = document.getElementById('btn-text');
+  const btnLoading = document.getElementById('btn-loading');
+  const resetBtn = document.getElementById('reset-btn');
+
+  if (form && errorBox && successPanel && trackingResult && submitBtn && btnText && btnLoading) {
+    const adapter = new LocalAccountDeletionAdapter();
+    const useCase = new SubmitAccountDeletionUseCase(adapter);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.style.display = 'none';
+
+      const docNumber = (document.getElementById('docNumber') as HTMLInputElement)?.value || '';
+      const fullName = (document.getElementById('fullName') as HTMLInputElement)?.value || '';
+      const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
+      const phone = (document.getElementById('phone') as HTMLInputElement)?.value || '';
+      const reason = (document.getElementById('reason') as HTMLTextAreaElement)?.value || '';
+      const consent = (document.getElementById('consent') as HTMLInputElement)?.checked || false;
+
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+
+      try {
+        const result = await useCase.execute({
+          documentNumber: docNumber,
+          fullName,
+          email,
+          phone,
+          reason,
+          consent
+        });
+
+        if (result.success && result.trackingCode) {
+          trackingResult.textContent = result.trackingCode;
+          form.style.display = 'none';
+          successPanel.style.display = 'block';
+        } else {
+          errorBox.textContent = result.errorMessage || 'Ocurrió un error al procesar la solicitud.';
+          errorBox.style.display = 'block';
+        }
+      } catch (err) {
+        errorBox.textContent = 'No se pudo completar la solicitud. Verifique los datos ingresados.';
+        errorBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+      }
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      form.reset();
+      form.style.display = 'block';
+      successPanel.style.display = 'none';
+      errorBox.style.display = 'none';
+    });
+  }
+</script>
+
+<style>
+  .deletion-form-container {
+    margin-top: 24px;
+  }
+
+  .form-help {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .consent-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 24px 0;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+  }
+
+  .form-checkbox {
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold-primary);
+    cursor: pointer;
+  }
+
+  .consent-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .success-card {
+    padding: 28px;
+    border-radius: var(--radius-lg);
+  }
+
+  .success-badge {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .success-header h3 {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .tracking-display {
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 2px dashed var(--gold-primary);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  .tracking-display code {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gold-primary);
+    letter-spacing: 0.05em;
+  }
+
+  .tracking-details {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    line-height: 1.6;
+  }
+</style>

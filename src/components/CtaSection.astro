@@ -1,0 +1,81 @@
+---
+const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
+---
+
+<section class="section cta-section">
+  <div class="container cta-container">
+    <div class="card cta-card">
+      <span class="badge">Comienza Hoy</span>
+      <h2 class="cta-title">¿Listo para Entrenar al Nivel VIP?</h2>
+      <p class="cta-desc">
+        Visítanos en nuestra sede de Juliaca para registrarte, o descarga la aplicación móvil para gestionar tus accesos y avisos.
+      </p>
+
+      <div class="cta-actions">
+        <a href="/descargar" class="btn btn-primary cta-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Descargar App Móvil
+        </a>
+
+        <a 
+          href={WEB_APP_URL} 
+          class="btn btn-secondary cta-btn"
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Ingresar al Portal Web
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+
+  .cta-card {
+    text-align: center;
+    padding: 48px 24px;
+    background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, var(--bg-card) 70%);
+    border: 1px solid var(--border-color);
+  }
+
+  .cta-title {
+    font-size: 32px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+
+  .cta-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto 32px auto;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cta-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalPath?: string;
+}
+
+const {
+  title,
+  description = 'Portal oficial de VIP Center Fit (GYM VIP). Sede Juliaca, Puno. Control de acceso con QR dinámico, membresías transparentes y app móvil oficial.',
+  canonicalPath = ''
+} = Astro.props;
+
+const siteUrl = 'https://gymvip.vercel.app';
+const canonicalUrl = `${siteUrl}${canonicalPath}`;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — VIP CENTER FIT</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  
+  <!-- Open Graph / Meta Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={`${title} — VIP CENTER FIT`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:site_name" content="VIP CENTER FIT" />
+  
+  <!-- Favicon SVG seguro -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <Header currentPath={canonicalPath} />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <Footer />
+</body>
+</html>

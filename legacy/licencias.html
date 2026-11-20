@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Licencias de Software y Recursos — GymVIP</title>
+  <meta name="description" content="Catálogo de licencias de código abierto, frameworks y librerías utilizadas en GymVIP.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">GYM<span>VIP</span></a>
+      <nav class="nav">
+        <a href="index.html#servicios">Servicios</a>
+        <a href="index.html#horarios">Horarios</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="terminos.html">Términos</a>
+        <a href="licencias.html" class="active">Licencias</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div class="legal-card">
+      <div class="badge">Open Source & Compliance</div>
+      <h1 class="page-title">Licencias de Software y Recursos</h1>
+      <p class="meta-info">Auditoría SBOM & Avisos a Terceros — Noviembre 2026</p>
+
+      <p>
+        El ecosistema GymVIP está construido utilizando tecnologías de software libre y de código abierto de clase empresarial con licencias permisivas comerciales. Ninguna dependencia del stack productivo incorpora licencias restrictivas ("copyleft" viral agresivo que comprometa el código propietario) ni licencias de tipo "solo uso personal/no comercial" para la operación del gimnasio.
+      </p>
+
+      <h2>1. Stack Backend (Java / Spring Boot)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Componente / Librería</th>
+              <th>Versión</th>
+              <th>Licencia</th>
+              <th>Propósito</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Spring Boot Framework</td>
+              <td>3.4.3</td>
+              <td>Apache-2.0</td>
+              <td>Framework empresarial REST y seguridad</td>
+            </tr>
+            <tr>
+              <td>Spring Security & JWT</td>
+              <td>6.x</td>
+              <td>Apache-2.0</td>
+              <td>Autenticación stateless por roles y filtros</td>
+            </tr>
+            <tr>
+              <td>PostgreSQL JDBC Driver</td>
+              <td>42.7.x</td>
+              <td>BSD-2-Clause</td>
+              <td>Conectividad a base de datos relacional</td>
+            </tr>
+            <tr>
+              <td>Flyway Community Edition</td>
+              <td>10.x</td>
+              <td>Apache-2.0</td>
+              <td>Migraciones y control de versiones de esquema</td>
+            </tr>
+            <tr>
+              <td>ZXing ("Zebra Crossing")</td>
+              <td>3.5.3</td>
+              <td>Apache-2.0</td>
+              <td>Generación y decodificación de códigos QR</td>
+            </tr>
+            <tr>
+              <td>Lombok</td>
+              <td>1.18.x</td>
+              <td>MIT</td>
+              <td>Generación de código boilerplate en compilación</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>2. Stack Frontend Web (React / Vite)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Paquete NPM</th>
+              <th>Versión</th>
+              <th>Licencia</th>
+              <th>Propósito</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>React & React-DOM</td>
+              <td>18.3.1</td>
+              <td>MIT</td>
+              <td>Renderizado declarativo de interfaz</td>
+            </tr>
+            <tr>
+              <td>Vite</td>
+              <td>6.4.4</td>
+              <td>MIT</td>
+              <td>Compilador, bundler y servidor de desarrollo ultrarrápido</td>
+            </tr>
+            <tr>
+              <td>React Router DOM</td>
+              <td>6.x</td>
+              <td>MIT</td>
+              <td>Enrutamiento SPA para administración</td>
+            </tr>
+            <tr>
+              <td>Lucide React / Phosphor Icons</td>
+              <td>Reciente</td>
+              <td>MIT / ISC</td>
+              <td>Iconografía SVG modular ligera</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. Stack Móvil (Kotlin Multiplatform / Compose)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Framework / SDK</th>
+              <th>Versión</th>
+              <th>Licencia</th>
+              <th>Propósito</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kotlin Multiplatform & Coroutines</td>
+              <td>2.1.0</td>
+              <td>Apache-2.0</td>
+              <td>Lógica de negocio y concurrencia multiplataforma</td>
+            </tr>
+            <tr>
+              <td>Compose Multiplatform</td>
+              <td>1.7.1</td>
+              <td>Apache-2.0</td>
+              <td>UI declarativa nativa para Android y Desktop</td>
+            </tr>
+            <tr>
+              <td>Ktor Client</td>
+              <td>3.0.x</td>
+              <td>Apache-2.0</td>
+              <td>Cliente HTTP asíncrono para consumo de la API</td>
+            </tr>
+            <tr>
+              <td>SQLDelight</td>
+              <td>2.0.x</td>
+              <td>Apache-2.0</td>
+              <td>Persistencia SQLite local segura sin ORM pesado</td>
+            </tr>
+            <tr>
+              <td>Koin Core</td>
+              <td>3.5.x</td>
+              <td>Apache-2.0</td>
+              <td>Inyección de dependencias pragmática y ligera</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>4. Declaración de Ausencia de Licencias No Comerciales</h2>
+      <p>
+        Se certifica mediante auditoría de dependencias (SBOM) que el proyecto no emplea activos marcados como <em>"Creative Commons Non-Commercial (CC BY-NC)"</em> ni licencias que impidan el uso productivo en el gimnasio.
+      </p>
+
+      <div style="margin-top: 2.5rem; text-align: center;">
+        <a href="index.html" class="btn btn-secondary">← Volver al Portal Principal</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Inicio</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos y Condiciones</a>
+      <a href="aviso-legal.html">Aviso Legal</a>
+      <a href="atribuciones.html">Atribuciones</a>
+      <a href="licencias.html">Licencias</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="eliminar-cuenta.html">Eliminar Cuenta</a>
+    </div>
+    <p class="copyright">© 2026 GymVIP. Licenciamiento verificado bajo estándares Open Source OSI.</p>
+  </footer>
+</body>
+</html>

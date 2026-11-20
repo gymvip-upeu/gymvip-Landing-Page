@@ -1,0 +1,461 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QrCode from '../components/QrCode.astro';
+import { GetAndroidReleaseUseCase } from '../core/usecases/GetAndroidReleaseUseCase';
+import { GitHubReleaseAdapter } from '../core/adapters/GitHubReleaseAdapter';
+
+const releaseUseCase = new GetAndroidReleaseUseCase(new GitHubReleaseAdapter());
+const release = await releaseUseCase.execute();
+
+const canonicalDownloadUrl = 'https://gymvip.vercel.app/descargar';
+---
+
+<BaseLayout
+  title="Descargar App Android"
+  description="Descarga la aplicación oficial de GYM VIP para Android. Acceso con QR dinámico a torniquetes, estado de membresía, catálogo y avisos."
+  canonicalPath="/descargar"
+>
+  <div class="download-page-wrapper">
+    <div class="container download-container">
+      <header class="download-header">
+        <span class="badge">Aplicación Oficial</span>
+        <h1 class="page-title">GYM VIP para Android</h1>
+        <p class="page-subtitle">
+          Lleva tu entrenamiento, credenciales de acceso y membresía en tu smartphone con conexión segura a nuestro backend de producción.
+        </p>
+      </header>
+
+      <div class="download-main-grid">
+        <!-- Tarjeta de Descarga y Estado -->
+        <div class="card download-card">
+          <div class="app-info-header">
+            <div class="app-icon" aria-hidden="true">🏋️</div>
+            <div>
+              <h2 class="app-name">GYM VIP Mobile</h2>
+              <p class="app-version">Versión {release.version} ({release.releaseTag})</p>
+              <span class={`status-pill ${release.isAvailable ? 'status-available' : 'status-coming-soon'}`}>
+                {release.isAvailable ? '● Paquete de Producción Verificado' : '⏳ Compilado Localmente / Próximamente en Releases'}
+              </span>
+            </div>
+          </div>
+
+          <div class="download-actions-area">
+            {release.isAvailable ? (
+              <div class="available-box">
+                <a 
+                  href={release.downloadUrl} 
+                  class="btn btn-primary btn-download"
+                  download={release.apkName}
+                  aria-label={`Descargar ${release.apkName} versión ${release.version}`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  Descargar APK Oficial ({release.apkSizeFormatted})
+                </a>
+                <p class="direct-link-note">
+                  Enlace directo accesible: <a href={release.downloadUrl}>{release.apkName}</a>
+                </p>
+              </div>
+            ) : (
+              <div class="coming-soon-box alert alert-info">
+                <div class="coming-soon-header">
+                  <span class="coming-soon-badge">Estado del Artefacto</span>
+                  <h3>Listo para Publicación en GitHub Releases</h3>
+                </div>
+                <p class="coming-soon-desc">
+                  El paquete oficial firmado para producción <strong>{release.apkName}</strong> ({release.apkSizeFormatted}) ha sido generado, firmado con esquema v2 y verificado en <code>entregables/android/</code>.
+                </p>
+                <div class="pending-notice">
+                  <strong>Acción pendiente requerida:</strong> Cargar el archivo APK en el tag <code>{release.releaseTag}</code> del repositorio público de distribución en GitHub para activar la descarga directa vía CDN.
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Metadatos de Seguridad e Integridad -->
+          <div class="security-metadata-box">
+            <h3 class="box-title">Ficha Técnica del Paquete de Producción</h3>
+            <dl class="metadata-grid">
+              <div class="meta-row">
+                <dt>Plataforma Objetivo:</dt>
+                <dd>{release.minAndroid}</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Tamaño del Archivo:</dt>
+                <dd>{release.apkSizeFormatted} ({release.apkSizeBytes.toLocaleString()} bytes)</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Esquema de Firma:</dt>
+                <dd>{release.signatureScheme}</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Servidor de Datos:</dt>
+                <dd><code>{release.backendUrl}</code></dd>
+              </div>
+              <div class="meta-row sha-row">
+                <dt>Checksum SHA-256:</dt>
+                <dd>
+                  <code class="sha-code">{release.sha256}</code>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Columna de QR (Desktop) y Guía de Instalación -->
+        <div class="sidebar-guide">
+          <!-- QR Visible en escritorio, oculto en móvil -->
+          <div class="card qr-card desktop-only">
+            <h3 class="qr-title">Escanear para Descargar</h3>
+            <p class="qr-desc">
+              Apunta con la cámara de tu teléfono para abrir esta página de descarga en tu Android:
+            </p>
+            <div class="qr-code-wrapper">
+              <QrCode url={canonicalDownloadUrl} size={190} label="QR de descarga oficial de GYM VIP" />
+            </div>
+            <p class="qr-url-text">
+              <code>{canonicalDownloadUrl}</code>
+            </p>
+          </div>
+
+          <!-- Guía de Instalación en Android -->
+          <div class="card guide-card">
+            <h3 class="guide-title">Instrucciones de Instalación</h3>
+            <ol class="steps-list">
+              {release.instructions.map((step, idx) => (
+                <li class="step-item">
+                  <span class="step-number">{idx + 1}</span>
+                  <span class="step-text">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div class="install-tip">
+              <strong>Aviso de seguridad Android:</strong> Al tratarse de una descarga directa fuera de Google Play, Android te solicitará autorizar "Permitir desde esta fuente / navegador". Este procedimiento es completamente seguro y estándar para aplicaciones corporativas oficiales.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .download-page-wrapper {
+    padding: 60px 0 80px 0;
+  }
+
+  .download-container {
+    max-width: 1080px;
+  }
+
+  .download-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 48px auto;
+  }
+
+  .page-title {
+    font-size: 40px;
+    margin-top: 12px;
+    margin-bottom: 14px;
+  }
+
+  .page-subtitle {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .download-main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  @media (min-width: 900px) {
+    .download-main-grid {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+
+  .download-card {
+    background: var(--bg-card);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .app-info-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .app-icon {
+    font-size: 44px;
+    background: var(--bg-surface);
+    border: 2px solid var(--gold-primary);
+    width: 76px;
+    height: 76px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .app-name {
+    font-size: 24px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .app-version {
+    font-size: 14px;
+    color: var(--gold-primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .status-pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 9999px;
+  }
+
+  .status-available {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+
+  .status-coming-soon {
+    background: var(--color-info-bg);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+  }
+
+  .btn-download {
+    width: 100%;
+    padding: 16px 28px;
+    font-size: 17px;
+    box-shadow: 0 4px 20px var(--gold-glow);
+  }
+
+  .direct-link-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .direct-link-note a {
+    color: var(--gold-primary);
+    word-break: break-all;
+  }
+
+  .coming-soon-box {
+    padding: 20px;
+    border-radius: var(--radius-md);
+  }
+
+  .coming-soon-badge {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    background: rgba(59, 130, 246, 0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .coming-soon-header h3 {
+    font-size: 17px;
+    color: #e0f2fe;
+    margin-bottom: 8px;
+  }
+
+  .coming-soon-desc {
+    font-size: 14px;
+    color: #bae6fd;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .pending-notice {
+    font-size: 13px;
+    background: rgba(10, 10, 12, 0.6);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--gold-primary);
+    color: #e0f2fe;
+  }
+
+  .security-metadata-box {
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+  }
+
+  .box-title {
+    font-size: 16px;
+    color: var(--gold-primary);
+    margin-bottom: 16px;
+  }
+
+  .metadata-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  @media (min-width: 600px) {
+    .meta-row {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .meta-row dt {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .meta-row dd {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .sha-row dd {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .sha-code {
+    display: block;
+    word-break: break-all;
+    font-size: 11px;
+    background: var(--bg-surface);
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    color: var(--gold-primary);
+  }
+
+  .sidebar-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .qr-card {
+    text-align: center;
+    padding: 24px;
+    background: var(--bg-card);
+  }
+
+  .qr-title {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .qr-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .qr-code-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .qr-url-text {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .guide-card {
+    padding: 24px;
+    background: var(--bg-card);
+  }
+
+  .guide-title {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .steps-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .step-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--gold-muted);
+    color: var(--gold-primary);
+    border: 1px solid var(--gold-primary);
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .install-tip {
+    font-size: 12px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .install-tip strong {
+    color: var(--gold-primary);
+  }
+
+  /* Ocultar QR en dispositivos móviles pequeños para priorizar el botón */
+  @media (max-width: 899px) {
+    .desktop-only {
+      display: none;
+    }
+  }
+</style>

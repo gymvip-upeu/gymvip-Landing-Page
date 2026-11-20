@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Schedules from '../components/Schedules.astro';
+import Memberships from '../components/Memberships.astro';
+import Benefits from '../components/Benefits.astro';
+import FaqSection from '../components/FaqSection.astro';
+import CtaSection from '../components/CtaSection.astro';
+---
+
+<BaseLayout 
+  title="Inicio — Portal Oficial"
+  description="Plataforma tecnológica oficial de VIP Center Fit (GYM VIP). Sede Juliaca, Puno. Control de acceso con QR dinámico, membresías transparentes y app móvil oficial."
+  canonicalPath="/"
+>
+  <Hero />
+  <Schedules />
+  <Memberships />
+  <Benefits />
+  <FaqSection />
+  <CtaSection />
+</BaseLayout>

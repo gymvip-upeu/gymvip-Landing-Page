@@ -1,0 +1,159 @@
+---
+const plans = [
+  {
+    title: 'Plan Mensual',
+    description: 'Acceso total a sala de pesas, cardio y asesoría inicial de sala durante 30 días calendario.',
+    features: [
+      'Acceso diario con QR dinámico',
+      'Uso de casilleros y duchas',
+      'Sin contrato de permanencia forzosa',
+      'Registro en App Oficial para socios'
+    ]
+  },
+  {
+    title: 'Plan Trimestral',
+    description: 'Plan preferente para entrenamiento continuo con evaluación y descuentos especiales en recepción.',
+    features: [
+      'Acceso irrestricto en todos los horarios',
+      'Seguimiento básico de progreso',
+      'Descuentos en suplementos seleccionados',
+      'Prioridad de reserva en talleres de sala'
+    ],
+    highlight: true
+  },
+  {
+    title: 'Plan Semestral / Anual',
+    description: 'Compromiso a mediano y largo plazo con congelamiento preventivo por viaje o descanso médico justificado.',
+    features: [
+      'Tarifa mensual más económica',
+      'Congelamiento de membresía (hasta 15 días)',
+      'Acceso a promociones y sorteos de temporada',
+      'Atención preferente en mostrador'
+    ]
+  }
+];
+---
+
+<section id="membresias" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Membresías Transparentes</span>
+      <h2 class="section-title">Entrena a tu Ritmo, Sin Letras Pequeñas</h2>
+      <p class="section-subtitle">
+        Todos nuestros planes se contratan y abonan exclusivamente en el mostrador oficial de recepción.
+      </p>
+    </div>
+
+    <div class="grid grid-3">
+      {plans.map(p => (
+        <div class={`card plan-card ${p.highlight ? 'plan-highlight' : ''}`}>
+          {p.highlight && <span class="badge badge-highlight">Más Elegido</span>}
+          <h3 class="plan-title">{p.title}</h3>
+          <p class="plan-desc">{p.description}</p>
+          <ul class="plan-features">
+            {p.features.map(f => (
+              <li class="plan-feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check-icon" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="plan-footer">
+            <a href="/contacto" class={`btn ${p.highlight ? 'btn-primary' : 'btn-secondary'}`} style="width: 100%;">
+              Consultar en Recepción
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="membership-policy-note">
+      <p>
+        <strong>Política de Transparencia:</strong> Las tarifas exactas y promociones vigentes se confirman en el mostrador de recepción en Juliaca, emitiéndose el comprobante de pago físico y digital en el momento de la liquidación.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .plan-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg-card);
+  }
+
+  .plan-highlight {
+    border-color: var(--gold-primary);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+  }
+
+  .badge-highlight {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .plan-title {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .plan-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-grow: 1;
+  }
+
+  .plan-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .check-icon {
+    color: var(--gold-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .plan-footer {
+    margin-top: auto;
+  }
+
+  .membership-policy-note {
+    margin-top: 36px;
+    text-align: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .membership-policy-note p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .membership-policy-note strong {
+    color: var(--gold-primary);
+  }
+</style>
