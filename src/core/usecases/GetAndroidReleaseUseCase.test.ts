@@ -23,7 +23,7 @@ describe('GetAndroidReleaseUseCase', () => {
     const release = await useCase.execute();
 
     assert.strictEqual(release.version, '1.1.1');
-    assert.strictEqual(release.sha256, 'CBAEE3F01EF92825D22CBC3CA06E36310AF842C6B1E49CBC9D333B4712DE979E');
+    assert.strictEqual(release.sha256, 'C3DDE6423BEAFF89160188AA7A5A7B79638B6BD28171F70FA797AFD65EFD64E5');
     assert.strictEqual(release.apkName, 'gymvip-mobile-v1.1.1-release.apk');
     assert.strictEqual(release.isAvailable, true);
   });
