@@ -23,8 +23,8 @@ describe('GetAndroidReleaseUseCase', () => {
     const release = await useCase.execute();
 
     assert.strictEqual(release.version, '1.1.1');
-    assert.strictEqual(release.sha256, '0B7462D30653E40E5AF1D06211F2DCBF068050FC69556FD8865D82FCB4435CDF');
-    assert.strictEqual(release.apkName, 'GYM_VIP_Mobile_Render_v1.1.1_Release.apk');
+    assert.strictEqual(release.sha256, 'CBAEE3F01EF92825D22CBC3CA06E36310AF842C6B1E49CBC9D333B4712DE979E');
+    assert.strictEqual(release.apkName, 'gymvip-mobile-v1.1.1-release.apk');
     assert.strictEqual(release.isAvailable, true);
   });
 });

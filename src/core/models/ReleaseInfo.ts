@@ -19,18 +19,18 @@ export interface ReleaseInfo {
 export const OFFICIAL_RELEASE_METADATA: Omit<ReleaseInfo, 'downloadUrl' | 'isAvailable' | 'availabilityStatus' | 'statusMessage'> = {
   version: '1.1.1',
   releaseTag: 'v1.1.1',
-  releaseDate: '19 de Noviembre de 2026',
-  minAndroid: 'Android 7.0 (Nougat, API 24) o superior',
-  apkName: 'GYM_VIP_Mobile_Render_v1.1.1_Release.apk',
-  apkSizeBytes: 13969920,
-  apkSizeFormatted: '13.3 MB',
-  sha256: '0B7462D30653E40E5AF1D06211F2DCBF068050FC69556FD8865D82FCB4435CDF',
-  signatureScheme: 'APK Signature Scheme v2 (Verificado)',
+  releaseDate: '20 de Noviembre de 2026',
+  minAndroid: 'Android 8.0 (Oreo, API 26) o superior',
+  apkName: 'gymvip-mobile-v1.1.1-release.apk',
+  apkSizeBytes: 39873044,
+  apkSizeFormatted: '38.0 MB',
+  sha256: 'CBAEE3F01EF92825D22CBC3CA06E36310AF842C6B1E49CBC9D333B4712DE979E',
+  signatureScheme: 'APK Signature Scheme v1 & v2 (Firma Oficial CN=GYM VIP Mobile)',
   backendUrl: 'https://gymvip-backend.onrender.com',
   instructions: [
     'Descarga el archivo APK oficial en tu dispositivo Android.',
     'Si tu navegador muestra la advertencia de seguridad de Android sobre "fuentes desconocidas", selecciona "Configuración" y activa "Permitir desde esta fuente".',
-    'Abre el archivo descargado y presiona "Instalar".',
+    'Abre el archivo descargado y presiona "Instalar". (Si tenías una versión debug previa de prueba, desinstálala primero debido al cambio al certificado oficial de producción).',
     'Abre GYM VIP e inicia sesión con las credenciales entregadas en recepción del gimnasio.'
   ]
 };
