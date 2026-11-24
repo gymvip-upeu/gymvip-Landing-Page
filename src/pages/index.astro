@@ -1,21 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import Facilities from '../components/Facilities.astro';
 import Schedules from '../components/Schedules.astro';
 import Memberships from '../components/Memberships.astro';
+import MobileAppSection from '../components/MobileAppSection.astro';
 import Benefits from '../components/Benefits.astro';
 import FaqSection from '../components/FaqSection.astro';
 import CtaSection from '../components/CtaSection.astro';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ExerciseGym',
+  'name': 'VIP Center Fit — GYM VIP',
+  'image': 'https://gymvip.vercel.app/images/og-banner.jpg',
+  'description': 'Centro de entrenamiento integral de alta gama en Juliaca, San Román, Puno. Musculación, cardio, spinning, vestidores de primer nivel y control de acceso digital mediante App Móvil.',
+  'address': {
+    '@type': 'PostalAddress',
+    'addressLocality': 'Juliaca',
+    'addressRegion': 'Puno',
+    'addressCountry': 'PE'
+  },
+  'geo': {
+    '@type': 'GeoCoordinates',
+    'latitude': -15.4988,
+    'longitude': -70.1332
+  },
+  'url': 'https://gymvip.vercel.app',
+  'telephone': '+51951000000',
+  'priceRange': 'S/ 120 - S/ 1100',
+  'openingHoursSpecification': [
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      'opens': '06:00',
+      'closes': '22:00'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': 'Saturday',
+      'opens': '06:00',
+      'closes': '20:00'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': 'Sunday',
+      'opens': '08:00',
+      'closes': '14:00'
+    }
+  ],
+  'paymentAccepted': 'Cash, Credit Card, Yape, Plin'
+};
 ---
 
 <BaseLayout 
   title="Inicio — Portal Oficial"
-  description="Plataforma tecnológica oficial de VIP Center Fit (GYM VIP). Sede Juliaca, Puno. Control de acceso con QR dinámico, membresías transparentes y app móvil oficial."
+  description="Plataforma tecnológica oficial de VIP Center Fit (GYM VIP). Sede Juliaca, Puno. Control de acceso con QR dinámico, membresías transparentes, salas de musculación y app móvil oficial."
   canonicalPath="/"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
   <Hero />
+  <Facilities />
   <Schedules />
   <Memberships />
+  <MobileAppSection />
   <Benefits />
   <FaqSection />
   <CtaSection />

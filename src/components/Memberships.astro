@@ -1,55 +1,111 @@
 ---
-const plans = [
+interface Plan {
+  id: string;
+  title: string;
+  priceFormatted: string;
+  billingPeriod: string;
+  monthlyEquivalent?: string;
+  savingsBadge?: string;
+  description: string;
+  features: string[];
+  highlight?: boolean;
+}
+
+const plans: Plan[] = [
   {
-    title: 'Plan Mensual',
-    description: 'Acceso total a sala de pesas, cardio y asesoría inicial de sala durante 30 días calendario.',
+    id: 'mensual',
+    title: 'Plan VIP Mensual',
+    priceFormatted: 'S/ 120',
+    billingPeriod: 'por 30 días calendario',
+    description: 'Flexibilidad total para comenzar tu transformación. Acceso completo a sala de pesas, máquinas y área de cardio sin permanencia.',
     features: [
-      'Acceso diario con QR dinámico',
-      'Uso de casilleros y duchas',
-      'Sin contrato de permanencia forzosa',
-      'Registro en App Oficial para socios'
+      'Acceso total a sala de fuerza, pesas y cardio',
+      'Generación de código QR dinámico en App',
+      'Uso diario de casilleros y duchas con agua caliente',
+      'Sin contrato de permanencia ni cargos ocultos',
+      'Asesoría técnica de sala por entrenadores de turno'
     ]
   },
   {
-    title: 'Plan Trimestral',
-    description: 'Plan preferente para entrenamiento continuo con evaluación y descuentos especiales en recepción.',
+    id: 'trimestral',
+    title: 'Plan VIP Trimestral',
+    priceFormatted: 'S/ 320',
+    billingPeriod: 'por 90 días calendario',
+    monthlyEquivalent: 'Equivalente a S/ 106.60 / mes',
+    savingsBadge: 'Ahorras 11%',
+    description: 'La opción recomendada para consolidar el hábito deportivo y ver cambios medibles en tu composición física con beneficios extra.',
     features: [
-      'Acceso irrestricto en todos los horarios',
-      'Seguimiento básico de progreso',
-      'Descuentos en suplementos seleccionados',
-      'Prioridad de reserva en talleres de sala'
+      'Todos los beneficios del Plan Mensual',
+      'Descuento preferencial del 10% en suplementos',
+      'Prioridad de reserva en clases de spinning y talleres',
+      'Evaluación inicial básica de medidas corporales',
+      'Seguimiento de progresión de cargas con instructores'
     ],
     highlight: true
   },
   {
-    title: 'Plan Semestral / Anual',
-    description: 'Compromiso a mediano y largo plazo con congelamiento preventivo por viaje o descanso médico justificado.',
+    id: 'anual',
+    title: 'Plan VIP Black Anual',
+    priceFormatted: 'S/ 1,100',
+    billingPeriod: 'por 365 días continuos',
+    monthlyEquivalent: 'Equivalente a S/ 91.60 / mes',
+    savingsBadge: 'Máximo Ahorro — 24%',
+    description: 'El plan de máxima fidelidad y categoría premium para atletas y entusiastas del fitness con privilegios exclusivos durante todo el año.',
     features: [
-      'Tarifa mensual más económica',
-      'Congelamiento de membresía (hasta 15 días)',
-      'Acceso a promociones y sorteos de temporada',
-      'Atención preferente en mostrador'
+      'Acceso ilimitado los 365 días en todos los horarios',
+      'Congelamiento preventivo por viaje o salud (hasta 15 días)',
+      '2 evaluaciones completas de bioimpedancia InBody al año',
+      'Toalla de microfibra exclusiva VIP de bienvenida',
+      'Atención preferente en mostrador de recepción',
+      'Descuento del 10% en todo el catálogo de suplementos'
     ]
   }
 ];
+
+const comparisonFeatures = [
+  { name: 'Acceso a sala de musculación, fuerza y cardio', mensual: true, trimestral: true, anual: true },
+  { name: 'Generación de QR de acceso dinámico en App Móvil', mensual: true, trimestral: true, anual: true },
+  { name: 'Uso de casilleros de seguridad y duchas calientes', mensual: true, trimestral: true, anual: true },
+  { name: 'Sin permanencia obligatoria ni cobros bancarios automáticos', mensual: true, trimestral: true, anual: true },
+  { name: 'Descuento del 10% en suplementos deportivos', mensual: false, trimestral: true, anual: true },
+  { name: 'Prioridad en reserva de clases de spinning', mensual: false, trimestral: true, anual: true },
+  { name: 'Evaluaciones físicas y control de medidas', mensual: 'Básica inicial', trimestral: 'Seguimiento', anual: '2 InBody al año' },
+  { name: 'Congelamiento preventivo de membresía', mensual: false, trimestral: false, anual: 'Hasta 15 días' },
+  { name: 'Kit VIP de bienvenida (Toalla oficial)', mensual: false, trimestral: false, anual: true },
+  { name: 'Atención preferencial en mostrador de recepción', mensual: false, trimestral: false, anual: true }
+];
 ---
 
-<section id="membresias" class="section section-alt">
+<section id="planes" class="section section-alt memberships-section">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Membresías Transparentes</span>
-      <h2 class="section-title">Entrena a tu Ritmo, Sin Letras Pequeñas</h2>
+      <span class="badge">Tarifas Oficiales y Transparentes</span>
+      <h2 class="section-title">Elige el Plan que se Ajusta a tus Objetivos</h2>
       <p class="section-subtitle">
-        Todos nuestros planes se contratan y abonan exclusivamente en el mostrador oficial de recepción.
+        Sin cobros automáticos en tarjeta ni cláusulas de permanencia forzosa. En VIP CENTER FIT abonas tu membresía directamente en el mostrador oficial de recepción en Juliaca.
       </p>
     </div>
 
-    <div class="grid grid-3">
+    <!-- Cards Grid -->
+    <div class="grid grid-3 plans-grid">
       {plans.map(p => (
-        <div class={`card plan-card ${p.highlight ? 'plan-highlight' : ''}`}>
+        <div class={`card plan-card ${p.highlight ? 'plan-highlight' : ''}`} id={`plan-${p.id}`}>
           {p.highlight && <span class="badge badge-highlight">Más Elegido</span>}
+          {p.savingsBadge && !p.highlight && <span class="badge badge-savings">{p.savingsBadge}</span>}
+          
           <h3 class="plan-title">{p.title}</h3>
+          
+          <div class="plan-price-wrapper">
+            <span class="plan-price">{p.priceFormatted}</span>
+            <span class="plan-period">{p.billingPeriod}</span>
+            {p.monthlyEquivalent && (
+              <span class="plan-equivalent">{p.monthlyEquivalent}</span>
+            )}
+          </div>
+
           <p class="plan-desc">{p.description}</p>
+          
+          <div class="plan-features-title">Incluye:</div>
           <ul class="plan-features">
             {p.features.map(f => (
               <li class="plan-feature-item">
@@ -60,53 +116,190 @@ const plans = [
               </li>
             ))}
           </ul>
+
           <div class="plan-footer">
             <a href="/contacto" class={`btn ${p.highlight ? 'btn-primary' : 'btn-secondary'}`} style="width: 100%;">
-              Consultar en Recepción
+              Inscribirme en Recepción
             </a>
           </div>
         </div>
       ))}
     </div>
 
+    <!-- Tabla Comparativa -->
+    <div class="comparison-section">
+      <h3 class="comparison-title">Comparativa Detallada de Beneficios</h3>
+      <div class="table-responsive">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col" class="th-feature">Característica / Beneficio</th>
+              <th scope="col" class="th-plan">Plan Mensual<br><span class="table-price">S/ 120</span></th>
+              <th scope="col" class="th-plan th-highlight">Plan Trimestral<br><span class="table-price">S/ 320</span></th>
+              <th scope="col" class="th-plan">Plan VIP Black<br><span class="table-price">S/ 1,100</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparisonFeatures.map((row, idx) => (
+              <tr class={idx % 2 === 0 ? 'row-even' : 'row-odd'}>
+                <td class="td-feature">{row.name}</td>
+                <td class="td-val">
+                  {typeof row.mensual === 'boolean' ? (
+                    row.mensual ? (
+                      <span class="status-yes">✓</span>
+                    ) : (
+                      <span class="status-no">—</span>
+                    )
+                  ) : (
+                    <span class="status-text">{row.mensual}</span>
+                  )}
+                </td>
+                <td class="td-val td-val-highlight">
+                  {typeof row.trimestral === 'boolean' ? (
+                    row.trimestral ? (
+                      <span class="status-yes">✓</span>
+                    ) : (
+                      <span class="status-no">—</span>
+                    )
+                  ) : (
+                    <span class="status-text">{row.trimestral}</span>
+                  )}
+                </td>
+                <td class="td-val">
+                  {typeof row.anual === 'boolean' ? (
+                    row.anual ? (
+                      <span class="status-yes">✓</span>
+                    ) : (
+                      <span class="status-no">—</span>
+                    )
+                  ) : (
+                    <span class="status-text">{row.anual}</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Nota de Transparencia Comercial -->
     <div class="membership-policy-note">
+      <div class="policy-icon">📋</div>
       <p>
-        <strong>Política de Transparencia:</strong> Las tarifas exactas y promociones vigentes se confirman en el mostrador de recepción en Juliaca, emitiéndose el comprobante de pago físico y digital en el momento de la liquidación.
+        <strong>Compromiso de Honestidad Comercial:</strong> Todas las tarifas están expresadas en Soles peruanos (PEN) e incluyen impuestos de ley. En VIP CENTER FIT no exigimos vincular tu tarjeta de crédito para cobros mensuales automáticos. Abonarás cada ciclo voluntariamente en el mostrador oficial de recepción mediante efectivo, Yape, Plin o POS con tarjeta.
       </p>
     </div>
   </div>
 </section>
 
 <style>
+  .memberships-section {
+    padding: 90px 0;
+  }
+
+  .plans-grid {
+    gap: 28px;
+    margin-bottom: 56px;
+    align-items: stretch;
+  }
+
   .plan-card {
     display: flex;
     flex-direction: column;
     position: relative;
     background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   }
 
   .plan-highlight {
     border-color: var(--gold-primary);
-    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.18);
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.04) 0%, var(--bg-card) 100%);
   }
 
   .badge-highlight {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 18px;
+    right: 18px;
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    color: #000;
+    font-weight: 800;
+  }
+
+  .badge-savings {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-weight: 700;
   }
 
   .plan-title {
-    font-size: 22px;
-    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 12px;
     color: var(--text-primary);
+  }
+
+  .plan-price-wrapper {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .plan-price {
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--gold-primary);
+    letter-spacing: -0.02em;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .plan-period {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: block;
+  }
+
+  .plan-equivalent {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #10B981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
   }
 
   .plan-desc {
     font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.5;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    min-height: 42px;
+  }
+
+  .plan-features-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin-bottom: 12px;
   }
 
   .plan-features {
@@ -116,14 +309,16 @@ const plans = [
     gap: 12px;
     margin-bottom: 32px;
     flex-grow: 1;
+    padding: 0;
   }
 
   .plan-feature-item {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    font-size: 14px;
+    font-size: 13.5px;
     color: var(--text-secondary);
+    line-height: 1.4;
   }
 
   .check-icon {
@@ -136,24 +331,131 @@ const plans = [
     margin-top: auto;
   }
 
+  /* Tabla Comparativa */
+  .comparison-section {
+    margin-top: 50px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .comparison-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .comparison-table th {
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  .th-feature {
+    width: 46%;
+  }
+
+  .th-plan {
+    width: 18%;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .th-highlight {
+    background: rgba(212, 175, 55, 0.06);
+    color: var(--gold-primary);
+    border-top-left-radius: var(--radius-sm);
+    border-top-right-radius: var(--radius-sm);
+  }
+
+  .table-price {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--gold-primary);
+  }
+
+  .comparison-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .row-even {
+    background: transparent;
+  }
+
+  .row-odd {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .td-feature {
+    color: var(--text-secondary);
+    font-size: 13.5px;
+  }
+
+  .td-val {
+    text-align: center;
+  }
+
+  .td-val-highlight {
+    background: rgba(212, 175, 55, 0.04);
+  }
+
+  .status-yes {
+    color: var(--gold-primary);
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .status-no {
+    color: #64748B;
+    font-weight: 400;
+  }
+
+  .status-text {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
   .membership-policy-note {
     margin-top: 36px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 16px;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    padding: 16px 24px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    padding: 20px 24px;
     border-radius: var(--radius-md);
-    max-width: 800px;
+    max-width: 860px;
     margin-left: auto;
     margin-right: auto;
   }
 
-  .membership-policy-note p {
-    font-size: 13px;
-    color: var(--text-muted);
+  .policy-icon {
+    font-size: 28px;
+    flex-shrink: 0;
   }
 
-  .membership-policy-note strong {
-    color: var(--gold-primary);
+  .membership-policy-note p {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
   }
 </style>
