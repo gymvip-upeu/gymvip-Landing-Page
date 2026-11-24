@@ -5,19 +5,37 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
 <section class="hero-section">
   <div class="container hero-container">
     <div class="hero-badge-wrapper">
-      <span class="badge">Sede Oficial — Juliaca, San Román, Puno</span>
+      <span class="badge">👑 VIP CENTER FIT · SEDE CENTRAL JULIACA</span>
     </div>
 
     <h1 class="hero-title">
-      Disciplina, Rendimiento y <span class="gold-gradient-text">Experiencia VIP</span>
+      El Gimnasio de Alta Gama que Transforma tu Vida en <span class="gold-gradient-text">Juliaca</span>
     </h1>
 
     <p class="hero-subtitle">
-      Plataforma tecnológica unificada de VIP Center Fit. Acceso con QR dinámico criptográfico, cobros y liquidación transparente en mostrador y app móvil nativa para socios.
+      Espacios climatizados, máquinas de última generación, instructores certificados y acceso digital inteligente con código QR en tu celular. ¡Sin contratos de permanencia forzada en plan mensual!
     </p>
 
+    {/* Selector Rápido de Objetivos (Estilo Smart Fit) */}
+    <div class="hero-goals-selector">
+      <span class="goals-label">¿Cuál es tu objetivo principal?</span>
+      <div class="goals-chips">
+        <a href="#planes" class="goal-chip">💪 Hipertrofia & Musculación</a>
+        <a href="#planes" class="goal-chip">🔥 Quema de Grasa & Cardio</a>
+        <a href="#planes" class="goal-chip">🧘 Salud & Vitalidad Integral</a>
+      </div>
+    </div>
+
     <div class="hero-actions">
-      <a href="/descargar" class="btn btn-primary hero-btn">
+      <a href="#planes" class="btn btn-primary hero-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        ¡Ver Planes desde S/ 120/mes!
+      </a>
+
+      <a href="/descargar" class="btn btn-secondary hero-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
@@ -25,44 +43,30 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
         </svg>
         Descargar App Android
       </a>
-
-      <a 
-        href={WEB_APP_URL} 
-        class="btn btn-secondary hero-btn"
-        target="_blank" 
-        rel="noopener noreferrer"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-          <polyline points="10 17 15 12 10 7"/>
-          <line x1="15" y1="12" x2="3" y2="12"/>
-        </svg>
-        Ingresar a la Plataforma Web
-      </a>
     </div>
 
     <div class="hero-highlights">
       <div class="highlight-item">
         <div class="highlight-icon">🔒</div>
         <div class="highlight-text">
-          <strong>Acceso QR Dinámico</strong>
-          <span>Seguridad anti-fraude en torniquetes</span>
+          <strong>Acceso QR en 2 Segundos</strong>
+          <span>Torniquete inteligente anti-filas</span>
         </div>
       </div>
 
       <div class="highlight-item">
         <div class="highlight-icon">💳</div>
         <div class="highlight-text">
-          <strong>Liquidación en Recepción</strong>
-          <span>Sin cargos recurrentes no autorizados</span>
+          <strong>Sin Débitos Automáticos Sorpresa</strong>
+          <span>Tú decides cómo y cuándo renovar</span>
         </div>
       </div>
 
       <div class="highlight-item">
-        <div class="highlight-icon">📱</div>
+        <div class="highlight-icon">🚿</div>
         <div class="highlight-text">
-          <strong>App Móvil Oficial</strong>
-          <span>Avisos, membresías y catálogo</span>
+          <strong>Duchas de Agua Caliente y Lockers</strong>
+          <span>Comodidad y seguridad para tus cosas</span>
         </div>
       </div>
     </div>
@@ -107,6 +111,50 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
     max-width: 760px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .hero-goals-selector {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: var(--radius-md);
+    padding: 14px 20px;
+    margin: 0 auto 36px auto;
+    max-width: 680px;
+  }
+
+  .goals-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .goals-chips {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .goal-chip {
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold-primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .goal-chip:hover {
+    background: var(--gold-primary);
+    color: #000;
+    transform: translateY(-2px);
   }
 
   .hero-actions {

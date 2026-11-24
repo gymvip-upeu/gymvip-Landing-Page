@@ -4,10 +4,14 @@ import Hero from '../components/Hero.astro';
 import Facilities from '../components/Facilities.astro';
 import Schedules from '../components/Schedules.astro';
 import Memberships from '../components/Memberships.astro';
+import SavingsCalculator from '../components/SavingsCalculator.astro';
+import SedeSection from '../components/SedeSection.astro';
 import MobileAppSection from '../components/MobileAppSection.astro';
 import Benefits from '../components/Benefits.astro';
+import Testimonials from '../components/Testimonials.astro';
 import FaqSection from '../components/FaqSection.astro';
 import CtaSection from '../components/CtaSection.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -62,10 +66,13 @@ const structuredData = {
 
   <Hero />
   <Facilities />
-  <Schedules />
   <Memberships />
+  <SavingsCalculator />
+  <SedeSection />
   <MobileAppSection />
   <Benefits />
+  <Testimonials />
   <FaqSection />
   <CtaSection />
+  <WhatsAppFab />
 </BaseLayout>

@@ -1,4 +1,6 @@
 ---
+import PromoBanner from './PromoBanner.astro';
+
 interface Props {
   currentPath?: string;
 }
@@ -7,6 +9,8 @@ const { currentPath = '/' } = Astro.props;
 
 const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
 ---
+
+<PromoBanner />
 
 <header class="site-header">
   <div class="container header-container">
@@ -23,28 +27,29 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
 
     <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
       <a href="/#instalaciones" class="nav-link">Instalaciones</a>
-      <a href="/#horarios" class="nav-link">Horarios</a>
       <a href="/#planes" class="nav-link">Planes</a>
+      <a href="/#calculadora" class="nav-link">Calculadora</a>
+      <a href="/#sede" class="nav-link">Sede Juliaca</a>
       <a href="/#app" class="nav-link">App Móvil</a>
-      <a href="/#beneficios" class="nav-link">Beneficios</a>
       <a href="/#preguntas" class="nav-link">Preguntas</a>
       <a href="/descargar" class={`nav-link ${currentPath === '/descargar' ? 'active' : ''}`}>Descargar APK</a>
-      <a href="/contacto" class={`nav-link ${currentPath === '/contacto' ? 'active' : ''}`}>Contacto</a>
 
       <div class="nav-cta-wrapper">
         <a 
+          href="/#planes" 
+          class="btn btn-primary nav-btn-cta"
+          title="Ver planes y registrar inscripción"
+        >
+          ¡Inscríbete Ahora!
+        </a>
+        <a 
           href={WEB_APP_URL} 
-          class="btn btn-primary nav-btn-cta" 
+          class="btn btn-secondary nav-btn-cta" 
           target="_blank" 
           rel="noopener noreferrer"
           title="Acceso al portal web de socios y administración"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-            <polyline points="10 17 15 12 10 7"/>
-            <line x1="15" y1="12" x2="3" y2="12"/>
-          </svg>
-          Ingresar al Sistema
+          Portal Web
         </a>
       </div>
     </nav>

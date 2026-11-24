@@ -1,0 +1,141 @@
+---
+// ==============================================================================
+// GYM VIP — Testimonios y Comunidad VIP (Estilo Smart Fit)
+// ==============================================================================
+
+const testimonials = [
+  {
+    name: 'Carlos Mendoza',
+    role: 'Socio Plan Black VIP — Juliaca',
+    avatar: '👨‍💼',
+    comment: 'Las máquinas de musculación son de nivel profesional y nunca tienes que hacer colas eternas. Lo mejor es entrar directamente escaneando el código QR de la App en el torniquete.',
+    stars: 5,
+  },
+  {
+    name: 'Fiorella Quispe',
+    role: 'Socia Plan Trimestral — San Román',
+    avatar: '👩‍⚕️',
+    comment: 'El área de cardio y spinning tiene una vista increíble y buena ventilación. Los instructores siempre están dispuestos a orientarte con la técnica de los ejercicios.',
+    stars: 5,
+  },
+  {
+    name: 'Ing. Rodrigo Paredes',
+    role: 'Socio Plan Mensual — Juliaca',
+    avatar: '🏋️‍♂️',
+    comment: 'Valoro mucho que los precios sean claros en soles y que no te cobren cargos automáticos sin aviso como otros gimnasios. Las duchas y casilleros son 10/10.',
+    stars: 5,
+  }
+];
+---
+
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="badge">COMUNIDAD VIP CENTER FIT</span>
+      <h2 class="section-title">
+        La Experiencia de <span class="gold-gradient-text">Nuestros Socios</span>
+      </h2>
+      <p class="section-subtitle">
+        Más de 500 atletas y entusiastas del fitness entrenan diariamente en nuestra sede central de Juliaca.
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      {testimonials.map(item => (
+        <div class="testimonial-card">
+          <div class="stars-row">
+            {Array.from({ length: item.stars }).map(() => (
+              <span class="star-icon">★</span>
+            ))}
+          </div>
+
+          <p class="comment-text">"{item.comment}"</p>
+
+          <div class="author-row">
+            <span class="author-avatar">{item.avatar}</span>
+            <div>
+              <strong class="author-name">{item.name}</strong>
+              <span class="author-role">{item.role}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    background: #0a0a0c;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .testimonial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+
+  .stars-row {
+    color: var(--gold-primary);
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .comment-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .author-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    font-size: 28px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .author-role {
+    font-size: 12px;
+    color: var(--gold-primary);
+  }
+</style>

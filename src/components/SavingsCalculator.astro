@@ -1,0 +1,410 @@
+---
+// ==============================================================================
+// GYM VIP — Calculadora Interactiva de Ahorro y Cotizador (Estilo Smart Fit)
+// Permite al usuario proyectar su permanencia y visualizar su ahorro real en PEN
+// ==============================================================================
+---
+
+<section id="calculadora" class="section calculator-section">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="badge">COTIZADOR INTELIGENTE</span>
+      <h2 class="section-title">
+        Calcula tu Inversión y <span class="gold-gradient-text">Ahorro Real</span>
+      </h2>
+      <p class="section-subtitle">
+        Diseñado con la transparencia de VIP Center Fit. Compara cuánto ahorras al optar por planes de mediano y largo plazo sin cargos sorpresa.
+      </p>
+    </div>
+
+    <div class="calculator-card">
+      <div class="calculator-inputs">
+        <label for="calc-months" class="calc-label">
+          <span>¿Cuántos meses planeas entrenar?</span>
+          <span id="calc-months-display" class="calc-months-badge">12 Meses</span>
+        </label>
+        
+        <input 
+          type="range" 
+          id="calc-months" 
+          name="months" 
+          min="1" 
+          max="12" 
+          value="12" 
+          step="1" 
+          class="calc-slider"
+          aria-label="Cantidad de meses de entrenamiento"
+        />
+
+        <div class="slider-marks">
+          <span>1 mes</span>
+          <span>3 meses (Trimestral)</span>
+          <span>6 meses</span>
+          <span>12 meses (Black VIP)</span>
+        </div>
+
+        <div class="calc-presets">
+          <button type="button" class="preset-btn" data-months="1">1 Mes (S/ 120)</button>
+          <button type="button" class="preset-btn" data-months="3">3 Meses (S/ 320)</button>
+          <button type="button" class="preset-btn active" data-months="12">12 Meses (S/ 1,100)</button>
+        </div>
+      </div>
+
+      <div class="calculator-summary">
+        <div class="summary-header">
+          <span class="summary-plan-name" id="calc-recommended-plan">Plan Black VIP Anual</span>
+          <span class="summary-savings-tag" id="calc-savings-percent">Ahorras 24%</span>
+        </div>
+
+        <div class="summary-metrics">
+          <div class="metric-row">
+            <span class="metric-label">Costo regular mensual (S/ 120 x mes):</span>
+            <span class="metric-value regular-strike" id="calc-regular-total">S/ 1,440.00</span>
+          </div>
+
+          <div class="metric-row">
+            <span class="metric-label">Inversión con Tarifa VIP:</span>
+            <span class="metric-value highlight-price" id="calc-discounted-total">S/ 1,100.00</span>
+          </div>
+
+          <div class="metric-row divider">
+            <span class="metric-label">Costo mensual equivalente:</span>
+            <span class="metric-value gold-text" id="calc-monthly-equiv">S/ 91.67 / mes</span>
+          </div>
+
+          <div class="savings-box">
+            <div class="savings-icon">💰</div>
+            <div class="savings-text">
+              <span class="savings-title">Ahorro total para tu bolsillo:</span>
+              <strong class="savings-amount" id="calc-savings-total">S/ 340.00 PEN</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-actions">
+          <a 
+            id="calc-whatsapp-btn"
+            href="https://wa.me/51951000000?text=Hola%20VIP%20Center%20Fit%2C%20deseo%20inscribirme%20en%20el%20Plan%20Black%20VIP%20Anual%20por%20S%2F%201%2C100%20con%20el%2024%25%20de%20ahorro." 
+            class="btn btn-primary btn-block"
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            ¡Inscribirme con este Descuento!
+          </a>
+          <span class="calc-legal-note">
+            Sin cargos de renovación automática. Pagos en efectivo, tarjetas, Yape y Plin en recepción.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCalculator() {
+    const slider = document.getElementById('calc-months') as HTMLInputElement | null;
+    const monthsDisplay = document.getElementById('calc-months-display');
+    const planNameDisplay = document.getElementById('calc-recommended-plan');
+    const savingsPercentDisplay = document.getElementById('calc-savings-percent');
+    const regularTotalDisplay = document.getElementById('calc-regular-total');
+    const discountedTotalDisplay = document.getElementById('calc-discounted-total');
+    const monthlyEquivDisplay = document.getElementById('calc-monthly-equiv');
+    const savingsTotalDisplay = document.getElementById('calc-savings-total');
+    const whatsappBtn = document.getElementById('calc-whatsapp-btn') as HTMLAnchorElement | null;
+    const presetBtns = document.querySelectorAll('.preset-btn');
+
+    if (!slider || !monthsDisplay) return;
+
+    function updateCalculations(months: number) {
+      monthsDisplay!.textContent = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+
+      let recommendedPlan = 'Plan VIP Mensual';
+      let totalCost = months * 120;
+      let savingsPercent = 'Tarifa base';
+      let regularTotal = months * 120;
+
+      if (months >= 12) {
+        recommendedPlan = 'Plan Black VIP Anual';
+        totalCost = 1100;
+        savingsPercent = 'Ahorras 24%';
+      } else if (months >= 3) {
+        recommendedPlan = `Plan VIP Trimestral (${Math.floor(months / 3)} periodos)`;
+        const trimestres = Math.floor(months / 3);
+        const mesesRestantes = months % 3;
+        totalCost = (trimestres * 320) + (mesesRestantes * 120);
+        const savingsRatio = ((regularTotal - totalCost) / regularTotal) * 100;
+        savingsPercent = savingsRatio > 0 ? `Ahorras ${Math.round(savingsRatio)}%` : 'Tarifa base';
+      }
+
+      const savingsTotal = Math.max(0, regularTotal - totalCost);
+      const monthlyEquiv = totalCost / months;
+
+      if (planNameDisplay) planNameDisplay.textContent = recommendedPlan;
+      if (savingsPercentDisplay) savingsPercentDisplay.textContent = savingsPercent;
+      if (regularTotalDisplay) regularTotalDisplay.textContent = `S/ ${regularTotal.toFixed(2)}`;
+      if (discountedTotalDisplay) discountedTotalDisplay.textContent = `S/ ${totalCost.toFixed(2)}`;
+      if (monthlyEquivDisplay) monthlyEquivDisplay.textContent = `S/ ${monthlyEquiv.toFixed(2)} / mes`;
+      if (savingsTotalDisplay) savingsTotalDisplay.textContent = `S/ ${savingsTotal.toFixed(2)} PEN`;
+
+      if (whatsappBtn) {
+        const textMsg = encodeURIComponent(
+          `Hola VIP Center Fit, estuve usando la calculadora oficial y deseo inscribirme por ${months} meses con el ${recommendedPlan} por un total de S/ ${totalCost.toFixed(2)}.`
+        );
+        whatsappBtn.href = `https://wa.me/51951000000?text=${textMsg}`;
+      }
+
+      presetBtns.forEach(btn => {
+        const btnMonths = parseInt(btn.getAttribute('data-months') || '0', 10);
+        btn.classList.toggle('active', btnMonths === months);
+      });
+    }
+
+    slider.addEventListener('input', (e) => {
+      const val = parseInt((e.target as HTMLInputElement).value, 10);
+      updateCalculations(val);
+    });
+
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = parseInt(btn.getAttribute('data-months') || '12', 10);
+        slider.value = String(val);
+        updateCalculations(val);
+      });
+    });
+
+    // Iniciar con 12 meses
+    updateCalculations(12);
+  }
+
+  // Inicializar al cargar el DOM o cambio de página Astro
+  document.addEventListener('DOMContentLoaded', initCalculator);
+  initCalculator();
+</script>
+
+<style>
+  .calculator-section {
+    background: radial-gradient(circle at 50% 30%, rgba(212, 175, 55, 0.06) 0%, rgba(10, 10, 12, 1) 70%);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .calculator-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    background: linear-gradient(135deg, #141418 0%, #1c1c24 100%);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 25px rgba(212, 175, 55, 0.1);
+    margin-top: 24px;
+  }
+
+  .calculator-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .calc-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .calc-months-badge {
+    background: var(--gold-primary);
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .calc-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #282836;
+    outline: none;
+    accent-color: var(--gold-primary);
+    cursor: pointer;
+  }
+
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .calc-presets {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .preset-btn {
+    flex: 1;
+    min-width: 110px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--gold-primary);
+    color: #fff;
+  }
+
+  .preset-btn.active {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+    font-weight: 700;
+  }
+
+  .calculator-summary {
+    background: rgba(10, 10, 12, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 14px;
+  }
+
+  .summary-plan-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .summary-savings-tag {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .summary-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  .metric-row.divider {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+  }
+
+  .regular-strike {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  .highlight-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .gold-text {
+    font-weight: 700;
+    color: var(--gold-primary);
+  }
+
+  .savings-box {
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .savings-icon {
+    font-size: 24px;
+  }
+
+  .savings-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .savings-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+
+  .savings-amount {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--gold-primary);
+  }
+
+  .btn-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .calc-legal-note {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .calculator-card {
+      grid-template-columns: 1fr;
+      padding: 24px;
+    }
+  }
+</style>
