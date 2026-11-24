@@ -1,0 +1,259 @@
+---
+interface FacilityItem {
+  id: string;
+  title: string;
+  badge: string;
+  description: string;
+  highlights: string[];
+  icon: string;
+}
+
+const facilities: FacilityItem[] = [
+  {
+    id: 'musculacion',
+    title: 'Zona de Musculación y Peso Libre',
+    badge: 'Alto Rendimiento',
+    description: 'Área equipada con estaciones multipower biomecánicas, mancuernas calibradas de hasta 50 kg, bancos multiposición y barras olímpicas de competición.',
+    highlights: ['Barras olímpicas y discos bumpers', 'Mancuernas calibradas 2.5 kg a 50 kg', 'Máquinas guiadas de aislamiento muscular', 'Piso amortiguado de caucho de alta densidad'],
+    icon: '🏋️'
+  },
+  {
+    id: 'cardio',
+    title: 'Zona Cardiovascular de Precisión',
+    badge: 'Tecnología Aeróbica',
+    description: 'Equipos de cardio con monitores de ritmo cardíaco, absorción de impacto articular y perfiles programables de inclinación e intensidad.',
+    highlights: ['Cintas trotadoras con absorción articular', 'Elípticas de bajo impacto', 'Escaladoras continuas tipo StairMaster', 'Monitoreo de frecuencia cardíaca'],
+    icon: '🏃'
+  },
+  {
+    id: 'spinning',
+    title: 'Sala de Spinning y Cycling Indoor',
+    badge: 'Ambiente Acústico',
+    description: 'Estudio especializado con bicicletas estáticas magnéticas de ajuste milimétrico, medición de vatios/cadencia y sistema de audio envolvente para clases grupales.',
+    highlights: ['Bicicletas magnéticas de alta inercia', 'Control de cadencia (RPM) y vatios', 'Sonido e iluminación inmersiva', 'Sesiones dirigidas matutinas y nocturnas'],
+    icon: '🚴'
+  },
+  {
+    id: 'torniquetes',
+    title: 'Torniquetes con Validación QR Criptográfica',
+    badge: 'Acceso Inmediato',
+    description: 'Control de acceso biométrico de última generación mediante código QR dinámico generado en la app oficial. Validación en menos de 300 ms sin colas.',
+    highlights: ['Validación instantánea en menos de 300 ms', 'Código QR dinámico anti-captura', 'Torniquetes bidireccionales en acero inox', 'Sincronización en tiempo real con recepción'],
+    icon: '🛡️'
+  },
+  {
+    id: 'vestidores',
+    title: 'Vestidores, Lockers y Duchas con Agua Caliente',
+    badge: 'Confort y Seguridad',
+    description: 'Instalaciones higiénicas y sanitizadas continuamente con casilleros individuales de seguridad, espejos iluminados y duchas con agua caliente presurizada.',
+    highlights: ['Duchas privadas con agua caliente continua', 'Casilleros individuales con candado personal', 'Espejos panorámicos de alta definición', 'Limpieza y sanitización programada diaria'],
+    icon: '🚿'
+  },
+  {
+    id: 'nutricion',
+    title: 'Estación de Suplementación y Asesoría',
+    badge: 'Nutrición Deportiva',
+    description: 'Mostrador oficial de nutrición deportiva donde podrás adquirir suplementos originales de marcas certificadas, batidos post-entreno y bebidas hidratantes.',
+    highlights: ['Proteínas, creatinas y aminoácidos certificados', 'Batidos y bebidas de hidratación en mostrador', 'Precios con descuento para socios VIP', 'Emisión inmediata de comprobante de pago'],
+    icon: '⚡'
+  }
+];
+---
+
+<section id="instalaciones" class="section facilities-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Infraestructura de Primer Nivel</span>
+      <h2 class="section-title">Instalaciones Diseñadas para tu Máximo Rendimiento</h2>
+      <p class="section-subtitle">
+        En VIP CENTER FIT combinamos equipamiento profesional, tecnología biométrica y un ambiente exclusivo en nuestra sede de Juliaca para brindarte una experiencia de entrenamiento sin interrupciones.
+      </p>
+    </div>
+
+    <div class="grid grid-3 facilities-grid">
+      {facilities.map(item => (
+        <div class="card facility-card" id={item.id}>
+          <div class="facility-card-header">
+            <span class="facility-icon" aria-hidden="true">{item.icon}</span>
+            <span class="facility-badge">{item.badge}</span>
+          </div>
+          <h3 class="facility-title">{item.title}</h3>
+          <p class="facility-desc">{item.description}</p>
+          <div class="facility-divider"></div>
+          <ul class="facility-highlights">
+            {item.highlights.map(h => (
+              <li class="facility-highlight-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check-icon" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>{h}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="facilities-banner">
+      <div class="banner-content">
+        <div class="banner-icon">📍</div>
+        <div>
+          <h4 class="banner-title">Sede Única Oficial: Juliaca, Puno</h4>
+          <p class="banner-text">
+            Visítanos en recepción para conocer nuestras instalaciones, probar los equipos y recibir una inducción personalizada sin compromiso.
+          </p>
+        </div>
+      </div>
+      <a href="/contacto" class="btn btn-primary banner-btn">
+        Ver Ubicación y Horarios
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .facilities-section {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .facilities-grid {
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .facility-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .facility-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .facility-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .facility-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .facility-badge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold-primary);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+  }
+
+  .facility-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .facility-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .facility-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin-bottom: 16px;
+  }
+
+  .facility-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+  }
+
+  .facility-highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .check-icon {
+    color: var(--gold-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .facilities-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(10, 10, 12, 0.95) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: var(--radius-lg);
+    padding: 24px 32px;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .facilities-banner {
+      flex-direction: row;
+    }
+  }
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .banner-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+
+  .banner-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .banner-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 620px;
+  }
+
+  .banner-btn {
+    flex-shrink: 0;
+  }
+</style>
