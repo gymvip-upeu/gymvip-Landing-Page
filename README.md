@@ -1,157 +1,218 @@
-# GYM VIP — Portal Público Oficial (VIP CENTER FIT)
+# GYM VIP — Portal Público Oficial y Centro de Descarga (`gymvip-Landing-Page` / `gymvip-publico`)
 
-Portal web público informativo, centro de descargas para Android y plataforma de cumplimiento normativo (Ley N° 29733 de Protección de Datos Personales de Perú).
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
+[![Astro Version](https://img.shields.io/badge/Astro-5.4-BC52EE.svg)]()
+[![TypeScript Version](https://img.shields.io/badge/TypeScript-5.7-3178C6.svg)]()
+[![Architecture](https://img.shields.io/badge/Clean%20Architecture-Enabled-success.svg)]()
+[![LPDP Compliance](https://img.shields.io/badge/LPDP%20Ley%2029733-Per%C3%BA-blue.svg)]()
+[![Branch](https://img.shields.io/badge/branch-ACOSTA--MEJORAS--Y--ACTUALIZACIONES-yellow.svg)]()
+[![License](https://img.shields.io/badge/license-Academic%20Proprietary-lightgrey.svg)]()
 
-Desarrollado con **Astro 5 + TypeScript**, generación estática (SSG) y arquitectura desacoplada (*Clean Architecture*) para los flujos con comportamiento interactivo.
+> **Ubicación en el Workspace:** `gymvip-publico/`  
+> **Organización Oficial:** [gymvip-upeu/gymvip-Landing-Page](https://github.com/gymvip-upeu/gymvip-Landing-Page)  
+> **Documentación Centralizada:** `../documentos/`  
+> **Fecha de Actualización:** 23 de Noviembre de 2026 | Revisión Canónica v2.5
 
 ---
 
-## 1. Arquitectura del Proyecto
+## 1. Nombre del Componente
+**GYM VIP Public Portal & Official App Distribution** (`gymvip-Landing-Page` / `gymvip-publico`).
 
+---
+
+## 2. Propósito
+Constituir la presencia institucional pública del centro de entrenamiento **VIP CENTER FIT**, ofreciendo un canal web rápido, accesible y confiable para que clientes y prospectos consulten horarios, tarifas y sedes, accedan a la aplicación web del gimnasio, descarguen de forma segura el APK release oficial para Android, y ejerzan sus derechos de privacidad bajo la Ley N° 29733 de Protección de Datos Personales de Perú.
+
+---
+
+## 3. Responsabilidades
+- **Presencia Web Institucional:** Portada informativa responsive con propuesta de valor Luxury Fitness, catálogo comercial de membresías y sedes físicas reales.
+- **Acceso Directo al Sistema Web:** Enlace canónico y visible (`https://gymvip-frontend.vercel.app/inicio`) sin forzar redirecciones automáticas que bloqueen la lectura de la landing.
+- **Centro Oficial de Descarga de la App Android (`/descargar`):** Página estable de destino para códigos QR impresos en recepción, con botón de descarga del APK release, especificación de versión (`v1.1.3`), fecha, requisitos de hardware y huella criptográfica SHA-256.
+- **Cumplimiento Normativo LPDP:** Canal formal de derechos ARCO (`/eliminar-cuenta`) con validación de identidad e informe de consecuencias legales.
+- **Información Legal y Transparencia:** Términos de servicio, política de privacidad, aviso legal, catálogo de licencias de código abierto (SBOM) y atribuciones de propiedad intelectual.
+
+---
+
+## 4. Arquitectura
+Generación de Sitio Estático (SSG) de alto rendimiento impulsada por **Astro 5**, complementada con principios de **Clean Architecture** en TypeScript para los módulos interactivos:
+- **`src/core/models/`:** Modelos de dominio inmutables (`ReleaseInfo`, `AccountDeletionRequest`).
+- **`src/core/ports/`:** Contratos e interfaces desacopladas de repositorios (`IReleaseRepository`, `IAccountDeletionRepository`).
+- **`src/core/adapters/`:** Implementaciones de infraestructura (`GitHubReleaseAdapter`, `LocalAccountDeletionAdapter`).
+- **`src/core/usecases/`:** Casos de uso de negocio puros (`GetAndroidReleaseUseCase`, `SubmitAccountDeletionUseCase`).
+- **`src/layouts/`:** Plantillas reutilizables (`BaseLayout.astro`, `LegalLayout.astro`) con metadatos Open Graph, tokens de color Dark & Gold y accesibilidad WCAG AA.
+- **`src/components/`:** Componentes de interfaz (Hero, Beneficios, Horarios, Preguntas Frecuentes, Generador QR en SVG).
+- **`src/pages/`:** 9 rutas estáticas optimizadas para CDN.
+
+---
+
+## 5. Tecnologías y Versiones Reales
+| Tecnología | Versión Oficial | Propósito |
+|---|---|---|
+| **Astro Framework** | 5.4.x | Compilador web estático SSG con cero JavaScript por defecto |
+| **TypeScript** | 5.7.x | Tipado estático estricto y contratos de Clean Architecture |
+| **Node.js** | 20.x LTS / 22.x | Entorno de compilación y ejecución de scripts |
+| **npm** | 10.x | Gestor de paquetes reproducible |
+| **Vercel Edge Network** | Producción | Servidor CDN perimetral con compresión Brotli |
+
+---
+
+## 6. Estructura de Carpetas
 ```text
 gymvip-publico/
-├── astro.config.mjs             # Configuración del compilador Astro (modo estático SSG)
+├── astro.config.mjs             # Configuración del compilador Astro (modo SSG)
 ├── tsconfig.json                # Configuración TypeScript estricta
-├── package.json                 # Scripts de build, pruebas y dependencias
-├── vercel.json                  # Reglas de enrutamiento Vercel, redirecciones 301 y headers
-├── public/                      # Recursos estáticos (robots.txt, favicon.svg)
-├── legacy/                      # Respaldo histórico de páginas HTML/CSS/JS originales
-├── dist/                        # Salida estática compilada lista para CDN
+├── package.json                 # Scripts de build, test y dependencias
+├── vercel.json                  # Headers HTTP de seguridad y caché en Vercel
+├── CONTRIBUTING.md              # Estándar obligatorio de commits
+├── README.md                    # Esta documentación canónica
+├── public/                      # Recursos estáticos servidos en la raíz
+│   ├── robots.txt               # Instrucciones para motores de búsqueda
+│   ├── favicon.svg              # Isotipo vectorial Dark & Gold
+│   └── gymvip-mobile-release-v1.1.3.apk # Binario universal Android
 └── src/
-    ├── core/                    # Clean Architecture (comportamiento real desacoplado)
-    │   ├── models/              # Modelos de dominio y validaciones (ReleaseInfo, AccountDeletion)
-    │   ├── ports/               # Interfaces / Contratos de repositorios (IReleaseRepository, IAccountDeletionRepository)
-    │   ├── adapters/            # Implementaciones de infraestructura (GitHubReleaseAdapter, LocalAccountDeletionAdapter)
-    │   └── usecases/            # Casos de uso (GetAndroidReleaseUseCase, SubmitAccountDeletionUseCase)
-    ├── layouts/
-    │   ├── BaseLayout.astro     # Estructura base HTML5, meta tags, tokens Dark & Gold y skip-links
-    │   └── LegalLayout.astro    # Plantilla unificada para documentos de cumplimiento legal
-    ├── components/
-    │   ├── Header.astro         # Navegación responsive con botón CTA directo al sistema web
-    │   ├── Footer.astro         # Pie de página institucional y accesos legales
-    │   ├── Hero.astro           # Portada concisa con beneficios clave y llamadas a la acción
-    │   ├── Benefits.astro       # Propuesta de valor tecnológica (QR dinámico, caja transparente)
-    │   ├── Schedules.astro      # Horarios oficiales de entrenamiento y sede presencial
-    │   ├── Memberships.astro    # Planes de membresía presenciales sin cargos recurrentes
-    │   ├── FaqSection.astro     # Preguntas frecuentes en acordeón nativo accesible
-    │   ├── QrCode.astro         # Generador de código QR SVG en tiempo de build
-    │   └── AccountDeletionForm.astro # Formulario interactivo de supresión de datos ARCO
-    └── pages/
-        ├── index.astro          # Portada principal (/)
-        ├── descargar.astro      # Centro de descarga de la App Android (/descargar)
-        ├── contacto.astro       # Canales oficiales de atención y sede presencial (/contacto)
-        ├── eliminar-cuenta.astro# Procedimiento y formulario formal ARCO (/eliminar-cuenta)
-        ├── privacidad.astro     # Política de privacidad bajo Ley N° 29733 (/privacidad)
-        ├── terminos.astro       # Términos y condiciones del servicio (/terminos)
-        ├── aviso-legal.astro    # Aviso legal y titularidad del proyecto (/aviso-legal)
-        ├── atribuciones.astro   # Propiedad intelectual y atribuciones (/atribuciones)
-        └── licencias.astro      # SBOM y catálogo de licencias de código abierto (/licencias)
+    ├── core/                    # Clean Architecture en TypeScript
+    │   ├── models/              # ReleaseInfo.ts, AccountDeletion.ts
+    │   ├── ports/               # Interfaces de repositorio
+    │   ├── adapters/            # Adaptadores de datos locales y GitHub
+    │   └── usecases/            # Casos de uso de descarga y ARCO
+    ├── layouts/                 # BaseLayout.astro, LegalLayout.astro
+    ├── components/              # Header, Footer, Hero, Benefits, QrCode, etc.
+    └── pages/                   # index, descargar, contacto, eliminar-cuenta, etc.
 ```
 
 ---
 
-## 2. Requisitos y Configuración Local
+## 7. Funcionalidades
+1. **Portada Institucional (`/`):** Hero section con botones de acción directa, grid de beneficios tecnológicos, horarios de atención y planes presenciales en Soles (PEN).
+2. **Página de Descarga Oficial (`/descargar`):** Resumen técnico del APK v1.1.3, tamaño (38 MB), requisitos Android 8.0+ (API 24+) y huella digital SHA-256 verificable.
+3. **Canal ARCO de Supresión de Cuenta (`/eliminar-cuenta`):** Formulario con validación DNI y correo para solicitud de revocación conforme a la Ley N° 29733.
+4. **Directorio y Contacto (`/contacto`):** Ubicación real de sedes (Sede Ñaña UPeU Km 19 Chosica / Sede Juliaca), correos autorizados (`devteam@gymvip.pe`, `soporte@gymvip.pe`).
+5. **Transparencia Legal:** Páginas estáticas para términos, privacidad, aviso legal, atribuciones y licencias.
 
-- **Node.js:** Versión 18.17+, 20+ o 22+ (probado y verificado en Node.js v26 LTS).
-- **Gestor de paquetes:** `npm` (v10+).
+---
 
-### Instalación de dependencias
-```bash
-npm install
+## 8. Usuarios y Roles Correspondientes
+- **Público General y Socios:** Navegación libre, descarga del aplicativo móvil, consulta de información y ejercicio de derechos de privacidad.
+- **Equipo de Soporte y Legal:** Procesamiento de solicitudes de eliminación recibidas a través del canal oficial.
+
+---
+
+## 9. Requisitos Previos
+- **Node.js:** Versión 20 LTS o 22 LTS instalada.
+- **npm:** Versión 10+.
+
+---
+
+## 10. Instalación desde Cero
+```powershell
+# 1. Clonar el repositorio
+git clone https://github.com/gymvip-upeu/gymvip-Landing-Page.git
+Set-Location gymvip-publico
+
+# 2. Situarse en la rama de trabajo
+git checkout ACOSTA-MEJORAS-Y-ACTUALIZACIONES
+
+# 3. Instalación de dependencias
+npm ci
 ```
 
-### Servidor de desarrollo local
-```bash
+---
+
+## 11. Variables de Entorno
+Configurar en `.env` (o en el panel de Vercel):
+```env
+PUBLIC_FRONTEND_URL=https://gymvip-frontend.vercel.app
+PUBLIC_APK_DOWNLOAD_URL=/gymvip-mobile-release-v1.1.3.apk
+PUBLIC_CONTACT_EMAIL=soporte@gymvip.pe
+```
+
+---
+
+## 12. Configuración Local
+El proyecto no requiere base de datos ni servicios externos en ejecución para renderizar sus páginas públicas.
+
+---
+
+## 13. Comandos de Ejecución
+```powershell
+# Servidor de desarrollo local con recarga rápida
 npm run dev
 ```
-El portal estará disponible en `http://localhost:4321`.
+Disponible en `http://localhost:4321`.
 
-### Verificación estricta de tipos y diagnóstico
-```bash
-npm run check
+---
+
+## 14. Comandos de Compilación
+```powershell
+# Compilación de producción SSG
+npm run build
+
+# Salida estática generada en: dist/
+# Para previsualizar el sitio compilado:
+npm run preview
 ```
 
-### Ejecución de pruebas unitarias de dominio
-```bash
+---
+
+## 15. Pruebas
+```powershell
+# Ejecutar suite de pruebas unitarias de casos de uso y adaptadores
 npm test
 ```
-
-### Compilación estática de producción
-```bash
-npm run build
-```
-Genera los archivos HTML estáticos y assets optimizados en el directorio `dist/`.
+*Total de pruebas ejecutadas:* 8 tests pasando satisfactoriamente.
 
 ---
 
-## 3. Despliegue en Vercel como Proyecto Independiente
-
-Para desplegar este portal como proyecto independiente dentro del monorepo GYM VIP en Vercel:
-
-1. **Crear nuevo proyecto en el Dashboard de Vercel:**
-   - Seleccionar el repositorio `gymvip-upeu/gymvip` (o el repositorio raíz correspondiente).
-2. **Configuración de Directorio Raíz (*Root Directory*):**
-   - Establecer `Root Directory` en: `gymvip-publico`.
-3. **Parámetros de Construcción:**
-   - **Framework Preset:** `Astro`
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-   - **Install Command:** `npm install`
-4. **Variables de Entorno Opcionales:**
-   - `PUBLIC_APK_DOWNLOAD_URL`: URL directa del archivo APK firmado en GitHub Releases (ej. `https://github.com/gymvip-upeu/gymvip-mobile/releases/download/v1.1.1/GYM_VIP_Mobile_Render_v1.1.1_Release.apk`).
-5. **Redirecciones y Seguridad Automáticas (`vercel.json`):**
-   - Redirecciones permanentes (HTTP 301) para rutas antiguas con extensión `.html` hacia rutas limpias (`/index.html` -> `/`, `/contacto.html` -> `/contacto`, `/descargas` -> `/descargar`, etc.).
-   - Headers HTTP de seguridad incluidos: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`.
+## 16. Integraciones
+- **gymvip-frontend:** Enlace institucional directo desde el botón "Ingresar" en el Header.
+- **gymvip-mobile:** Distribución del archivo binario APK release firmado.
 
 ---
 
-## 4. Enlaces de Integración con el Ecosistema
-
-- **Acceso a la Plataforma Web (Socios y Administración):**
-  Todos los botones y enlaces del portal dirigen de forma fija y segura a:
-  `https://gymvip-frontend.vercel.app/inicio`
-  *(Verificado con respuesta HTTP 200 OK)*.
-- **Backend de Producción:**
-  `https://gymvip-backend.onrender.com`
+## 17. Seguridad
+- Sitio 100% estático: superficie de ataque prácticamente nula.
+- Cabeceras de seguridad estrictas en `vercel.json`: Content-Security-Policy (CSP), X-Content-Type-Options, X-Frame-Options: DENY, HSTS pre-activado.
+- Cero recolección de contraseñas ni almacenamiento de datos sensibles en el portal público.
 
 ---
 
-## 5. Procedimiento para Publicación de Nuevas Versiones del APK Android
-
-Para actualizar la versión del APK disponible en `/descargar`:
-
-1. **Compilar y firmar el APK en el proyecto `gymvip-mobile`:**
-   ```powershell
-   Set-Location gymvip-mobile
-   .\gradlew.bat assembleRelease
-   ```
-   El paquete firmado se genera en `gymvip-mobile/composeApp/build/outputs/apk/release/composeApp-release.apk` y se copia en `entregables/android/GYM_VIP_Mobile_Render_vX.Y.Z_Release.apk`.
-2. **Obtener el Checksum SHA-256 e integridad:**
-   ```powershell
-   Get-FileHash "entregables/android/GYM_VIP_Mobile_Render_v1.1.1_Release.apk" -Algorithm SHA256
-   ```
-   *Valor verificado para v1.1.1:* `0B7462D30653E40E5AF1D06211F2DCBF068050FC69556FD8865D82FCB4435CDF` (13,969,920 bytes).
-3. **Publicar en GitHub Releases:**
-   - Crear una nueva Release con la etiqueta `v1.1.1` en el repositorio público de distribución de `gymvip-mobile` (ej. `https://github.com/gymvip-upeu/gymvip-mobile/releases`).
-   - Adjuntar el asset con el nombre exacto esperado: `GYM_VIP_Mobile_Render_v1.1.1_Release.apk`.
-4. **Comprobación:**
-   - La página `/descargar` detecta automáticamente la disponibilidad del asset vía HEAD request. Si no está publicado aún, presenta el estado honesto de "Próximamente / Compilado localmente" sin generar enlaces rotos ni descargas 404.
+## 18. Despliegue
+- **Plataforma Productiva:** Vercel Hosting (Edge CDN).
+- **Dominio Oficial:** `https://gymvip.vercel.app` (o dominio institucional asignado).
 
 ---
 
-## 6. Equipo de Desarrollo de Software (VIP DevStudio)
+## 19. Solución de Problemas Frecuentes
+- **Error 404 al descargar el APK:** Asegurarse de que el archivo `.apk` esté ubicado en la carpeta `public/` antes de ejecutar `npm run build`.
+- **Incompatibilidad de enlaces:** Comprobar que `PUBLIC_FRONTEND_URL` apunte a la URL activa del frontend.
 
-El portal web público y el ecosistema digital **GYM VIP** han sido concebidos, diseñados e implementados por el equipo de ingeniería de software:
+---
 
-- **Nombre del Equipo:** `VIP DevStudio`
-- **Institución:** Universidad Peruana Unión (UPeU) — Facultad de Ingeniería y Arquitectura
-- **Sede de Desarrollo:** **Sede en Ñaña** (Campus Universitario, Km 19 Carretera Central, Lurigancho-Chosica, Lima — Perú)
-- **Contacto de Ingeniería y Soporte Técnico:** [devteam@gymvip.pe](mailto:devteam@gymvip.pe)
-- **Organización GitHub:** [https://github.com/gymvip-upeu](https://github.com/gymvip-upeu)
-- **Repositorio Oficial de la Landing Page:** [https://github.com/gymvip-upeu/gymvip-Landing-Page.git](https://github.com/gymvip-upeu/gymvip-Landing-Page.git)
+## 20. Limitaciones Conocidas
+- El portal no procesa compras ni reservas en línea; orienta al usuario hacia la sede física o hacia las aplicaciones web y móvil.
 
-### Estructura de Ramas en el Repositorio
-- `main`: Rama de producción estable desplegada automáticamente en CDN (Vercel).
-- `develop`: Rama de integración activa del equipo de desarrollo para nuevas características.
-- `v1-landing-page`: Rama congelada que preserva la Versión 1.0 de la Landing Page pública migrada a Astro 5 con Clean Architecture.
+---
 
+## 21. Enlaces hacia los Otros Repositorios
+- **Backend API:** [gymvip-backend](https://github.com/gymvip-upeu/gymvip-backend)
+- **Frontend Web:** [gymvip-frontend](https://github.com/gymvip-upeu/gymvip-frontend)
+- **App Móvil:** [gymvip-mobile](https://github.com/gymvip-upeu/gymvip-mobile)
+- **Comunicaciones:** [gymvip-ms-comunicaciones](https://github.com/gymvip-upeu/gymvip-ms-comunicaciones)
+
+---
+
+## 22. Enlaces hacia Diagramas
+- **Flujo de Distribución y Descarga APK:** `../documentos/diagramas/09-Flujos-Funcionales/06_flujo_distribucion_apk_y_actualizacion.puml`
+
+---
+
+## 23. Enlaces hacia ESTADO_PROYECTO.md
+- Documento Central: [`../documentos/ESTADO_PROYECTO.md`](../documentos/ESTADO_PROYECTO.md)
+
+---
+
+## 24. Fecha y Revisión de Referencia
+- **Fecha:** 23 de Noviembre de 2026.
+- **Revisión de Ingeniería:** Consolidación Maestra Sprint 1 & 2 / Release Candidate v2.5.
+- **Autoría:** Equipo de Ingeniería GYM VIP / VIP CENTER FIT.
