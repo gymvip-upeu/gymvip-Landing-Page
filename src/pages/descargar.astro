@@ -1,461 +1,433 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import QrCode from '../components/QrCode.astro';
-import { GetAndroidReleaseUseCase } from '../core/usecases/GetAndroidReleaseUseCase';
 import { GitHubReleaseAdapter } from '../core/adapters/GitHubReleaseAdapter';
+import { GetAndroidReleaseUseCase } from '../core/usecases/GetAndroidReleaseUseCase';
 
-const releaseUseCase = new GetAndroidReleaseUseCase(new GitHubReleaseAdapter());
-const release = await releaseUseCase.execute();
+const adapter = new GitHubReleaseAdapter();
+const getRelease = new GetAndroidReleaseUseCase(adapter);
+const release = await getRelease.execute();
 
-const canonicalDownloadUrl = 'https://gymvip.vercel.app/descargar';
+const portalDownloadUrl = 'https://gymvip.vercel.app/descargar';
 ---
 
 <BaseLayout
-  title="Descargar App Android"
-  description="Descarga la aplicación oficial de GYM VIP para Android. Acceso con QR dinámico a torniquetes, estado de membresía, catálogo y avisos."
+  title={`Descargar App Android ${release.releaseTag}`}
+  description={`Descarga oficial del paquete Android ${release.apkName} (${release.version}) para socios de VIP CENTER FIT con firma v2/v3 y verificación SHA-256.`}
   canonicalPath="/descargar"
+  theme="dark"
 >
-  <div class="download-page-wrapper">
-    <div class="container download-container">
-      <header class="download-header">
-        <span class="badge">Aplicación Oficial</span>
-        <h1 class="page-title">GYM VIP para Android</h1>
-        <p class="page-subtitle">
-          Lleva tu entrenamiento, credenciales de acceso y membresía en tu smartphone con conexión segura a nuestro backend de producción.
+  <section class="dl-section">
+    <div class="container">
+      <div class="dl-header">
+        <span class="eyebrow hero-dark-pill">DISTRIBUCIÓN OFICIAL ANDROID</span>
+        <h1>GYM VIP Mobile — Android {release.releaseTag}</h1>
+        <p class="dl-lead">
+          Tu carnet digital offline, check-in por QR dinámico en recepción, catálogo de suplementos con retiro QR y alertas de membresía.
         </p>
-      </header>
+      </div>
 
-      <div class="download-main-grid">
-        <!-- Tarjeta de Descarga y Estado -->
-        <div class="card download-card">
-          <div class="app-info-header">
-            <div class="app-icon" aria-hidden="true">🏋️</div>
+      <div class="dl-grid">
+        <div class="card dl-main-card">
+          <div class="dl-app-head">
+            <div class="dl-app-icon">
+              <img
+                src="/images/gymvip-logo.webp"
+                alt="Logotipo oficial VIP CENTER FIT"
+                width="64"
+                height="64"
+                class="dl-logo-img"
+              />
+            </div>
             <div>
-              <h2 class="app-name">GYM VIP Mobile</h2>
-              <p class="app-version">Versión {release.version} ({release.releaseTag})</p>
-              <span class={`status-pill ${release.isAvailable ? 'status-available' : 'status-coming-soon'}`}>
-                {release.isAvailable ? '● Paquete de Producción Verificado' : '⏳ Compilado Localmente / Próximamente en Releases'}
+              <h2>GYM VIP Mobile <span class="pkg-id">(com.gymvip.mobile)</span></h2>
+              <p class="dl-version">
+                Versión {release.version} ({release.releaseTag}) · Compilado {release.releaseDate}
+              </p>
+              <span class:list={['dl-badge', release.isAvailable ? 'dl-badge-ok' : 'dl-badge-warn']}>
+                {release.isAvailable
+                  ? '● Paquete Release Universal Verificado (v2 & v3)'
+                  : '○ Consulta en Releases Oficiales GitHub'}
               </span>
             </div>
           </div>
 
-          <div class="download-actions-area">
+          <div class="dl-cta-wrap">
             {release.isAvailable ? (
-              <div class="available-box">
-                <a 
-                  href={release.downloadUrl} 
-                  class="btn btn-primary btn-download"
-                  download={release.apkName}
-                  aria-label={`Descargar ${release.apkName} versión ${release.version}`}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  Descargar APK Oficial ({release.apkSizeFormatted})
-                </a>
-                <p class="direct-link-note">
-                  Enlace directo accesible: <a href={release.downloadUrl}>{release.apkName}</a>
-                </p>
-              </div>
+              <a href={release.downloadUrl} download={release.apkName} class="btn btn-primary btn-full dl-btn">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Descargar APK Oficial ({release.apkSizeFormatted})</span>
+              </a>
             ) : (
-              <div class="coming-soon-box alert alert-info">
-                <div class="coming-soon-header">
-                  <span class="coming-soon-badge">Estado del Artefacto</span>
-                  <h3>Listo para Publicación en GitHub Releases</h3>
-                </div>
-                <p class="coming-soon-desc">
-                  El paquete oficial firmado para producción <strong>{release.apkName}</strong> ({release.apkSizeFormatted}) ha sido generado, firmado con esquema v2 y verificado en <code>entregables/android/</code>.
-                </p>
-                <div class="pending-notice">
-                  <strong>Acción pendiente requerida:</strong> Cargar el archivo APK en el tag <code>{release.releaseTag}</code> del repositorio público de distribución en GitHub para activar la descarga directa vía CDN.
-                </div>
-              </div>
+              <a href={release.downloadUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full dl-btn">
+                <span>Abrir Releases Oficiales en GitHub</span>
+              </a>
             )}
+            <p class="dl-status-msg">{release.statusMessage}</p>
           </div>
 
-          <!-- Metadatos de Seguridad e Integridad -->
-          <div class="security-metadata-box">
-            <h3 class="box-title">Ficha Técnica del Paquete de Producción</h3>
-            <dl class="metadata-grid">
-              <div class="meta-row">
-                <dt>Plataforma Objetivo:</dt>
-                <dd>{release.minAndroid}</dd>
-              </div>
-              <div class="meta-row">
-                <dt>Tamaño del Archivo:</dt>
-                <dd>{release.apkSizeFormatted} ({release.apkSizeBytes.toLocaleString()} bytes)</dd>
-              </div>
-              <div class="meta-row">
-                <dt>Esquema de Firma:</dt>
-                <dd>{release.signatureScheme}</dd>
-              </div>
-              <div class="meta-row">
-                <dt>Servidor de Datos:</dt>
-                <dd><code>{release.backendUrl}</code></dd>
-              </div>
-              <div class="meta-row sha-row">
-                <dt>Checksum SHA-256:</dt>
-                <dd>
-                  <code class="sha-code">{release.sha256}</code>
-                </dd>
-              </div>
-            </dl>
+          <div class="dl-specs">
+            <h3>Ficha Técnica e Integridad Criptográfica</h3>
+            <ul class="specs-list">
+              <li>
+                <span class="spec-label">Compatibilidad mínima</span>
+                <span class="spec-value">{release.minAndroid}</span>
+              </li>
+              <li>
+                <span class="spec-label">Arquitecturas ABI</span>
+                <span class="spec-value">Universal (arm64-v8a, armeabi-v7a, x86, x86_64)</span>
+              </li>
+              <li>
+                <span class="spec-label">Peso del archivo APK</span>
+                <span class="spec-value">
+                  {release.apkSizeFormatted} ({release.apkSizeBytes.toLocaleString('es-PE')} bytes)
+                </span>
+              </li>
+              <li>
+                <span class="spec-label">Esquema de firma</span>
+                <span class="spec-value">{release.signatureScheme}</span>
+              </li>
+              <li>
+                <span class="spec-label">API de producción</span>
+                <span class="spec-value mono">{release.backendUrl}</span>
+              </li>
+              <li class="spec-hash-row">
+                <div class="spec-hash-top">
+                  <span class="spec-label">Checksum SHA-256 (archivo APK)</span>
+                  <button type="button" id="copy-sha-btn" class="copy-btn" data-sha={release.sha256}>
+                    Copiar SHA-256
+                  </button>
+                </div>
+                <code class="hash-code" id="sha-value">{release.sha256}</code>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <!-- Columna de QR (Desktop) y Guía de Instalación -->
-        <div class="sidebar-guide">
-          <!-- QR Visible en escritorio, oculto en móvil -->
-          <div class="card qr-card desktop-only">
-            <h3 class="qr-title">Escanear para Descargar</h3>
+        <aside class="dl-side-col">
+          <div class="card dl-qr-card">
+            <h3>Escanear desde tu Android</h3>
             <p class="qr-desc">
-              Apunta con la cámara de tu teléfono para abrir esta página de descarga en tu Android:
+              Apunta la cámara de tu teléfono para abrir directamente esta ficha y descargar el paquete:
             </p>
-            <div class="qr-code-wrapper">
-              <QrCode url={canonicalDownloadUrl} size={190} label="QR de descarga oficial de GYM VIP" />
+            <div class="qr-center">
+              <QrCode url={portalDownloadUrl} size={172} label="https://gymvip.vercel.app/descargar" />
             </div>
-            <p class="qr-url-text">
-              <code>{canonicalDownloadUrl}</code>
-            </p>
           </div>
 
-          <!-- Guía de Instalación en Android -->
-          <div class="card guide-card">
-            <h3 class="guide-title">Instrucciones de Instalación</h3>
-            <ol class="steps-list">
-              {release.instructions.map((step, idx) => (
-                <li class="step-item">
-                  <span class="step-number">{idx + 1}</span>
-                  <span class="step-text">{step}</span>
-                </li>
-              ))}
+          <div class="card dl-steps-card">
+            <h3>Pasos de Instalación Segura</h3>
+            <ol class="install-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Descarga <strong>{release.apkName}</strong> en tu equipo Android.</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Si tu dispositivo solicita autorización para instalar apps externas, activa <em>Permitir desde esta fuente</em> para tu navegador.</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>Si tuviste una compilación de prueba anterior (<em>debug</em>), desinstálala previamente para evitar conflicto de firma oficial.</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>Inicia sesión con las credenciales entregadas en recepción de Juliaca.</span>
+              </li>
             </ol>
-            <div class="install-tip">
-              <strong>Aviso de seguridad Android:</strong> Al tratarse de una descarga directa fuera de Google Play, Android te solicitará autorizar "Permitir desde esta fuente / navegador". Este procedimiento es completamente seguro y estándar para aplicaciones corporativas oficiales.
+
+            <div class="alert-box dl-honest-alert">
+              <strong>Distribución transparente:</strong> Esta aplicación no se distribuye en Google Play Store ni App Store; el instalador proviene únicamente del paquete oficial firmado por el equipo de ingeniería GYM VIP.
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
-  </div>
+  </section>
 </BaseLayout>
 
+<script>
+  const copyBtn = document.getElementById('copy-sha-btn');
+  copyBtn?.addEventListener('click', async () => {
+    const sha = copyBtn.getAttribute('data-sha') || '';
+    try {
+      await navigator.clipboard.writeText(sha);
+      copyBtn.textContent = '¡SHA-256 copiado!';
+      setTimeout(() => {
+        copyBtn.textContent = 'Copiar SHA-256';
+      }, 2200);
+    } catch {
+      copyBtn.textContent = 'Copia manual requerida';
+    }
+  });
+</script>
+
 <style>
-  .download-page-wrapper {
-    padding: 60px 0 80px 0;
+  .dl-section {
+    padding: 3.5rem 0 5rem;
   }
 
-  .download-container {
-    max-width: 1080px;
-  }
-
-  .download-header {
+  .dl-header {
     text-align: center;
-    max-width: 760px;
-    margin: 0 auto 48px auto;
+    max-width: 740px;
+    margin: 0 auto 2.75rem;
   }
 
-  .page-title {
-    font-size: 40px;
-    margin-top: 12px;
-    margin-bottom: 14px;
-  }
-
-  .page-subtitle {
-    font-size: 17px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  .download-main-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  @media (min-width: 900px) {
-    .download-main-grid {
-      grid-template-columns: 1.4fr 1fr;
-    }
-  }
-
-  .download-card {
-    background: var(--bg-card);
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-  }
-
-  .app-info-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .app-icon {
-    font-size: 44px;
-    background: var(--bg-surface);
-    border: 2px solid var(--gold-primary);
-    width: 76px;
-    height: 76px;
-    border-radius: var(--radius-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .app-name {
-    font-size: 24px;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-  }
-
-  .app-version {
-    font-size: 14px;
-    color: var(--gold-primary);
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  .status-pill {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 9999px;
-  }
-
-  .status-available {
-    background: var(--color-success-bg);
-    color: var(--color-success);
-    border: 1px solid rgba(16, 185, 129, 0.4);
-  }
-
-  .status-coming-soon {
-    background: var(--color-info-bg);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.4);
-  }
-
-  .btn-download {
-    width: 100%;
-    padding: 16px 28px;
-    font-size: 17px;
-    box-shadow: 0 4px 20px var(--gold-glow);
-  }
-
-  .direct-link-note {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .direct-link-note a {
-    color: var(--gold-primary);
-    word-break: break-all;
-  }
-
-  .coming-soon-box {
-    padding: 20px;
-    border-radius: var(--radius-md);
-  }
-
-  .coming-soon-badge {
-    font-size: 11px;
-    text-transform: uppercase;
+  .dl-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.8vw, 2.85rem);
     font-weight: 800;
-    letter-spacing: 0.05em;
-    background: rgba(59, 130, 246, 0.3);
-    padding: 2px 8px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 6px;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
   }
 
-  .coming-soon-header h3 {
-    font-size: 17px;
-    color: #e0f2fe;
-    margin-bottom: 8px;
+  .dl-lead {
+    color: var(--vf-muted-on-dark);
+    font-size: 1.05rem;
   }
 
-  .coming-soon-desc {
-    font-size: 14px;
-    color: #bae6fd;
-    line-height: 1.5;
-    margin-bottom: 12px;
+  .dl-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+    align-items: start;
   }
 
-  .pending-notice {
-    font-size: 13px;
-    background: rgba(10, 10, 12, 0.6);
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    border-left: 3px solid var(--gold-primary);
-    color: #e0f2fe;
-  }
-
-  .security-metadata-box {
-    border-top: 1px solid var(--border-color);
-    padding-top: 24px;
-  }
-
-  .box-title {
-    font-size: 16px;
-    color: var(--gold-primary);
-    margin-bottom: 16px;
-  }
-
-  .metadata-grid {
+  .dl-app-head {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 1.15rem;
+    margin-bottom: 1.75rem;
   }
 
-  .meta-row {
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-    padding-bottom: 8px;
-    border-bottom: 1px dashed var(--border-color);
+  .dl-app-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1.5px solid var(--vf-gold);
+    flex-shrink: 0;
+    background: #0b0d12;
   }
 
-  @media (min-width: 600px) {
-    .meta-row {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-  }
-
-  .meta-row dt {
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .meta-row dd {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  .sha-row dd {
+  .dl-logo-img {
     width: 100%;
-    margin-top: 4px;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .sha-code {
-    display: block;
-    word-break: break-all;
-    font-size: 11px;
-    background: var(--bg-surface);
-    padding: 6px 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    color: var(--gold-primary);
+  .dl-app-head h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.2rem;
   }
 
-  .sidebar-guide {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  .dl-version {
+    font-size: 0.9rem;
+    color: var(--vf-gold);
+    font-weight: 600;
+    margin-bottom: 0.45rem;
   }
 
-  .qr-card {
+  .dl-badge {
+    display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .dl-badge-ok {
+    background: rgba(16, 185, 129, 0.14);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+
+  .dl-badge-warn {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  }
+
+  .dl-cta-wrap {
+    margin-bottom: 2rem;
     text-align: center;
-    padding: 24px;
-    background: var(--bg-card);
   }
 
-  .qr-title {
-    font-size: 18px;
-    margin-bottom: 6px;
+  .dl-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1.02rem;
   }
 
-  .qr-desc {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
+  .dl-status-msg {
+    margin-top: 0.75rem;
+    font-size: 0.84rem;
+    color: var(--vf-muted-on-dark);
   }
 
-  .qr-code-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
+  .dl-specs h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.9rem;
+    border-bottom: 1px solid var(--vf-border-on-dark);
+    padding-bottom: 0.65rem;
   }
 
-  .qr-url-text {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .guide-card {
-    padding: 24px;
-    background: var(--bg-card);
-  }
-
-  .guide-title {
-    font-size: 18px;
-    color: var(--text-primary);
-    margin-bottom: 16px;
-  }
-
-  .steps-list {
+  .specs-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 0.75rem;
   }
 
-  .step-item {
+  .specs-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.89rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 0.65rem;
+  }
+
+  .spec-label {
+    color: var(--vf-muted-on-dark);
+  }
+
+  .spec-value {
+    color: #ffffff;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .spec-hash-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    border-bottom: none !important;
+  }
+
+  .spec-hash-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .copy-btn {
+    background: rgba(212, 175, 55, 0.14);
+    border: 1px solid var(--vf-gold-border);
+    color: var(--vf-gold);
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .hash-code {
+    display: block;
+    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid var(--vf-border-on-dark);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--vf-gold);
+    word-break: break-all;
+  }
+
+  .dl-side-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .dl-qr-card,
+  .dl-steps-card {
+    text-align: left;
+  }
+
+  .dl-qr-card h3,
+  .dl-steps-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.6rem;
+  }
+
+  .qr-desc {
+    font-size: 0.88rem;
+    color: var(--vf-muted-on-dark);
+    margin-bottom: 1.15rem;
+  }
+
+  .qr-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .install-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-top: 0.85rem;
+  }
+
+  .install-steps li {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: #cbd5e1;
   }
 
-  .step-number {
+  .step-num {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: var(--gold-muted);
-    color: var(--gold-primary);
-    border: 1px solid var(--gold-primary);
-    font-size: 12px;
+    background: rgba(212, 175, 55, 0.16);
+    border: 1px solid var(--vf-gold-border);
+    color: var(--vf-gold);
     font-weight: 800;
-    display: flex;
+    font-size: 0.78rem;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: 2px;
   }
 
-  .step-text {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
+  .dl-honest-alert {
+    margin-bottom: 0;
+    font-size: 0.83rem;
   }
 
-  .install-tip {
-    font-size: 12px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    padding: 12px 14px;
-    border-radius: var(--radius-sm);
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
+  @media (max-width: 900px) {
+    .dl-grid {
+      grid-template-columns: 1fr;
+    }
 
-  .install-tip strong {
-    color: var(--gold-primary);
-  }
+    .specs-list li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-  /* Ocultar QR en dispositivos móviles pequeños para priorizar el botón */
-  @media (max-width: 899px) {
-    .desktop-only {
-      display: none;
+    .spec-value {
+      text-align: left;
     }
   }
 </style>

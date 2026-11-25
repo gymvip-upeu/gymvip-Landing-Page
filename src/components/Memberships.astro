@@ -1,159 +1,525 @@
 ---
-const plans = [
-  {
-    title: 'Plan Mensual',
-    description: 'Acceso total a sala de pesas, cardio y asesoría inicial de sala durante 30 días calendario.',
-    features: [
-      'Acceso diario con QR dinámico',
-      'Uso de casilleros y duchas',
-      'Sin contrato de permanencia forzosa',
-      'Registro en App Oficial para socios'
-    ]
-  },
-  {
-    title: 'Plan Trimestral',
-    description: 'Plan preferente para entrenamiento continuo con evaluación y descuentos especiales en recepción.',
-    features: [
-      'Acceso irrestricto en todos los horarios',
-      'Seguimiento básico de progreso',
-      'Descuentos en suplementos seleccionados',
-      'Prioridad de reserva en talleres de sala'
-    ],
-    highlight: true
-  },
-  {
-    title: 'Plan Semestral / Anual',
-    description: 'Compromiso a mediano y largo plazo con congelamiento preventivo por viaje o descanso médico justificado.',
-    features: [
-      'Tarifa mensual más económica',
-      'Congelamiento de membresía (hasta 15 días)',
-      'Acceso a promociones y sorteos de temporada',
-      'Atención preferente en mostrador'
-    ]
-  }
-];
+import { DAILY_PASS_INFO, GYM_PLANS } from '../data/catalog';
 ---
 
-<section id="membresias" class="section section-alt">
+<section id="planes" class="section section-light" aria-labelledby="planes-heading">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Membresías Transparentes</span>
-      <h2 class="section-title">Entrena a tu Ritmo, Sin Letras Pequeñas</h2>
+      <span class="eyebrow">MEMBRESÍAS PRESENCIALES · CERO DÉBITOS OCULTOS</span>
+      <h2 id="planes-heading" class="section-title">
+        ELIGE <span class="accent">TU PLAN</span>
+      </h2>
       <p class="section-subtitle">
-        Todos nuestros planes se contratan y abonan exclusivamente en el mostrador oficial de recepción.
+        Comienza a entrenar en nuestra sede de Juliaca con modalidades transparentes, comprobante en caja y vigencia calendario clara en tiempo real.
       </p>
     </div>
 
-    <div class="grid grid-3">
-      {plans.map(p => (
-        <div class={`card plan-card ${p.highlight ? 'plan-highlight' : ''}`}>
-          {p.highlight && <span class="badge badge-highlight">Más Elegido</span>}
-          <h3 class="plan-title">{p.title}</h3>
-          <p class="plan-desc">{p.description}</p>
-          <ul class="plan-features">
-            {p.features.map(f => (
-              <li class="plan-feature-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check-icon" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>{f}</span>
+    <div class="plans-grid">
+      {GYM_PLANS.map((plan) => (
+        <article class:list={['plan-card', { 'plan-card-dark': plan.featured, 'plan-card-light': !plan.featured }]}>
+          {plan.badge && <div class="plan-top-pill">{plan.badge}</div>}
+
+          <div class="plan-head">
+            <h3 class="plan-name">{plan.name}</h3>
+            <p class="plan-subtitle">{plan.subtitle}</p>
+          </div>
+
+          <div class="plan-pricing-box">
+            <span class="plan-duration-tag">{plan.durationLabel}</span>
+            <p class="plan-price-title">{plan.priceDisplay}</p>
+            <p class="plan-price-sub">{plan.priceSubtext}</p>
+            <p class="plan-policy-note">{plan.renewalPolicy}</p>
+          </div>
+
+          <a
+            href={plan.ctaHref}
+            class:list={['btn', 'btn-full', plan.featured ? 'btn-primary' : 'btn-dark', 'plan-cta']}
+          >
+            {plan.ctaLabel}
+          </a>
+
+          <ul class="plan-highlights" aria-label={`Beneficios de ${plan.name}`}>
+            {plan.highlights.map((item) => (
+              <li class:list={['highlight-item', { excluded: !item.included }]}>
+                <span class:list={['item-icon', item.included ? 'icon-ok' : 'icon-no']} aria-hidden="true">
+                  {item.included ? '✓' : '⊘'}
+                </span>
+                <span>{item.text}</span>
               </li>
             ))}
           </ul>
-          <div class="plan-footer">
-            <a href="/contacto" class={`btn ${p.highlight ? 'btn-primary' : 'btn-secondary'}`} style="width: 100%;">
-              Consultar en Recepción
-            </a>
+
+          <div class="plan-expand">
+            <button
+              type="button"
+              class="expand-toggle"
+              aria-expanded="false"
+              data-plan-toggle={plan.id}
+            >
+              <span>Ver detalles operativos</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <ul class="extra-details" id={`plan-details-${plan.id}`} hidden>
+              {plan.extraDetails.map((d) => (
+                <li>{d}</li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </article>
       ))}
     </div>
 
-    <div class="membership-policy-note">
-      <p>
-        <strong>Política de Transparencia:</strong> Las tarifas exactas y promociones vigentes se confirman en el mostrador de recepción en Juliaca, emitiéndose el comprobante de pago físico y digital en el momento de la liquidación.
-      </p>
+    <div class="daily-pass-banner">
+      <div class="daily-pass-copy">
+        <span class="daily-badge">{DAILY_PASS_INFO.badge}</span>
+        <h3>{DAILY_PASS_INFO.title}</h3>
+        <p>{DAILY_PASS_INFO.description}</p>
+      </div>
+      <a href={DAILY_PASS_INFO.ctaHref} class="btn btn-outline-dark daily-cta">
+        {DAILY_PASS_INFO.ctaLabel}
+      </a>
     </div>
+
+    <div class="matrix-toggle-wrap">
+      <button
+        type="button"
+        id="toggle-matrix-btn"
+        class="btn btn-outline-dark"
+        aria-expanded="false"
+        aria-controls="plans-matrix-panel"
+      >
+        Comparar beneficios lado a lado ▾
+      </button>
+    </div>
+
+    <div id="plans-matrix-panel" class="matrix-panel" hidden>
+      <div class="matrix-scroll">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Criterio / Beneficio</th>
+              <th>Mensual</th>
+              <th class="col-featured">Trimestral</th>
+              <th>Semestral / Anual</th>
+              <th>Pase Diario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Duración de vigencia</td>
+              <td>30 días</td>
+              <td class="col-featured">90 días</td>
+              <td>180 / 360 días</td>
+              <td>1 día</td>
+            </tr>
+            <tr>
+              <td>Sala Musculación + Cardio</td>
+              <td>Incluido</td>
+              <td class="col-featured">Incluido</td>
+              <td>Incluido</td>
+              <td>Incluido</td>
+            </tr>
+            <tr>
+              <td>Acceso QR Dinámico App Móvil</td>
+              <td>Incluido</td>
+              <td class="col-featured">Incluido</td>
+              <td>Incluido</td>
+              <td>Ingreso en mostrador</td>
+            </tr>
+            <tr>
+              <td>Asesoría Nutricional (M/J)</td>
+              <td>Sujeto a turno</td>
+              <td class="col-featured">Prioritario</td>
+              <td>Incluido</td>
+              <td>No aplica</td>
+            </tr>
+            <tr>
+              <td>Área Sauna Seco (Vie–Dom)</td>
+              <td>Consulta en sede</td>
+              <td class="col-featured">Incluido</td>
+              <td>Incluido</td>
+              <td>No aplica</td>
+            </tr>
+            <tr>
+              <td>Congelamiento preventivo</td>
+              <td>No incluye</td>
+              <td class="col-featured">Evaluado en sede</td>
+              <td>Incluido con sustento</td>
+              <td>No aplica</td>
+            </tr>
+            <tr>
+              <td>Renovación automática / cargos</td>
+              <td>Nunca</td>
+              <td class="col-featured">Nunca</td>
+              <td>Nunca</td>
+              <td>Nunca</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="plans-footnote">
+      * Nota de transparencia comercial: Los montos oficiales en Soles (PEN), promociones vigentes en sala y programación diaria de clases grupales se confirman directamente en el mostrador de VIP CENTER FIT Juliaca al momento del registro.
+    </p>
   </div>
 </section>
 
+<script>
+  document.querySelectorAll('[data-plan-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-plan-toggle');
+      const panel = document.getElementById(`plan-details-${id}`);
+      if (!panel) return;
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      panel.hidden = expanded;
+      const label = btn.querySelector('span');
+      if (label) {
+        label.textContent = expanded ? 'Ver detalles operativos' : 'Ocultar detalles operativos';
+      }
+    });
+  });
+
+  const matrixBtn = document.getElementById('toggle-matrix-btn');
+  const matrixPanel = document.getElementById('plans-matrix-panel');
+  matrixBtn?.addEventListener('click', () => {
+    if (!matrixPanel) return;
+    const isOpen = matrixBtn.getAttribute('aria-expanded') === 'true';
+    matrixBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    matrixPanel.hidden = isOpen;
+    matrixBtn.textContent = isOpen
+      ? 'Comparar beneficios lado a lado ▾'
+      : 'Ocultar comparativa lado a lado ▴';
+  });
+</script>
+
 <style>
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-top: 1.25rem;
+  }
+
   .plan-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    padding: 2rem 1.65rem 1.5rem;
     display: flex;
     flex-direction: column;
-    position: relative;
-    background: var(--bg-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .plan-highlight {
-    border-color: var(--gold-primary);
-    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+  .plan-card-light {
+    background-color: #ffffff;
+    border: 1px solid var(--vf-border);
+    box-shadow: var(--shadow-card);
+    color: var(--vf-ink);
   }
 
-  .badge-highlight {
+  .plan-card-dark {
+    background: linear-gradient(180deg, #1b1f2b 0%, #11131a 100%);
+    border: 2px solid var(--vf-gold);
+    box-shadow: 0 22px 46px rgba(11, 13, 18, 0.24);
+    color: #ffffff;
+  }
+
+  .plan-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .plan-top-pill {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: -14px;
+    left: 1.5rem;
+    background-color: var(--vf-gold);
+    color: #111111;
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 0.34rem 0.95rem;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 6px 14px rgba(212, 175, 55, 0.35);
   }
 
-  .plan-title {
-    font-size: 22px;
-    margin-bottom: 8px;
-    color: var(--text-primary);
+  .plan-head {
+    margin-bottom: 1.25rem;
   }
 
-  .plan-desc {
-    font-size: 14px;
-    color: var(--text-secondary);
+  .plan-name {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin-bottom: 0.45rem;
+  }
+
+  .plan-subtitle {
+    font-size: 0.92rem;
     line-height: 1.5;
-    margin-bottom: 24px;
+    color: var(--vf-muted);
+    min-height: 2.8em;
   }
 
-  .plan-features {
+  .plan-card-dark .plan-subtitle {
+    color: #cbd5e1;
+  }
+
+  .plan-pricing-box {
+    padding: 1rem 0;
+    border-top: 1px solid var(--vf-border);
+    border-bottom: 1px solid var(--vf-border);
+    margin-bottom: 1.25rem;
+  }
+
+  .plan-card-dark .plan-pricing-box {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .plan-duration-tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--vf-gold-ink);
+    margin-bottom: 0.35rem;
+  }
+
+  .plan-card-dark .plan-duration-tag {
+    color: var(--vf-gold);
+  }
+
+  .plan-price-title {
+    font-family: var(--font-display);
+    font-size: 1.22rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .plan-price-sub {
+    font-size: 0.84rem;
+    color: var(--vf-muted);
+    margin-top: 0.25rem;
+  }
+
+  .plan-card-dark .plan-price-sub {
+    color: #a3abb9;
+  }
+
+  .plan-policy-note {
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--vf-success);
+  }
+
+  .plan-card-dark .plan-policy-note {
+    color: #4ade80;
+  }
+
+  .plan-cta {
+    margin-bottom: 1.4rem;
+  }
+
+  .plan-highlights {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 32px;
-    flex-grow: 1;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+    flex: 1;
   }
 
-  .plan-feature-item {
+  .highlight-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--text-secondary);
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    line-height: 1.45;
   }
 
-  .check-icon {
-    color: var(--gold-primary);
+  .highlight-item.excluded {
+    opacity: 0.62;
+  }
+
+  .item-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
-  .plan-footer {
-    margin-top: auto;
+  .icon-ok {
+    background-color: rgba(21, 128, 61, 0.14);
+    color: var(--vf-success);
   }
 
-  .membership-policy-note {
-    margin-top: 36px;
-    text-align: center;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    padding: 16px 24px;
+  .plan-card-dark .icon-ok {
+    background-color: rgba(74, 222, 128, 0.16);
+    color: #4ade80;
+  }
+
+  .icon-no {
+    background-color: rgba(148, 163, 184, 0.18);
+    color: #64748b;
+  }
+
+  .plan-expand {
+    border-top: 1px solid var(--vf-border);
+    padding-top: 0.85rem;
+  }
+
+  .plan-card-dark .plan-expand {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .expand-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.86rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0.25rem 0;
+  }
+
+  .expand-toggle[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .extra-details {
+    margin-top: 0.7rem;
+    padding-left: 1.1rem;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    color: var(--vf-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .plan-card-dark .extra-details {
+    color: #cbd5e1;
+  }
+
+  .extra-details[hidden] {
+    display: none;
+  }
+
+  .daily-pass-banner {
+    margin-top: 2rem;
+    background-color: var(--vf-bg-soft);
+    border: 1px solid var(--vf-border);
     border-radius: var(--radius-md);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
   }
 
-  .membership-policy-note p {
-    font-size: 13px;
-    color: var(--text-muted);
+  .daily-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--vf-gold-ink);
+    margin-bottom: 0.25rem;
   }
 
-  .membership-policy-note strong {
-    color: var(--gold-primary);
+  .daily-pass-copy h3 {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+  }
+
+  .daily-pass-copy p {
+    font-size: 0.92rem;
+    color: var(--vf-muted);
+    max-width: 720px;
+  }
+
+  .daily-cta {
+    flex-shrink: 0;
+  }
+
+  .matrix-toggle-wrap {
+    text-align: center;
+    margin-top: 1.75rem;
+  }
+
+  .matrix-panel {
+    margin-top: 1.5rem;
+    background: #ffffff;
+    border: 1px solid var(--vf-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .matrix-scroll {
+    overflow-x: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 640px;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--vf-border);
+  }
+
+  .comparison-table th {
+    background-color: var(--vf-bg-soft);
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+
+  .comparison-table .col-featured {
+    background-color: rgba(212, 175, 55, 0.11);
+    font-weight: 700;
+  }
+
+  .plans-footnote {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--vf-muted);
+    max-width: 820px;
+    margin: 1.75rem auto 0;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 960px) {
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .daily-pass-banner {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 </style>

@@ -1,49 +1,47 @@
 ---
-const faqs = [
-  {
-    q: '¿Cómo obtengo mi código QR para ingresar al gimnasio?',
-    a: 'Al inscribirte en la recepción de VIP Center Fit, nuestro personal registrará tu documento y te entregará tus credenciales de acceso inicial. Una vez descargada la App Móvil oficial o ingresando al portal web, tu pantalla principal generará tu código QR dinámico criptográfico para pasar por los torniquetes.'
-  },
-  {
-    q: '¿Dónde y cómo se realizan los pagos de las membresías?',
-    a: 'Todos los pagos y renovaciones se realizan de forma presencial en el mostrador de recepción en Juliaca mediante Efectivo, Yape, Plin o Transferencia Bancaria. No realizamos cobros recurrentes automáticos ni guardamos datos bancarios.'
-  },
-  {
-    q: '¿Cuáles son los requisitos para registrarme como socio?',
-    a: 'Solo requieres presentar tu documento de identidad vigente (DNI o Carnet de Extranjería) en recepción, seleccionar la modalidad de membresía que mejor se adapte a tus objetivos y registrar un número de teléfono de contacto.'
-  },
-  {
-    q: '¿La aplicación móvil funciona en cualquier teléfono Android?',
-    a: 'Sí, la aplicación GYM VIP Mobile es compatible con dispositivos Android con versión 7.0 (Nougat, API 24) o superior. Puedes descargarla directamente en la sección de Descargas de este portal.'
-  },
-  {
-    q: '¿Puedo solicitar la eliminación de mi cuenta y datos personales?',
-    a: 'Por supuesto. En cumplimiento estricto de la Ley N° 29733 de Protección de Datos Personales de Perú, disponemos de un formulario en línea para el ejercicio de derechos ARCO en la sección Eliminación de Cuenta, donde podrás tramitar la baja y obtener un código de seguimiento auditado.'
-  }
-];
+import { FAQ_ITEMS } from '../data/catalog';
+
+const categories = ['Todas', 'Planes y Pagos', 'Acceso QR', 'App Móvil', 'Privacidad ARCO'] as const;
 ---
 
-<section id="preguntas" class="section">
+<section id="faq" class="section section-light" aria-labelledby="faq-heading">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Dudas Frecuentes</span>
-      <h2 class="section-title">Preguntas Frecuentes</h2>
+      <span class="eyebrow">DUDAS FRECUENTES</span>
+      <h2 id="faq-heading" class="section-title">
+        Preguntas <span class="accent">Frecuentes</span>
+      </h2>
       <p class="section-subtitle">
-        Respuestas claras sobre la operativa de VIP Center Fit y el uso de nuestras plataformas.
+        Respuestas verificadas sobre membresías, check-in digital, distribución de la App Android y derechos de privacidad.
       </p>
     </div>
 
-    <div class="faq-container">
-      {faqs.map((faq, index) => (
-        <details class="faq-item card" open={index === 0}>
+    <div class="faq-filter-bar" role="tablist" aria-label="Filtrar preguntas frecuentes por tema">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          class:list={['faq-tab', { active: idx === 0 }]}
+          role="tab"
+          aria-selected={idx === 0 ? 'true' : 'false'}
+          data-faq-filter={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <div class="faq-list" id="faq-list">
+      {FAQ_ITEMS.map((item) => (
+        <details class="faq-item" data-faq-cat={item.category} open={item.defaultOpen}>
           <summary class="faq-question">
-            <span>{faq.q}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-icon" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <span class="faq-q-main">
+              <span class="faq-cat-pill">{item.category}</span>
+              <span>{item.question}</span>
+            </span>
+            <span class="faq-chevron" aria-hidden="true">⌄</span>
           </summary>
           <div class="faq-answer">
-            <p>{faq.a}</p>
+            <p>{item.answer}</p>
           </div>
         </details>
       ))}
@@ -51,61 +49,128 @@ const faqs = [
   </div>
 </section>
 
+<script>
+  const tabs = document.querySelectorAll('[data-faq-filter]');
+  const items = document.querySelectorAll('.faq-item');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const selected = tab.getAttribute('data-faq-filter');
+      tabs.forEach((t) => {
+        const isCurrent = t === tab;
+        t.classList.toggle('active', isCurrent);
+        t.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+      });
+
+      items.forEach((el) => {
+        const cat = el.getAttribute('data-faq-cat');
+        const show = selected === 'Todas' || cat === selected;
+        (el as HTMLElement).style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
+
 <style>
-  .faq-container {
-    max-width: 800px;
+  .faq-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .faq-tab {
+    background-color: var(--vf-bg-soft);
+    border: 1px solid var(--vf-border);
+    color: var(--vf-ink-soft);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .faq-tab:hover {
+    border-color: var(--vf-gold);
+  }
+
+  .faq-tab.active {
+    background-color: var(--vf-ink);
+    border-color: var(--vf-ink);
+    color: var(--vf-gold);
+  }
+
+  .faq-list {
+    max-width: 860px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0.85rem;
   }
 
   .faq-item {
-    padding: 0;
+    background-color: #ffffff;
+    border: 1px solid var(--vf-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
-    background: var(--bg-card);
+  }
+
+  .faq-item[open] {
+    border-color: var(--vf-gold);
   }
 
   .faq-question {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-primary);
+    padding: 1.15rem 1.35rem;
     cursor: pointer;
     list-style: none;
-    transition: color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--vf-ink);
   }
 
   .faq-question::-webkit-details-marker {
     display: none;
   }
 
-  .faq-question:hover {
-    color: var(--gold-primary);
+  .faq-q-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
   }
 
-  .faq-icon {
-    color: var(--gold-primary);
-    transition: transform var(--transition-fast);
-    flex-shrink: 0;
+  .faq-cat-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--vf-gold-ink);
+    background-color: rgba(212, 175, 55, 0.16);
+    padding: 0.18rem 0.58rem;
+    border-radius: var(--radius-pill);
   }
 
-  details[open] .faq-icon {
+  .faq-chevron {
+    color: var(--vf-gold-ink);
+    font-size: 1.25rem;
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] .faq-chevron {
     transform: rotate(180deg);
   }
 
   .faq-answer {
-    padding: 0 24px 20px 24px;
-    border-top: 1px solid var(--border-color);
-    padding-top: 16px;
-  }
-
-  .faq-answer p {
-    font-size: 15px;
-    color: var(--text-secondary);
+    padding: 0 1.35rem 1.2rem;
+    color: var(--vf-muted);
+    font-size: 0.94rem;
     line-height: 1.6;
   }
 </style>

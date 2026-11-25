@@ -1,68 +1,87 @@
 ---
-const currentYear = new Date().getFullYear();
+import { SITE_BRAND } from '../data/catalog';
+const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-  <div class="container footer-content">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="/" class="brand-logo" aria-label="VIP CENTER FIT">
-          <span class="brand-badge">VIP</span>
-          <span class="brand-title">VIP CENTER FIT</span>
+<footer class="site-footer" aria-label="Pie de página institucional">
+  <div class="container">
+    <div class="footer-top-brand">
+      <a href="/" class="footer-logo-link" aria-label="VIP CENTER FIT Inicio">
+        <svg viewBox="0 0 42 42" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="42" height="42" rx="10" fill="#141720" stroke="#D4AF37" stroke-width="1.6" />
+          <path d="M9.5 14.5L15.5 28L21.5 14.5" stroke="#D4AF37" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M25 14.5H32M25 14.5V28M25 21H30.5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="footer-logo-text">{SITE_BRAND.brandName}</span>
+      </a>
+
+      <p class="footer-channels-label">Canales oficiales verificados</p>
+      <div class="footer-social-pills">
+        <a href={`mailto:${SITE_BRAND.supportEmail}`} class="social-pill" aria-label="Correo de soporte">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
+          <span>{SITE_BRAND.supportEmail}</span>
         </a>
-        <p class="brand-description">
-          Sede Central en Juliaca, San Román, Puno — Perú. Sistema integral de gestión de entrenamiento, membresías presenciales y control de acceso seguro.
+        <a href={SITE_BRAND.githubOrgUrl} target="_blank" rel="noopener noreferrer" class="social-pill">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          <span>GitHub @gymvip-upeu</span>
+        </a>
+        <a href={SITE_BRAND.frontendUrl} target="_blank" rel="noopener noreferrer" class="social-pill">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+          </svg>
+          <span>Portal Web</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-grid">
+      <div class="footer-col-desc">
+        <h4>Sede Operativa</h4>
+        <p>
+          <strong>{SITE_BRAND.sedeNombre}</strong><br />
+          {SITE_BRAND.sedeCiudad}
         </p>
-        <div class="contact-brief">
-          <p><strong>Atención Presencial:</strong> Lunes a Domingo</p>
-          <p><strong>Consultas:</strong> <a href="mailto:soporte@gymvip.pe">soporte@gymvip.pe</a></p>
-          <p><strong>Desarrollo:</strong> VIP DevStudio — Sede en Ñaña</p>
-        </div>
+        <p class="footer-dev-note">
+          Ingeniería de software: <strong>{SITE_BRAND.devStudioName}</strong> ({SITE_BRAND.devEmail}).
+        </p>
       </div>
 
-      <div class="footer-links-group">
-        <h4 class="links-title">Plataforma</h4>
-        <ul class="links-list">
-          <li><a href="/#horarios">Horarios y Sede</a></li>
-          <li><a href="/#membresias">Membresías</a></li>
-          <li><a href="/#beneficios">Beneficios</a></li>
-          <li><a href="/#preguntas">Preguntas Frecuentes</a></li>
-          <li><a href="/descargar">Descargar App Móvil</a></li>
-          <li><a href="https://gymvip-frontend.vercel.app/inicio" target="_blank" rel="noopener noreferrer">Acceso Personal / Socios</a></li>
+      <div>
+        <h4>Plataforma y Servicios</h4>
+        <ul class="footer-links">
+          <li><a href="/#planes">Membresías y Pase Diario</a></li>
+          <li><a href="/#instalaciones">Instalaciones</a></li>
+          <li><a href="/#servicios">Áreas y Clases VIP</a></li>
+          <li><a href="/#horarios">Horarios de Atención</a></li>
+          <li><a href="/descargar">Descargar App Android (APK)</a></li>
+          <li><a href={SITE_BRAND.frontendUrl} target="_blank" rel="noopener noreferrer">Acceso Portal Web</a></li>
         </ul>
       </div>
 
-      <div class="footer-links-group">
-        <h4 class="links-title">Legal y Cumplimiento</h4>
-        <ul class="links-list">
+      <div>
+        <h4>Legal y Derechos LPDP</h4>
+        <ul class="footer-links">
           <li><a href="/privacidad">Política de Privacidad</a></li>
           <li><a href="/terminos">Términos y Condiciones</a></li>
           <li><a href="/aviso-legal">Aviso Legal</a></li>
-          <li><a href="/eliminar-cuenta">Eliminación de Cuenta (ARCO)</a></li>
-          <li><a href="/contacto">Canales de Contacto</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-links-group">
-        <h4 class="links-title">Transparencia</h4>
-        <ul class="links-list">
+          <li><a href="/eliminar-cuenta">Eliminar Cuenta / Derechos ARCO</a></li>
           <li><a href="/atribuciones">Atribuciones y Marca</a></li>
-          <li><a href="/licencias">Licencias y SBOM</a></li>
-          <li><span class="compliance-tag">Ley N° 29733 (Perú)</span></li>
-          <li><span class="compliance-tag">Protección de Datos</span></li>
+          <li><a href="/licencias">Licencias de Software (SBOM)</a></li>
+          <li><a href="/contacto">Canales Oficiales de Contacto</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p class="copyright">
-        &copy; {currentYear} VIP CENTER FIT — GYM VIP. Todos los derechos reservados.
-      </p>
-      <p class="dev-credits">
-        Desarrollado por <strong>VIP DevStudio</strong> — <strong>Sede en Ñaña</strong> (UPeU, Lima). Contacto técnico: <a href="mailto:devteam@gymvip.pe">devteam@gymvip.pe</a>
-      </p>
-      <p class="disclaimer">
-        Los cobros presenciales, emisión de comprobantes y altas biométricas se tramitan de forma exclusiva en el mostrador oficial de recepción.
+      <p>&copy; {year} {SITE_BRAND.brandName} — {SITE_BRAND.ecosystemName}. Todos los derechos reservados.</p>
+      <p class="footer-disclaimer">
+        Las tarifas vigentes, cobros presenciales, emisión de comprobantes e inscripciones se realizan únicamente en mostrador oficial de recepción en Juliaca. Cumplimiento Ley N° 29733 (Perú).
       </p>
     </div>
   </div>
@@ -70,129 +89,130 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .site-footer {
-    background: var(--bg-surface);
-    border-top: 1px solid var(--border-color);
-    padding: 56px 0 28px 0;
+    background-color: var(--vf-bg-dark);
+    color: var(--vf-text-on-dark);
+    border-top: 1px solid var(--vf-gold-border);
+    padding: 3.75rem 0 2.5rem;
     margin-top: auto;
+  }
+
+  .footer-top-brand {
+    text-align: center;
+    padding-bottom: 2.25rem;
+    border-bottom: 1px solid var(--vf-border-on-dark);
+    margin-bottom: 2.25rem;
+  }
+
+  .footer-logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .footer-logo-text {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+  }
+
+  .footer-channels-label {
+    font-size: 0.84rem;
+    color: var(--vf-muted-on-dark);
+    margin-bottom: 0.85rem;
+  }
+
+  .footer-social-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+  }
+
+  .social-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background-color: var(--vf-card-dark);
+    border: 1px solid var(--vf-border-on-dark);
+    color: var(--vf-text-on-dark);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.48rem 0.95rem;
+    border-radius: var(--radius-pill);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .social-pill:hover {
+    border-color: var(--vf-gold);
+    color: var(--vf-gold);
   }
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    margin-bottom: 48px;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 2.25rem;
+    margin-bottom: 2.5rem;
   }
 
-  @media (min-width: 640px) {
-    .footer-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 960px) {
-    .footer-grid {
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    }
-  }
-
-  .brand-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-    color: var(--text-primary);
-  }
-
-  .brand-badge {
-    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
-    color: #000;
+  .site-footer h4 {
+    font-family: var(--font-display);
+    font-size: 0.86rem;
     font-weight: 800;
-    font-size: 12px;
-    padding: 3px 6px;
-    border-radius: var(--radius-sm);
-  }
-
-  .brand-title {
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  .brand-description {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
-
-  .contact-brief p {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
-
-  .links-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--gold-primary);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 16px;
+    letter-spacing: 0.06em;
+    color: var(--vf-gold);
+    margin-bottom: 0.9rem;
   }
 
-  .links-list {
+  .footer-col-desc p {
+    font-size: 0.9rem;
+    color: var(--vf-muted-on-dark);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-col-desc strong {
+    color: #ffffff;
+  }
+
+  .footer-links {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.55rem;
   }
 
-  .links-list a {
-    color: var(--text-secondary);
-    font-size: 14px;
-    transition: color var(--transition-fast);
+  .footer-links a {
+    font-size: 0.89rem;
+    color: var(--vf-muted-on-dark);
+    transition: color 0.18s ease;
   }
 
-  .links-list a:hover {
-    color: var(--gold-hover);
-  }
-
-  .compliance-tag {
-    display: inline-block;
-    font-size: 12px;
-    color: var(--text-muted);
-    background: rgba(255, 255, 255, 0.04);
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
+  .footer-links a:hover {
+    color: var(--vf-gold);
   }
 
   .footer-bottom {
-    border-top: 1px solid var(--border-color);
-    padding-top: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
+    border-top: 1px solid var(--vf-border-on-dark);
+    padding-top: 1.5rem;
     text-align: center;
+    font-size: 0.84rem;
+    color: var(--vf-muted-on-dark);
   }
 
-  .copyright {
-    font-size: 13px;
-    color: var(--text-muted);
+  .footer-disclaimer {
+    margin-top: 0.45rem;
+    font-size: 0.77rem;
+    color: #7c8596;
   }
 
-  .dev-credits {
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-
-  .dev-credits a {
-    color: var(--gold-primary);
-    text-decoration: underline;
-  }
-
-  .disclaimer {
-    font-size: 12px;
-    color: var(--text-muted);
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
   }
 </style>

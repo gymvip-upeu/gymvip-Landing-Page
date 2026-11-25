@@ -1,71 +1,152 @@
 ---
-const benefits = [
-  {
-    icon: '⚡',
-    title: 'Acceso Instantáneo con QR Dinámico',
-    desc: 'Tu teléfono genera un código QR rotativo y cifrado cada 30 segundos. Olvídate de carnets físicos extraviados o demoras en el molinete de entrada.'
-  },
-  {
-    icon: '🛡️',
-    title: 'Liquidación Transparente y Segura',
-    desc: 'Pagos presenciales en caja mediante Efectivo, Yape, Plin o Transferencia. Sin comisiones ocultas ni cobros automáticos a tarjetas de crédito.'
-  },
-  {
-    icon: '📱',
-    title: 'App Móvil para el Socio',
-    desc: 'Revisa el estado de tu membresía, días restantes, avisos de mantenimiento, catálogo de suplementos deportivos y promociones exclusivas.'
-  },
-  {
-    icon: '🔐',
-    title: 'Privacidad y Protección de Datos',
-    desc: 'Tus datos están protegidos bajo la Ley N° 29733 (Perú). Cuentas con derecho de acceso, rectificación y eliminación inmediata de tu registro cuando lo desees.'
-  }
-];
+import { SUPPLEMENTS_HIGHLIGHT, TECH_HIGHLIGHT } from '../data/catalog';
 ---
 
-<section id="beneficios" class="section section-alt">
+<section id="beneficios" class="section section-light" aria-labelledby="beneficios-heading">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Propuesta de Valor</span>
-      <h2 class="section-title">Tecnología Diseñada para tu Entrenamiento</h2>
+      <span class="eyebrow">COMPLEMENTOS DEL ECOSISTEMA</span>
+      <h2 id="beneficios-heading" class="section-title">
+        Conoce nuestros productos y servicios <span class="accent">adicionales para ti</span>
+      </h2>
       <p class="section-subtitle">
-        Eliminamos la fricción administrativa para que tu única preocupación sea alcanzar tus objetivos físicos.
+        Tecnología operativa real para reducir esperas en recepción, gestionar pedidos de suplementos con stock verificado y proteger tus datos personales.
       </p>
     </div>
 
-    <div class="grid grid-2">
-      {benefits.map(b => (
-        <div class="card benefit-card">
-          <div class="benefit-icon-wrapper" aria-hidden="true">{b.icon}</div>
-          <h3 class="benefit-title">{b.title}</h3>
-          <p class="benefit-desc">{b.desc}</p>
+    <div class="addons-grid">
+      <article class="addon-card">
+        <div class="addon-media">
+          <img
+            src={SUPPLEMENTS_HIGHLIGHT.image}
+            alt={SUPPLEMENTS_HIGHLIGHT.imageAlt}
+            width="640"
+            height="420"
+            class="addon-img"
+            loading="eager"
+            decoding="sync"
+          />
         </div>
-      ))}
+        <div class="addon-content">
+          <span class="addon-overline">{SUPPLEMENTS_HIGHLIGHT.overline}</span>
+          <h3>{SUPPLEMENTS_HIGHLIGHT.title}</h3>
+          <p>{SUPPLEMENTS_HIGHLIGHT.description}</p>
+          <div class="addon-actions">
+            <a href="/descargar" class="btn btn-primary">Ver Catálogo en App Móvil</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="addon-card">
+        <div class="addon-media">
+          <img
+            src={TECH_HIGHLIGHT.image}
+            alt={TECH_HIGHLIGHT.imageAlt}
+            width="640"
+            height="420"
+            class="addon-img"
+            loading="eager"
+            decoding="sync"
+          />
+        </div>
+        <div class="addon-content">
+          <span class="addon-overline">{TECH_HIGHLIGHT.overline}</span>
+          <h3>{TECH_HIGHLIGHT.title}</h3>
+          <p>{TECH_HIGHLIGHT.description}</p>
+          <div class="addon-actions">
+            <a href="/eliminar-cuenta" class="btn btn-outline-dark">Canal ARCO Ley N° 29733</a>
+          </div>
+        </div>
+      </article>
     </div>
+
+    <p class="addons-note">
+      * La disponibilidad física de suplementos, marcas y lotes en stock se actualiza directamente desde el Kardex en recepción y puede consultarse desde la App Móvil.
+    </p>
   </div>
 </section>
 
 <style>
-  .benefit-card {
+  .addons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+
+  .addon-card {
+    background-color: var(--vf-bg-soft);
+    border: 1px solid var(--vf-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    box-shadow: var(--shadow-card);
+  }
+
+  .addon-media {
+    min-height: 260px;
+    background-color: var(--vf-bg-dark);
+  }
+
+  .addon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+
+  .addon-content {
+    padding: 1.75rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: var(--bg-card);
+    justify-content: center;
   }
 
-  .benefit-icon-wrapper {
-    font-size: 32px;
-    margin-bottom: 4px;
+  .addon-overline {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--vf-gold-ink);
+    margin-bottom: 0.45rem;
   }
 
-  .benefit-title {
-    font-size: 20px;
-    color: var(--text-primary);
+  .addon-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--vf-ink);
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
   }
 
-  .benefit-desc {
-    font-size: 15px;
-    color: var(--text-secondary);
+  .addon-content p {
+    font-size: 0.92rem;
+    color: var(--vf-muted);
     line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .addons-note {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--vf-muted);
+  }
+
+  @media (max-width: 1020px) {
+    .addons-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .addon-card {
+      grid-template-columns: 1fr;
+    }
+
+    .addon-media {
+      min-height: 200px;
+      max-height: 240px;
+    }
   }
 </style>

@@ -1,52 +1,99 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE_BRAND } from '../data/catalog';
 import '../styles/global.css';
 
-interface Props {
+export interface Props {
   title: string;
   description?: string;
   canonicalPath?: string;
+  theme?: 'landing' | 'dark';
+  preloadHero?: boolean;
 }
 
 const {
   title,
-  description = 'Portal oficial de VIP Center Fit (GYM VIP). Sede Juliaca, Puno. Control de acceso con QR dinámico, membresías transparentes y app móvil oficial.',
-  canonicalPath = ''
+  description = 'VIP CENTER FIT (GYM VIP) — Centro de entrenamiento en Juliaca con membresías presenciales transparentes, control de acceso por QR dinámico y App Android oficial.',
+  canonicalPath = '/',
+  theme = 'dark',
+  preloadHero = false,
 } = Astro.props;
 
-const siteUrl = 'https://gymvip.vercel.app';
-const canonicalUrl = `${siteUrl}${canonicalPath}`;
+const siteBase = Astro.site?.toString().replace(/\/$/, '') || 'https://gymvip.vercel.app';
+const fullTitle = `${title} | ${SITE_BRAND.brandName}`;
+const canonicalUrl = `${siteBase}${canonicalPath}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ExerciseGym',
+  name: SITE_BRAND.brandName,
+  alternateName: SITE_BRAND.ecosystemName,
+  description,
+  url: siteBase,
+  email: SITE_BRAND.supportEmail,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Juliaca',
+    addressRegion: 'Puno',
+    addressCountry: 'PE',
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '06:00',
+      closes: '22:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '07:00',
+      closes: '20:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Sunday',
+      opens: '08:00',
+      closes: '14:00',
+    },
+  ],
+};
 ---
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — VIP CENTER FIT</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalUrl} />
-  
-  <!-- Open Graph / Meta Social -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:title" content={`${title} — VIP CENTER FIT`} />
-  <meta property="og:description" content={description} />
-  <meta property="og:site_name" content="VIP CENTER FIT" />
-  
-  <!-- Favicon SVG seguro -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>" />
-</head>
-<body>
-  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={theme === 'landing' ? '#ffffff' : '#0b0d12'} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {preloadHero && <link rel="preload" as="image" href="/images/hero-club.webp" type="image/webp" />}
 
-  <Header currentPath={canonicalPath} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_BRAND.brandName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteBase}/images/hero-club.webp`} />
+    <meta property="og:locale" content="es_PE" />
 
-  <main id="main-content">
-    <slot />
-  </main>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
 
-  <Footer />
-</body>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class={theme === 'landing' ? 'theme-landing-page' : 'theme-dark-page'}>
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <Header variant={theme} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>

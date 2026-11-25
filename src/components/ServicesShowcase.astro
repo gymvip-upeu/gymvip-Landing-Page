@@ -1,0 +1,335 @@
+---
+import { GYM_SERVICES } from '../data/catalog';
+---
+
+<section id="servicios" class="section section-light" aria-labelledby="servicios-heading">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">ÁREAS OPERATIVAS REGISTRADAS EN SISTEMA</span>
+      <h2 id="servicios-heading" class="section-title">
+        Conoce nuestras Áreas y Servicios <span class="accent">EXCLUSIVOS</span>
+      </h2>
+      <p class="section-subtitle">
+        Cada zona está sincronizada con los servicios activos en nuestro sistema (`V12`) para tu rutina presencial y seguimiento desde la App Móvil.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      {GYM_SERVICES.map((srv) => (
+        <article class="service-card">
+          <div class="service-img-wrap">
+            <img
+              src={srv.image}
+              alt={srv.imageAlt}
+              width="720"
+              height="420"
+              class="service-img"
+              loading="eager"
+              decoding="sync"
+            />
+          </div>
+
+          <div class="service-title-strip">
+            <h3>{srv.shortTitle}</h3>
+          </div>
+
+          <div class="service-body">
+            <div class="service-meta-grid">
+              <div class="service-meta-item">
+                <span class="meta-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </span>
+                <span class="meta-label">Ubicación</span>
+                <strong class="meta-val">{srv.location}</strong>
+              </div>
+              <div class="service-meta-divider" aria-hidden="true"></div>
+              <div class="service-meta-item">
+                <span class="meta-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </span>
+                <span class="meta-label">Horario</span>
+                <strong class="meta-val">{srv.schedule}</strong>
+              </div>
+            </div>
+
+            <p class="service-desc">{srv.description}</p>
+
+            <button
+              type="button"
+              class="service-detail-link"
+              data-srv-open={srv.id}
+              data-srv-name={srv.name}
+              data-srv-loc={srv.location}
+              data-srv-sch={srv.schedule}
+              data-srv-mod={srv.modality}
+              data-srv-desc={srv.detailNote}
+            >
+              Más detalles
+            </button>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="services-cta-wrap">
+      <a href="/contacto" class="btn btn-primary">
+        Consultar disponibilidad de salas y turnos
+      </a>
+    </div>
+  </div>
+
+  <dialog id="srv-dialog" class="vf-dialog" aria-labelledby="srv-dialog-title">
+    <div class="vf-dialog-card srv-dialog-inner">
+      <button type="button" class="vf-dialog-close" id="srv-dialog-close" aria-label="Cerrar detalle de servicio">✕</button>
+      <div class="srv-dialog-content">
+        <span class="eyebrow" id="srv-dialog-mod"></span>
+        <h3 id="srv-dialog-title"></h3>
+        <div class="srv-dialog-specs">
+          <div>
+            <span>Ubicación en sede</span>
+            <strong id="srv-dialog-loc"></strong>
+          </div>
+          <div>
+            <span>Horario de atención</span>
+            <strong id="srv-dialog-sch"></strong>
+          </div>
+        </div>
+        <p id="srv-dialog-desc"></p>
+        <div class="srv-dialog-actions">
+          <a href="/contacto" class="btn btn-primary btn-full">Consultar en recepción</a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const srvDialog = document.getElementById('srv-dialog') as HTMLDialogElement | null;
+  const srvClose = document.getElementById('srv-dialog-close');
+  const srvMod = document.getElementById('srv-dialog-mod');
+  const srvTitle = document.getElementById('srv-dialog-title');
+  const srvLoc = document.getElementById('srv-dialog-loc');
+  const srvSch = document.getElementById('srv-dialog-sch');
+  const srvDesc = document.getElementById('srv-dialog-desc');
+
+  document.querySelectorAll('[data-srv-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!srvDialog) return;
+      if (srvMod) srvMod.textContent = btn.getAttribute('data-srv-mod') || '';
+      if (srvTitle) srvTitle.textContent = btn.getAttribute('data-srv-name') || '';
+      if (srvLoc) srvLoc.textContent = btn.getAttribute('data-srv-loc') || '';
+      if (srvSch) srvSch.textContent = btn.getAttribute('data-srv-sch') || '';
+      if (srvDesc) srvDesc.textContent = btn.getAttribute('data-srv-desc') || '';
+      srvDialog.showModal();
+    });
+  });
+
+  srvClose?.addEventListener('click', () => srvDialog?.close());
+  srvDialog?.addEventListener('click', (e) => {
+    if (e.target === srvDialog) srvDialog.close();
+  });
+</script>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background-color: #ffffff;
+    border: 1px solid var(--vf-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .service-img-wrap {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: var(--vf-bg-dark);
+  }
+
+  .service-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+  }
+
+  .service-title-strip {
+    background-color: var(--vf-gold);
+    color: #121214;
+    padding: 0.72rem 1rem;
+    text-align: center;
+  }
+
+  .service-title-strip h3 {
+    font-family: var(--font-display);
+    font-size: 0.96rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .service-body {
+    padding: 1.25rem 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: center;
+  }
+
+  .service-meta-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--vf-border);
+  }
+
+  .service-meta-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .meta-icon {
+    color: var(--vf-gold-ink);
+  }
+
+  .meta-label {
+    font-size: 0.74rem;
+    color: var(--vf-muted);
+    font-weight: 600;
+  }
+
+  .meta-val {
+    font-size: 0.78rem;
+    color: var(--vf-ink);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .service-meta-divider {
+    width: 1px;
+    background-color: var(--vf-border);
+  }
+
+  .service-desc {
+    font-size: 0.89rem;
+    color: var(--vf-muted);
+    line-height: 1.55;
+    margin-bottom: 1.15rem;
+    flex: 1;
+  }
+
+  .service-detail-link {
+    background: none;
+    border: none;
+    color: var(--vf-gold-ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+    align-self: center;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .service-detail-link:hover {
+    color: var(--vf-ink);
+  }
+
+  .services-cta-wrap {
+    text-align: center;
+    margin-top: 2.25rem;
+  }
+
+  .srv-dialog-inner {
+    padding: 2rem 1.75rem 1.75rem;
+    background: #ffffff;
+  }
+
+  .srv-dialog-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--vf-ink);
+  }
+
+  .srv-dialog-specs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    background: var(--vf-bg-soft);
+    border: 1px solid var(--vf-border);
+    border-radius: var(--radius-sm);
+    padding: 0.95rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .srv-dialog-specs span {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--vf-muted);
+  }
+
+  .srv-dialog-specs strong {
+    font-size: 0.9rem;
+    color: var(--vf-ink);
+  }
+
+  .srv-dialog-content p {
+    font-size: 0.95rem;
+    color: var(--vf-ink-soft);
+    line-height: 1.6;
+    margin-bottom: 1.35rem;
+  }
+
+  @media (max-width: 980px) {
+    .services-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services-grid {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 84%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 0.85rem;
+      scrollbar-width: thin;
+    }
+
+    .service-card {
+      scroll-snap-align: start;
+    }
+
+    .srv-dialog-specs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

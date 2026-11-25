@@ -1,173 +1,387 @@
 ---
-const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
+import { HERO_SLIDES } from '../data/catalog';
 ---
 
-<section class="hero-section">
-  <div class="container hero-container">
-    <div class="hero-badge-wrapper">
-      <span class="badge">Sede Oficial — Juliaca, San Román, Puno</span>
+<section class="hero-slider-wrap" aria-label="Presentación principal VIP CENTER FIT">
+  <div class="hero-carousel" id="hero-carousel">
+    <div class="hero-track" id="hero-track">
+      {HERO_SLIDES.map((slide, idx) => (
+        <article
+          class:list={['hero-slide', { active: idx === 0 }]}
+          data-slide-index={idx}
+          aria-hidden={idx === 0 ? 'false' : 'true'}
+        >
+          <div class="hero-media">
+            <img
+              src={slide.image}
+              alt={slide.imageAlt}
+              width="1400"
+              height="700"
+              class="hero-img"
+              loading="eager"
+              fetchpriority={idx === 0 ? 'high' : 'low'}
+              decoding="async"
+            />
+            <div class="hero-overlay"></div>
+          </div>
+
+          <div class="container hero-content-wrap">
+            <div class="hero-content">
+              <span class="eyebrow hero-dark-pill">{slide.eyebrow}</span>
+              {idx === 0 ? (
+                <h1 class="hero-title">
+                  {slide.titleLead}{' '}
+                  <span class="hero-accent">{slide.titleAccent}</span>
+                </h1>
+              ) : (
+                <h2 class="hero-title">
+                  {slide.titleLead}{' '}
+                  <span class="hero-accent">{slide.titleAccent}</span>
+                </h2>
+              )}
+              <p class="hero-desc">{slide.description}</p>
+
+              <div class="hero-cta-row">
+                <a href={slide.primaryCta.href} class="btn btn-primary hero-btn">
+                  {slide.primaryCta.label}
+                </a>
+                <a
+                  href={slide.secondaryCta.href}
+                  target={slide.secondaryCta.external ? '_blank' : undefined}
+                  rel={slide.secondaryCta.external ? 'noopener noreferrer' : undefined}
+                  class="btn btn-outline-light hero-btn"
+                >
+                  {slide.secondaryCta.label}
+                </a>
+              </div>
+
+              <div class="hero-stats-strip">
+                {slide.stats.map((st) => (
+                  <div class="hero-stat-pill">
+                    <span class="stat-label">{st.label}</span>
+                    <strong class="stat-value">{st.value}</strong>
+                  </div>
+                ))}
+              </div>
+              <p class="hero-footnote">{slide.referenceNote}</p>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
 
-    <h1 class="hero-title">
-      Disciplina, Rendimiento y <span class="gold-gradient-text">Experiencia VIP</span>
-    </h1>
+    <button
+      type="button"
+      class="hero-nav hero-prev"
+      id="hero-prev"
+      aria-label="Diapositiva anterior"
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+    <button
+      type="button"
+      class="hero-nav hero-next"
+      id="hero-next"
+      aria-label="Siguiente diapositiva"
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </button>
 
-    <p class="hero-subtitle">
-      Plataforma tecnológica unificada de VIP Center Fit. Acceso con QR dinámico criptográfico, cobros y liquidación transparente en mostrador y app móvil nativa para socios.
-    </p>
-
-    <div class="hero-actions">
-      <a href="/descargar" class="btn btn-primary hero-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        Descargar App Android
-      </a>
-
-      <a 
-        href={WEB_APP_URL} 
-        class="btn btn-secondary hero-btn"
-        target="_blank" 
-        rel="noopener noreferrer"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-          <polyline points="10 17 15 12 10 7"/>
-          <line x1="15" y1="12" x2="3" y2="12"/>
-        </svg>
-        Ingresar a la Plataforma Web
-      </a>
-    </div>
-
-    <div class="hero-highlights">
-      <div class="highlight-item">
-        <div class="highlight-icon">🔒</div>
-        <div class="highlight-text">
-          <strong>Acceso QR Dinámico</strong>
-          <span>Seguridad anti-fraude en torniquetes</span>
-        </div>
-      </div>
-
-      <div class="highlight-item">
-        <div class="highlight-icon">💳</div>
-        <div class="highlight-text">
-          <strong>Liquidación en Recepción</strong>
-          <span>Sin cargos recurrentes no autorizados</span>
-        </div>
-      </div>
-
-      <div class="highlight-item">
-        <div class="highlight-icon">📱</div>
-        <div class="highlight-text">
-          <strong>App Móvil Oficial</strong>
-          <span>Avisos, membresías y catálogo</span>
-        </div>
-      </div>
+    <div class="hero-dots" role="tablist" aria-label="Seleccionar diapositiva">
+      {HERO_SLIDES.map((_, idx) => (
+        <button
+          type="button"
+          class:list={['hero-dot', { active: idx === 0 }]}
+          data-dot-index={idx}
+          role="tab"
+          aria-selected={idx === 0 ? 'true' : 'false'}
+          aria-label={`Ir a diapositiva ${idx + 1}`}
+        />
+      ))}
     </div>
   </div>
 </section>
 
+<script>
+  function initHeroCarousel() {
+    const carousel = document.getElementById('hero-carousel');
+    if (!carousel) return;
+    const slides = carousel.querySelectorAll('.hero-slide');
+    const dots = carousel.querySelectorAll('.hero-dot');
+    const prevBtn = document.getElementById('hero-prev');
+    const nextBtn = document.getElementById('hero-next');
+
+    let current = 0;
+    const total = slides.length;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    function showSlide(index: number) {
+      current = (index + total) % total;
+      slides.forEach((s, i) => {
+        const active = i === current;
+        s.classList.toggle('active', active);
+        s.setAttribute('aria-hidden', active ? 'false' : 'true');
+      });
+      dots.forEach((d, i) => {
+        const active = i === current;
+        d.classList.toggle('active', active);
+        d.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    function startAuto() {
+      if (prefersReduced || total < 2) return;
+      stopAuto();
+      timer = setInterval(() => showSlide(current + 1), 6500);
+    }
+
+    function stopAuto() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      showSlide(current - 1);
+      startAuto();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      showSlide(current + 1);
+      startAuto();
+    });
+
+    dots.forEach((d) => {
+      d.addEventListener('click', () => {
+        const idx = Number(d.getAttribute('data-dot-index') || 0);
+        showSlide(idx);
+        startAuto();
+      });
+    });
+
+    carousel.addEventListener('mouseenter', stopAuto);
+    carousel.addEventListener('mouseleave', startAuto);
+
+    startAuto();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroCarousel);
+  } else {
+    initHeroCarousel();
+  }
+</script>
+
 <style>
-  .hero-section {
-    padding: 80px 0 60px 0;
+  .hero-slider-wrap {
+    background-color: var(--vf-bg-dark);
+    position: relative;
+  }
+
+  .hero-carousel {
     position: relative;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.08) 0%, rgba(10, 10, 12, 0) 70%);
+    min-height: 540px;
   }
 
-  .hero-container {
-    text-align: center;
-    max-width: 900px;
+  .hero-track {
+    position: relative;
+    min-height: 540px;
   }
 
-  .hero-badge-wrapper {
-    margin-bottom: 24px;
+  .hero-slide {
+    position: relative;
+    display: none;
+    min-height: 540px;
+    align-items: center;
+  }
+
+  .hero-slide.active {
+    display: flex;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      95deg,
+      rgba(11, 13, 18, 0.94) 0%,
+      rgba(11, 13, 18, 0.8) 48%,
+      rgba(11, 13, 18, 0.45) 100%
+    );
+  }
+
+  .hero-content-wrap {
+    position: relative;
+    z-index: 2;
+    padding-top: 3.75rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .hero-content {
+    max-width: 660px;
+    color: #ffffff;
   }
 
   .hero-title {
-    font-size: 38px;
+    font-family: var(--font-display);
+    font-size: clamp(2.15rem, 4.6vw, 3.5rem);
     font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 20px;
+    line-height: 1.09;
+    letter-spacing: -0.028em;
+    margin-bottom: 1.1rem;
   }
 
-  .gold-gradient-text {
-    background: linear-gradient(135deg, var(--gold-hover) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero-accent {
+    color: var(--vf-gold);
   }
 
-  .hero-subtitle {
-    font-size: 18px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 36px;
-    max-width: 760px;
-    margin-left: auto;
-    margin-right: auto;
+  .hero-desc {
+    color: #d6dbe6;
+    font-size: clamp(1rem, 1.8vw, 1.14rem);
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+    max-width: 580px;
   }
 
-  .hero-actions {
+  .hero-cta-row {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 56px;
+    gap: 0.9rem;
+    margin-bottom: 2rem;
   }
 
-  .hero-btn {
-    padding: 14px 28px;
-    font-size: 16px;
-  }
-
-  .hero-highlights {
+  .hero-stats-strip {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding-top: 36px;
-    border-top: 1px solid var(--border-color);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    max-width: 600px;
   }
 
-  @media (min-width: 768px) {
-    .hero-title {
-      font-size: 52px;
-    }
-
-    .hero-subtitle {
-      font-size: 20px;
-    }
-
-    .hero-highlights {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .highlight-item {
+  .hero-stat-pill {
+    background: rgba(20, 23, 32, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--vf-gold-border);
+    border-radius: 12px;
+    padding: 0.75rem 0.9rem;
     display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--vf-muted-on-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-value {
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .hero-footnote {
+    margin-top: 0.9rem;
+    font-size: 0.76rem;
+    color: #9ca3af;
+  }
+
+  .hero-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background-color: var(--vf-gold);
+    color: #141415;
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-    text-align: left;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    padding: 16px 20px;
-    border-radius: var(--radius-md);
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
-  .highlight-icon {
-    font-size: 24px;
+  .hero-nav:hover {
+    background-color: var(--vf-gold-hover);
+    transform: translateY(-50%) scale(1.06);
   }
 
-  .highlight-text strong {
-    display: block;
-    font-size: 14px;
-    color: var(--text-primary);
+  .hero-prev {
+    left: 1rem;
   }
 
-  .highlight-text span {
-    font-size: 12px;
-    color: var(--text-muted);
+  .hero-next {
+    right: 1rem;
+  }
+
+  .hero-dots {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    gap: 0.55rem;
+  }
+
+  .hero-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .hero-dot.active {
+    width: 28px;
+    border-radius: 999px;
+    background: var(--vf-gold);
+    border-color: var(--vf-gold);
+  }
+
+  @media (max-width: 900px) {
+    .hero-nav {
+      display: none;
+    }
+
+    .hero-overlay {
+      background: linear-gradient(
+        180deg,
+        rgba(11, 13, 18, 0.72) 0%,
+        rgba(11, 13, 18, 0.92) 58%,
+        rgba(11, 13, 18, 0.97) 100%
+      );
+    }
+
+    .hero-stats-strip {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

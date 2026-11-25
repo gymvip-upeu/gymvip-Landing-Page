@@ -1,44 +1,34 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
+import { SITE_BRAND } from '../data/catalog';
 ---
 
 <LegalLayout
-  title="Propiedad Intelectual y Atribuciones"
-  badge="Créditos & Propiedad Intelectual"
-  subtitle="Atribución de Recursos Gráficos, Tipografía e Iconografía de GymVIP"
-  updatedAt="Noviembre 2026"
+  title="Atribuciones y Marca"
+  badge="Propiedad Intelectual"
+  subtitle="Créditos visuales, tipografías de código abierto y trazabilidad de marca"
+  updatedAt="24 de noviembre de 2026"
   canonicalPath="/atribuciones"
 >
-<h2>1. Autoría del Proyecto y Equipo de Desarrollo</h2>
-      <p>
-        El ecosistema tecnológico GymVIP (Portal Público Astro 5, Backend Spring Boot, Frontend React Vite, Mobile Kotlin Multiplatform y Microservicio de Comunicaciones) ha sido diseñado e implementado por el equipo de ingeniería de software <strong>VIP DevStudio</strong>, con sede en el Campus Universitario — <strong>Sede en Ñaña</strong> (Universidad Peruana Unión, Km 19 Carretera Central, Lurigancho-Chosica, Lima, Perú).
-      </p>
-      <p>
-        <strong>Canales de Contacto de Ingeniería:</strong> Correo: <a href="mailto:devteam@gymvip.pe" style="color: var(--gold-primary);">devteam@gymvip.pe</a> | Organización GitHub: <a href="https://github.com/gymvip-upeu" target="_blank" rel="noopener noreferrer" style="color: var(--gold-primary);">github.com/gymvip-upeu</a>.
-      </p>
+  <h2>1. Identidad Visual, Nombre Comercial y Desarrollo</h2>
+  <p>
+    La marca operativa <strong>{SITE_BRAND.brandName}</strong>, los logotipos del centro de entrenamiento, la interfaz de administración y el ecosistema de aplicaciones móviles y web <strong>{SITE_BRAND.ecosystemName}</strong> pertenecen a la operación del centro deportivo en Juliaca y su equipo de ingeniería <strong>{SITE_BRAND.devStudioName}</strong>.
+  </p>
 
-      <h2>2. Tipografía y Fuentes</h2>
-      <p>
-        Para garantizar la privacidad del usuario, velocidad de carga y cumplimiento estricto de no transferencia transfronteriza de telemetría a servidores de terceros, GymVIP no realiza llamadas dinámicas a CDNs de Google Fonts en tiempo de ejecución:
-      </p>
-      <ul>
-        <li><strong>Pila Tipográfica de Sistema:</strong> Se emplean familias tipográficas sans-serif nativas seguras del sistema operativo (<code>system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif</code>).</li>
-        <li><strong>Fuentes Integradas (si aplica en móvil):</strong> Fuentes de código abierto bajo licencia SIL Open Font License 1.1 (OFL).</li>
-      </ul>
+  <h2>2. Recursos Visuales y Fotografía</h2>
+  <ul>
+    <li><strong>Logotipo y Recurso de Marca:</strong> Logotipo oficial de {SITE_BRAND.ecosystemName} (`gymvip-logo.webp`) y gráfico de atleta en entrenamiento (`hero-athlete.webp`).</li>
+    <li><strong>Visuales Conceptuales de Referencia:</strong> Las escenas de ambiente, recepción con lectura QR, comunitaria y stand de suplementos (`hero-club.webp`, `exp-welcome.webp`, `exp-qr.webp`, `exp-supplements.webp`, `exp-community.webp`) forman parte de los recursos oficiales producidos para el onboarding móvil y web de GYM VIP. Donde se muestran como anticipo de áreas de sala, se etiquetan explícitamente como visual referencial.</li>
+    <li><strong>Iconografía Vectorial:</strong> Iconos geométricos SVG personalizados diseñados sin dependencias de bibliotecas externas con licencia restrictiva.</li>
+  </ul>
 
-      <h2>3. Iconografía y Componentes Visuales</h2>
-      <ul>
-        <li><strong>Phosphor Icons / Lucide / Feather:</strong> Iconos vectoriales bajo licencia MIT. Copyright (c) Phosphor Icons / Lucide Contributors.</li>
-        <li><strong>Paleta de Color Dark & Gold:</strong> Sistema de diseño propietario de GymVIP inspirado en la estética premium de centros deportivos de alto rendimiento (#0B0B0B fondo profundo, #C6A664 dorado mate, #1F1F1F superficies elevadas).</li>
-      </ul>
+  <h2>3. Tipografía y Empaquetado Local</h2>
+  <ul>
+    <li><strong>DM Sans Variable y Inter Variable:</strong> Distribuidas localmente mediante paquetes oficiales <code>@fontsource-variable/dm-sans</code> e <code>@fontsource-variable/inter</code> bajo licencia SIL Open Font License 1.1 (OFL-1.1).</li>
+  </ul>
 
-      <h2>4. Fotografía y Material Gráfico de Referencia</h2>
-      <p>
-        Las imágenes y banners de muestra utilizados en prototipos de catálogo y pantallas de bienvenida corresponden a recursos libres de derechos de uso comercial bajo licencias Unsplash License / Pexels License, o composiciones vectoriales SVG generadas internamente libres de regalías.
-      </p>
-
-      <h2>5. Prohibición de Uso No Autorizado de Marcas</h2>
-      <p>
-        Queda expresamente prohibida la reproducción total o parcial del logotipo GymVIP, código de autenticación QR y elementos distintivos para actividades comerciales ajenas sin autorización escrita previa de la administración.
-      </p>
+  <h2>4. Propiedad del Software</h2>
+  <p>
+    El código fuente de la arquitectura distribuida <strong>GYM VIP</strong> se encuentra versionado bajo control de versiones institucional en la organización GitHub <a href={SITE_BRAND.githubOrgUrl} target="_blank" rel="noopener noreferrer">{SITE_BRAND.githubOrgUrl}</a>. Consulta las <a href="/licencias">Licencias de Software y Dependencias (SBOM)</a> para el detalle técnico completo de paquetes de código abierto utilizados en el ecosistema.
+  </p>
 </LegalLayout>

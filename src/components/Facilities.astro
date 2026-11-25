@@ -1,0 +1,298 @@
+---
+import { EXPERIENCE_ITEMS } from '../data/catalog';
+---
+
+<section id="instalaciones" class="section section-soft" aria-labelledby="exp-heading">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">AMBIENTES Y TECNOLOGÍA EN SEDE</span>
+      <h2 id="exp-heading" class="section-title">
+        Vive la experiencia <span class="accent">VIP CENTER FIT:</span> Entrena a tu nivel
+      </h2>
+      <p class="section-subtitle">
+        Conoce cómo integramos salas de entrenamiento, recepción asistida y acceso digital por código QR en nuestra sede de Juliaca.
+      </p>
+    </div>
+
+    <div class="exp-grid">
+      {EXPERIENCE_ITEMS.map((item) => (
+        <article class="exp-card">
+          <button
+            type="button"
+            class="exp-media-btn"
+            data-exp-open={item.id}
+            data-exp-title={item.title}
+            data-exp-subtitle={item.subtitle}
+            data-exp-img={item.image}
+            data-exp-alt={item.imageAlt}
+            data-exp-desc={item.description}
+            data-exp-note={item.referenceCaption}
+            aria-label={`Ampliar vista de ${item.title}`}
+          >
+            <img
+              src={item.image}
+              alt={item.imageAlt}
+              width="720"
+              height="480"
+              class="exp-img"
+              loading="eager"
+              decoding="sync"
+            />
+            <span class="exp-badge">{item.badge}</span>
+            <span class="exp-zoom-pill" aria-hidden="true">Ampliar vista</span>
+          </button>
+          <div class="exp-footer">
+            <h3>{item.title}</h3>
+            <p class="exp-sub">{item.subtitle}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="exp-cta-wrap">
+      <a href="/contacto" class="btn btn-primary exp-cta-btn">
+        Consultar visita presencial en sede
+      </a>
+      <p class="exp-legal-note">
+        * Las fotografías marcadas como visual referencial ilustran la arquitectura operativa del sistema mientras recibimos fotografías oficiales tomadas dentro del local en Juliaca.
+      </p>
+    </div>
+  </div>
+
+  <dialog id="exp-lightbox" class="vf-dialog" aria-labelledby="exp-dialog-title">
+    <div class="vf-dialog-card">
+      <button type="button" class="vf-dialog-close" id="exp-dialog-close" aria-label="Cerrar vista ampliada">✕</button>
+      <img id="exp-dialog-img" src="/images/exp-welcome.webp" alt="Vista previa" width="720" height="500" class="exp-dialog-img" />
+      <div class="vf-dialog-body">
+        <span class="eyebrow" id="exp-dialog-sub"></span>
+        <h3 id="exp-dialog-title"></h3>
+        <p id="exp-dialog-desc"></p>
+        <p id="exp-dialog-note" class="exp-dialog-note"></p>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const expDialog = document.getElementById('exp-lightbox') as HTMLDialogElement | null;
+  const expClose = document.getElementById('exp-dialog-close');
+  const expImg = document.getElementById('exp-dialog-img') as HTMLImageElement | null;
+  const expTitle = document.getElementById('exp-dialog-title');
+  const expSub = document.getElementById('exp-dialog-sub');
+  const expDesc = document.getElementById('exp-dialog-desc');
+  const expNote = document.getElementById('exp-dialog-note');
+
+  document.querySelectorAll('[data-exp-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!expDialog || !expImg) return;
+      expImg.src = btn.getAttribute('data-exp-img') || '';
+      expImg.alt = btn.getAttribute('data-exp-alt') || '';
+      if (expTitle) expTitle.textContent = btn.getAttribute('data-exp-title') || '';
+      if (expSub) expSub.textContent = btn.getAttribute('data-exp-subtitle') || '';
+      if (expDesc) expDesc.textContent = btn.getAttribute('data-exp-desc') || '';
+      if (expNote) expNote.textContent = btn.getAttribute('data-exp-note') || '';
+      expDialog.showModal();
+    });
+  });
+
+  expClose?.addEventListener('click', () => expDialog?.close());
+  expDialog?.addEventListener('click', (e) => {
+    if (e.target === expDialog) expDialog.close();
+  });
+</script>
+
+<style>
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .exp-card {
+    background-color: #ffffff;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--vf-border);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .exp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .exp-media-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: var(--vf-bg-dark);
+    cursor: pointer;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+
+  .exp-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+    transition: transform 0.35s ease;
+  }
+
+  .exp-card:hover .exp-img {
+    transform: scale(1.04);
+  }
+
+  .exp-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: rgba(11, 13, 18, 0.86);
+    color: var(--vf-gold);
+    border: 1px solid var(--vf-gold-border);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.28rem 0.7rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .exp-zoom-pill {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: rgba(255, 255, 255, 0.94);
+    color: var(--vf-ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.3rem 0.72rem;
+    border-radius: var(--radius-pill);
+    opacity: 0.92;
+  }
+
+  .exp-footer {
+    padding: 1.25rem 1.35rem;
+    text-align: center;
+  }
+
+  .exp-footer h3 {
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: var(--vf-ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-sub {
+    font-size: 0.86rem;
+    color: var(--vf-muted);
+  }
+
+  .exp-cta-wrap {
+    text-align: center;
+    margin-top: 2.25rem;
+  }
+
+  .exp-cta-btn {
+    min-width: 280px;
+  }
+
+  .exp-legal-note {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--vf-muted);
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .vf-dialog {
+    margin: auto;
+    border: 1px solid var(--vf-gold-border);
+    border-radius: var(--radius-md);
+    padding: 0;
+    max-width: 620px;
+    width: calc(100% - 2rem);
+    background-color: #ffffff;
+    color: var(--vf-ink);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  }
+
+  .vf-dialog::backdrop {
+    background: rgba(11, 13, 18, 0.76);
+    backdrop-filter: blur(4px);
+  }
+
+  .vf-dialog-card {
+    position: relative;
+  }
+
+  .vf-dialog-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(11, 13, 18, 0.86);
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .exp-dialog-img {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    object-position: center 22%;
+    background: var(--vf-bg-dark);
+  }
+
+  .vf-dialog-body {
+    padding: 1.5rem;
+  }
+
+  .vf-dialog-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+  }
+
+  .vf-dialog-body p {
+    font-size: 0.95rem;
+    color: var(--vf-ink-soft);
+    line-height: 1.6;
+  }
+
+  .exp-dialog-note {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--vf-border);
+    font-size: 0.82rem !important;
+    color: var(--vf-muted) !important;
+  }
+
+  @media (max-width: 900px) {
+    .exp-grid {
+      display: grid;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 84%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 0.75rem;
+      scrollbar-width: thin;
+    }
+
+    .exp-card {
+      scroll-snap-align: start;
+    }
+  }
+</style>
