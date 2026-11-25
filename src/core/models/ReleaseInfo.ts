@@ -22,9 +22,9 @@ export const OFFICIAL_RELEASE_METADATA: Omit<ReleaseInfo, 'downloadUrl' | 'isAva
   releaseDate: '25 de Noviembre de 2026',
   minAndroid: 'Android 7.0 (Nougat, API 24) o superior',
   apkName: 'gymvip-mobile-v1.1.4-release.apk',
-  apkSizeBytes: 35838348,
+  apkSizeBytes: 35842414,
   apkSizeFormatted: '34.2 MB',
-  sha256: 'D9E030C0CFC3C5E142B0C0CCB3D95CD266F08007EF45C7A4DA920204EEF67D61',
+  sha256: 'CC1B24CD04E50EEF1A9E7FFDE7E417543E6D1EEC2BEE2E090D2B3731DA003F74',
   signatureScheme: 'APK Signature Scheme v2 & v3 (Firma Oficial CN=GYM VIP Mobile)',
   backendUrl: 'https://gymvip-backend.onrender.com',
   instructions: [
