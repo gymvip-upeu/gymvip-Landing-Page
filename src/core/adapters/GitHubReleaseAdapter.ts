@@ -8,7 +8,7 @@ export class GitHubReleaseAdapter implements IReleaseRepository {
     // Configurable URL vía variable de entorno o fallback al asset estático servido directamente por la web pública
     this.defaultAssetUrl = customUrl ||
       (typeof process !== 'undefined' && process.env?.PUBLIC_APK_DOWNLOAD_URL) ||
-      '/downloads/gymvip-mobile-v1.1.1-release.apk';
+      '/downloads/gymvip-mobile-v1.1.4-release.apk';
   }
 
   async getLatestRelease(): Promise<ReleaseInfo> {
@@ -39,11 +39,11 @@ export class GitHubReleaseAdapter implements IReleaseRepository {
           statusMessage = 'Versión verificada y lista para descargar.';
         } else {
           isAvailable = false;
-          statusMessage = 'El artefacto firmado para producción v1.1.1 está disponible en el almacenamiento público oficial.';
+          statusMessage = 'El artefacto firmado para producción v1.1.4 está disponible en el almacenamiento público oficial.';
         }
       } catch {
         isAvailable = false;
-        statusMessage = 'El artefacto firmado para producción v1.1.1 está disponible en el almacenamiento público oficial.';
+        statusMessage = 'El artefacto firmado para producción v1.1.4 está disponible en el almacenamiento público oficial.';
       }
     }
 

@@ -1,9 +1,13 @@
 ---
-const apkVersion = 'v1.2.0-release';
-const apkSize = '34.2 MB';
-const minAndroid = 'Android 8.0 (API 26+)';
-const sha256Checksum = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
-const releaseDownloadUrl = 'https://github.com/gymvip-upeu/gymvip-mobile/releases/download/v1.2.0/gymvip-mobile-v1.2.0.apk';
+import { GetAndroidReleaseUseCase } from '../core/usecases/GetAndroidReleaseUseCase';
+import { GitHubReleaseAdapter } from '../core/adapters/GitHubReleaseAdapter';
+
+const release = await new GetAndroidReleaseUseCase(new GitHubReleaseAdapter()).execute();
+const apkVersion = `${release.releaseTag}-release`;
+const apkSize = release.apkSizeFormatted;
+const minAndroid = release.minAndroid;
+const sha256Checksum = release.sha256;
+const releaseDownloadUrl = release.downloadUrl;
 const qrTargetUrl = 'https://gymvip.vercel.app/descargar';
 ---
 
@@ -93,7 +97,7 @@ const qrTargetUrl = 'https://gymvip.vercel.app/descargar';
           </div>
 
           <div class="download-actions">
-            <a href={releaseDownloadUrl} class="btn btn-primary btn-download" download>
+            <a href={releaseDownloadUrl} class="btn btn-primary btn-download" download={release.apkName}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>

@@ -1,0 +1,28 @@
+{
+  "trailingSlash": "never",
+  "routes": [
+    { "route": "/descargas", "redirect": "/descargar", "statusCode": 301 },
+    { "route": "/contacto.html", "redirect": "/contacto", "statusCode": 301 },
+    { "route": "/eliminar-cuenta.html", "redirect": "/eliminar-cuenta", "statusCode": 301 },
+    { "route": "/privacidad.html", "redirect": "/privacidad", "statusCode": 301 },
+    { "route": "/terminos.html", "redirect": "/terminos", "statusCode": 301 },
+    { "route": "/aviso-legal.html", "redirect": "/aviso-legal", "statusCode": 301 },
+    { "route": "/atribuciones.html", "redirect": "/atribuciones", "statusCode": 301 },
+    { "route": "/licencias.html", "redirect": "/licencias", "statusCode": 301 }
+  ],
+  "mimeTypes": {
+    ".apk": "application/vnd.android.package-archive"
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404.html",
+      "statusCode": 404
+    }
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+  }
+}
