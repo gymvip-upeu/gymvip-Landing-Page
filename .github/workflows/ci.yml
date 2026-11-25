@@ -1,0 +1,49 @@
+name: CI Landing Publico GymVIP
+
+on:
+  push:
+    branches:
+      - develop
+      - ACOSTA-MEJORAS-Y-ACTUALIZACIONES
+      - S2-REVISION-QA
+      - 'feature/**'
+      - main
+  pull_request:
+    branches:
+      - develop
+      - ACOSTA-MEJORAS-Y-ACTUALIZACIONES
+      - S2-REVISION-QA
+      - main
+
+jobs:
+  build-and-test:
+    name: Build & Verify Astro Static Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Código Fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Instalación Limpia Reproducible
+        run: npm ci
+
+      - name: Auditoría de Seguridad de Dependencias
+        run: npm audit --audit-level=moderate
+
+      - name: Ejecutar Pruebas Unitarias
+        run: npm test
+
+      - name: Verificar Tipos y Compilación Astro
+        run: npm run build
+
+      - name: Publicar Artefacto Estático
+        uses: actions/upload-artifact@v4
+        with:
+          name: publico-dist
+          path: dist/
