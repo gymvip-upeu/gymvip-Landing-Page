@@ -5,13 +5,13 @@
 [![TypeScript Version](https://img.shields.io/badge/TypeScript-5.7-3178C6.svg)]()
 [![Architecture](https://img.shields.io/badge/Clean%20Architecture-Enabled-success.svg)]()
 [![LPDP Compliance](https://img.shields.io/badge/LPDP%20Ley%2029733-Per%C3%BA-blue.svg)]()
-[![Branch](https://img.shields.io/badge/branch-ACOSTA--MEJORAS--Y--ACTUALIZACIONES-yellow.svg)]()
+[![Branch](https://img.shields.io/badge/branch-develop-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Academic%20Proprietary-lightgrey.svg)]()
 
 > **Ubicación en el Workspace:** `gymvip-publico/`  
 > **Organización Oficial:** [gymvip-upeu/gymvip-Landing-Page](https://github.com/gymvip-upeu/gymvip-Landing-Page)  
 > **Documentación Centralizada:** `../documentos/`  
-> **Fecha de Actualización:** 23 de Noviembre de 2026 | Revisión Canónica v2.5
+> **Fecha de Actualización:** 24 de Noviembre de 2026 | Revisión Rediseño Integral Landing v2.6
 
 ---
 
@@ -84,11 +84,11 @@ gymvip-publico/
 ---
 
 ## 7. Funcionalidades
-1. **Portada Institucional (`/`):** Hero section con botones de acción directa, grid de beneficios tecnológicos, horarios de atención y planes presenciales en Soles (PEN).
-2. **Página de Descarga Oficial (`/descargar`):** Resumen técnico del APK v1.1.3, tamaño (38 MB), requisitos Android 8.0+ (API 24+) y huella digital SHA-256 verificable.
+1. **Portada Comercial Rediseñada (`/`):** Slider Hero de 2 diapositivas, bloque inmediato de **Sede Central Juliaca** con estado horario en vivo (`America/Lima`), comparador de planes presenciales (**Mensual**, **Trimestral destacado dark**, **Semestral/Anual** + **Pase Diario 1 día**) con matriz comparativa interactiva, galería `"Vive la experiencia VIP CENTER FIT"` con lightbox, catálogo de los **6 servicios V12** (`Musculación`, `Zona Cardio`, `Clases Grupales VIP`, `Nutrición`, `Sauna Seco`, `Lockers`), sección cálida de App Móvil con QR, beneficios de Suplementos y FAQ filtrable por categoría.
+2. **Página de Descarga Oficial (`/descargar`):** Ficha técnica real de **APK v1.1.3** (`32.3 MB` / `33,862,737 bytes`), Android 7.0+ (`API 24+`), arquitectura Universal ABI, botón de copia para SHA-256 (`151764BA7F162C97FDD518518EAAD47A72E7BCF74C18406937874C285103356D`), QR SVG y aviso transparente de distribución fuera de Play Store/App Store.
 3. **Canal ARCO de Supresión de Cuenta (`/eliminar-cuenta`):** Formulario con validación DNI y correo para solicitud de revocación conforme a la Ley N° 29733.
-4. **Directorio y Contacto (`/contacto`):** Ubicación real de sedes (Sede Ñaña UPeU Km 19 Chosica / Sede Juliaca), correos autorizados (`devteam@gymvip.pe`, `soporte@gymvip.pe`).
-5. **Transparencia Legal:** Páginas estáticas para términos, privacidad, aviso legal, atribuciones y licencias.
+4. **Directorio y Contacto (`/contacto`):** Canales verificados de **Sede Central Juliaca**, soporte (`soporte@gymvip.pe`) y equipo de ingeniería (`VIP DevStudio — Sede en Ñaña`, `devteam@gymvip.pe`).
+5. **Transparencia Legal:** Páginas estáticas para términos, privacidad, aviso legal, atribuciones y licencias + `sitemap.xml` y `robots.txt`.
 
 ---
 
@@ -110,8 +110,8 @@ gymvip-publico/
 git clone https://github.com/gymvip-upeu/gymvip-Landing-Page.git
 Set-Location gymvip-publico
 
-# 2. Situarse en la rama de trabajo
-git checkout ACOSTA-MEJORAS-Y-ACTUALIZACIONES
+# 2. Situarse en la rama oficial de integración de la landing
+git checkout develop
 
 # 3. Instalación de dependencias
 npm ci
@@ -157,10 +157,10 @@ npm run preview
 
 ## 15. Pruebas
 ```powershell
-# Ejecutar suite de pruebas unitarias de casos de uso y adaptadores
+# Ejecutar suite de pruebas unitarias (ARCO, APK Adapter y Catálogo Comercial)
 npm test
 ```
-*Total de pruebas ejecutadas:* 8 tests pasando satisfactoriamente.
+*Total de pruebas ejecutadas:* 15 tests pasando (`AccountDeletionValidator`, `GetAndroidReleaseUseCase`, `GitHubReleaseAdapter`, `SubmitAccountDeletionUseCase` y `Catálogo Comercial VIP CENTER FIT`).
 
 ---
 
