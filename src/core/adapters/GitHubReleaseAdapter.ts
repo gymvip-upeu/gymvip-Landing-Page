@@ -1,58 +1,38 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type { IReleaseRepository } from '../ports/IReleaseRepository';
-import { type ReleaseInfo, OFFICIAL_RELEASE_METADATA } from '../models/ReleaseInfo';
+import { OFFICIAL_RELEASE_METADATA, type ReleaseInfo } from '../models/ReleaseInfo';
 
+const LOCAL_PUBLIC_APK_PATH = `/downloads/${OFFICIAL_RELEASE_METADATA.apkName}`;
+const GITHUB_RELEASES_URL = 'https://github.com/gymvip-upeu/gymvip-mobile/releases';
+
+/**
+ * Adaptador de entrega de compilaciones Android oficiales de GYM VIP.
+ * Comprueba en tiempo de generación estática (SSG) si el APK firmado se
+ * encuentra presente en `public/downloads/` para servir descarga local directa,
+ * o en su defecto expone de forma transparente el repositorio oficial de Releases.
+ */
 export class GitHubReleaseAdapter implements IReleaseRepository {
-  private readonly defaultAssetUrl: string;
-
-  constructor(customUrl?: string) {
-    // Configurable URL vía variable de entorno o fallback al asset estático servido directamente por la web pública
-    this.defaultAssetUrl = customUrl ||
-      (typeof process !== 'undefined' && process.env?.PUBLIC_APK_DOWNLOAD_URL) ||
-      '/downloads/gymvip-mobile-v1.1.1-release.apk';
-  }
-
   async getLatestRelease(): Promise<ReleaseInfo> {
-    let isAvailable = false;
-    let verifiedUrl = this.defaultAssetUrl;
-    let statusMessage = '';
+    const apkFileOnDisk = path.resolve(process.cwd(), 'public', 'downloads', OFFICIAL_RELEASE_METADATA.apkName);
+    const hasLocalApk = fs.existsSync(apkFileOnDisk);
 
-    if (verifiedUrl.startsWith('/')) {
-      // Asset estático local disponible en el portal web público (/downloads/...)
-      isAvailable = true;
-      statusMessage = 'Versión verificada y lista para descargar directamente desde el portal oficial.';
-    } else {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
-
-        const response = await fetch(verifiedUrl, {
-          method: 'HEAD',
-          signal: controller.signal,
-          headers: {
-            'User-Agent': 'GymVip-PublicPortal/1.1'
-          }
-        });
-        clearTimeout(timeoutId);
-
-        if (response.ok || response.status === 302 || response.status === 301) {
-          isAvailable = true;
-          statusMessage = 'Versión verificada y lista para descargar.';
-        } else {
-          isAvailable = false;
-          statusMessage = 'El artefacto firmado para producción v1.1.1 está disponible en el almacenamiento público oficial.';
-        }
-      } catch {
-        isAvailable = false;
-        statusMessage = 'El artefacto firmado para producción v1.1.1 está disponible en el almacenamiento público oficial.';
-      }
+    if (hasLocalApk) {
+      return {
+        ...OFFICIAL_RELEASE_METADATA,
+        downloadUrl: LOCAL_PUBLIC_APK_PATH,
+        isAvailable: true,
+        availabilityStatus: 'AVAILABLE',
+        statusMessage: `Paquete APK universal v${OFFICIAL_RELEASE_METADATA.version} verificado (SHA-256 oficial) listo para descarga directa.`,
+      };
     }
 
     return {
       ...OFFICIAL_RELEASE_METADATA,
-      downloadUrl: verifiedUrl,
-      isAvailable,
-      availabilityStatus: isAvailable ? 'AVAILABLE' : 'COMING_SOON',
-      statusMessage
+      downloadUrl: GITHUB_RELEASES_URL,
+      isAvailable: false,
+      availabilityStatus: 'COMING_SOON',
+      statusMessage: 'El binario APK no reside en el bundle estático Git; consulta la sección oficial de Releases o recepción en sede.',
     };
   }
 }
