@@ -1,17 +1,17 @@
 # GYM VIP — Portal Público Oficial y Centro de Descarga (`gymvip-Landing-Page` / `gymvip-publico`)
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Astro Version](https://img.shields.io/badge/Astro-5.4-BC52EE.svg)]()
-[![TypeScript Version](https://img.shields.io/badge/TypeScript-5.7-3178C6.svg)]()
+[![Astro Version](https://img.shields.io/badge/Astro-7.4.13-BC52EE.svg)]()
+[![TypeScript Version](https://img.shields.io/badge/TypeScript-5.9-3178C6.svg)]()
 [![Architecture](https://img.shields.io/badge/Clean%20Architecture-Enabled-success.svg)]()
 [![LPDP Compliance](https://img.shields.io/badge/LPDP%20Ley%2029733-Per%C3%BA-blue.svg)]()
-[![Branch](https://img.shields.io/badge/branch-ACOSTA--MEJORAS--Y--ACTUALIZACIONES-yellow.svg)]()
+[![Branch](https://img.shields.io/badge/branch-develop-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Academic%20Proprietary-lightgrey.svg)]()
 
 > **Ubicación en el Workspace:** `gymvip-publico/`  
 > **Organización Oficial:** [gymvip-upeu/gymvip-Landing-Page](https://github.com/gymvip-upeu/gymvip-Landing-Page)  
 > **Documentación Centralizada:** `../documentos/`  
-> **Fecha de Actualización:** 23 de Noviembre de 2026 | Revisión Canónica v2.5
+> **Fecha de Actualización:** 26 de Noviembre de 2026 | Revisión Limpia (`develop`, `0` hints, 8/8 tests)
 
 ---
 
