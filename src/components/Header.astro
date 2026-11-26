@@ -27,27 +27,25 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
 
     <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
       <a href="/#instalaciones" class="nav-link">Instalaciones</a>
-      <a href="/#planes" class="nav-link">Planes</a>
-      <a href="/#calculadora" class="nav-link">Calculadora</a>
-      <a href="/#sede" class="nav-link">Sede Juliaca</a>
+      <a href="/#planes" class="nav-link">Socios</a>
+      <a href="/unete" class={`nav-link ${currentPath === '/unete' ? 'active' : ''}`}>Para Gimnasios (SaaS)</a>
       <a href="/#app" class="nav-link">App Móvil</a>
-      <a href="/#preguntas" class="nav-link">Preguntas</a>
       <a href="/descargar" class={`nav-link ${currentPath === '/descargar' ? 'active' : ''}`}>Descargar APK</a>
 
       <div class="nav-cta-wrapper">
         <a 
-          href="/#planes" 
+          href="/unete" 
           class="btn btn-primary nav-btn-cta"
-          title="Ver planes y registrar inscripción"
+          title="Digitaliza tu gimnasio con la plataforma GYM VIP"
         >
-          ¡Inscríbete Ahora!
+          Afiliar Gimnasio
         </a>
         <a 
           href={WEB_APP_URL} 
           class="btn btn-secondary nav-btn-cta" 
           target="_blank" 
           rel="noopener noreferrer"
-          title="Acceso al portal web de socios y administración"
+          title="Acceso al portal web operativo y consola SaaS"
         >
           Portal Web
         </a>

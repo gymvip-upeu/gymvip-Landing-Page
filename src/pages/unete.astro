@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.onrender.com';
+---
+
+<BaseLayout
+  title="Digitaliza tu Gimnasio — Plataforma SaaS B2B2C"
+  description="Afilia tu gimnasio o cadena multisede a GYM VIP 2.0. Licencias flexibles, control de acceso QR dinámico, membresías, app móvil y perfil comercial público."
+  canonicalPath="/unete"
+>
+  <section class="saas-hero container">
+    <span class="badge">GYM VIP 2.0 · PARA EMPRESAS Y GIMNASIOS</span>
+    <h1 class="saas-title">Digitaliza tu gimnasio con arquitectura multiempresa</h1>
+    <p class="saas-subtitle">
+      Administra sedes, socios, membresías, inventario, rutinas de entrenamiento y vitrina pública en una sola plataforma SaaS diseñada para el mercado peruano.
+    </p>
+  </section>
+
+  <section class="container saas-plans-grid" aria-label="Planes SaaS para Gimnasios">
+    <article class="card plan-b2b-card">
+      <div class="plan-head">
+        <span class="badge">STARTER</span>
+        <h2>Sede Única</h2>
+        <p class="plan-price">S/ 149 <span>/ mes</span></p>
+      </div>
+      <ul>
+        <li>Hasta 1 sede y 8 usuarios staff</li>
+        <li>Control de socios, membresías y asistencia QR</li>
+        <li>Catálogo tarifario, reportes base y app socio</li>
+        <li>Comisión operativa referencial: 3.50% en cobros digitales</li>
+      </ul>
+    </article>
+
+    <article class="card plan-b2b-card featured">
+      <div class="plan-head">
+        <span class="badge">PRO · RECOMENDADO</span>
+        <h2>Multisede en Crecimiento</h2>
+        <p class="plan-price">S/ 349 <span>/ mes</span></p>
+      </div>
+      <ul>
+        <li>Hasta 5 sedes y 35 usuarios staff</li>
+        <li>Tienda de suplementos, kardex e inventario por sede</li>
+        <li>Promociones grupales, perfil comercial público y reseñas</li>
+        <li>Comunicaciones WhatsApp/Email/Push · Comisión 3.00%</li>
+      </ul>
+    </article>
+
+    <article class="card plan-b2b-card">
+      <div class="plan-head">
+        <span class="badge">ENTERPRISE</span>
+        <h2>Cadenas Corporativas</h2>
+        <p class="plan-price">S/ 749 <span>/ mes</span></p>
+      </div>
+      <ul>
+        <li>Hasta 25 sedes y 150 usuarios corporativos</li>
+        <li>RBAC granular, auditoría dedicada y MFA obligatorio</li>
+        <li>Exportación histórica garantizada y soporte prioritario</li>
+        <li>Comisión preferencial: 2.50% sobre volumen digital</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="container saas-form-section">
+    <div class="card form-card">
+      <h2>Solicitud de Afiliación B2B</h2>
+      <p class="form-desc">
+        Registra los datos de tu empresa para evaluarla desde nuestra consola de plataforma y habilitar tu entorno de prueba de 14 días.
+      </p>
+
+      <form id="b2b-request-form" data-api-base={API_BASE_URL}>
+        <div class="grid-2">
+          <label>
+            Razón Social *
+            <input type="text" name="businessName" required minlength="3" placeholder="Ej. Power Zone Fitness SAC" />
+          </label>
+          <label>
+            Nombre Comercial
+            <input type="text" name="commercialName" placeholder="Ej. Power Zone Perú" />
+          </label>
+          <label>
+            RUC (11 dígitos) *
+            <input type="text" name="ruc" required pattern="[0-9]{11}" maxlength="11" placeholder="20601234567" />
+          </label>
+          <label>
+            Plan SaaS Solicitado *
+            <select name="requestedPlanCode" required>
+              <option value="STARTER">STARTER — S/ 149 / mes</option>
+              <option value="PRO" selected>PRO — S/ 349 / mes</option>
+              <option value="ENTERPRISE">ENTERPRISE — S/ 749 / mes</option>
+            </select>
+          </label>
+          <label>
+            Ciudad *
+            <input type="text" name="city" required placeholder="Lima / Juliaca / Arequipa" />
+          </label>
+          <label>
+            Distrito *
+            <input type="text" name="district" required placeholder="Miraflores / San Román" />
+          </label>
+          <label>
+            Representante / Contacto *
+            <input type="text" name="contactName" required placeholder="Nombre completo" />
+          </label>
+          <label>
+            Correo Corporativo *
+            <input type="email" name="contactEmail" required placeholder="gerencia@tugimnasio.pe" />
+          </label>
+          <label>
+            Teléfono / WhatsApp *
+            <input type="tel" name="contactPhone" required placeholder="+51 999 888 777" />
+          </label>
+          <label>
+            Cantidad estimada de sedes
+            <input type="number" name="branchesCount" min="1" max="100" value="1" />
+          </label>
+        </div>
+
+        <label class="full-width">
+          Comentarios o requerimientos operativos
+          <textarea name="message" rows="3" placeholder="Cuéntanos sobre tus sedes o necesidades de migración."></textarea>
+        </label>
+
+        <label class="consent-checkbox">
+          <input type="checkbox" name="legalAccepted" required />
+          <span>
+            Acepto expresamente la <a href="/privacidad">Política de Privacidad</a> y los <a href="/terminos">Términos de Servicio SaaS</a> conforme a la Ley N° 29733 y el D.S. N° 016-2024-JUS.
+          </span>
+        </label>
+
+        <button type="submit" class="btn btn-primary" id="submit-b2b-btn">Enviar Solicitud de Afiliación</button>
+      </form>
+
+      <div id="b2b-feedback" class="feedback-box" hidden></div>
+    </div>
+
+    <div class="card tracking-card">
+      <h3>Seguimiento de Solicitud</h3>
+      <p>Ingresa tu código de seguimiento (ej. <code>GYM-A1B2C3D4</code>) para consultar el estado en línea.</p>
+      <form id="b2b-track-form" class="track-row" data-api-base={API_BASE_URL}>
+        <input type="text" id="tracking-input" placeholder="GYM-XXXXXXXX" required />
+        <button type="submit" class="btn btn-secondary">Consultar Estado</button>
+      </form>
+      <div id="track-result" class="feedback-box" hidden></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('b2b-request-form') as HTMLFormElement | null;
+  const feedback = document.getElementById('b2b-feedback') as HTMLDivElement | null;
+  const submitBtn = document.getElementById('submit-b2b-btn') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !feedback || !submitBtn) return;
+    const apiBase = form.dataset.apiBase || 'https://gymvip-backend.onrender.com';
+    const data = new FormData(form);
+    const payload = {
+      businessName: String(data.get('businessName') || '').trim(),
+      commercialName: String(data.get('commercialName') || '').trim(),
+      ruc: String(data.get('ruc') || '').trim(),
+      city: String(data.get('city') || '').trim(),
+      district: String(data.get('district') || '').trim(),
+      contactName: String(data.get('contactName') || '').trim(),
+      contactEmail: String(data.get('contactEmail') || '').trim(),
+      contactPhone: String(data.get('contactPhone') || '').trim(),
+      branchesCount: Number(data.get('branchesCount') || 1),
+      estimatedMembers: 120,
+      requestedPlanCode: String(data.get('requestedPlanCode') || 'PRO'),
+      message: String(data.get('message') || '').trim(),
+      legalAccepted: data.get('legalAccepted') === 'on',
+      legalVersion: 'v2.0-2026',
+    };
+
+    submitBtn.disabled = true;
+    feedback.hidden = true;
+    try {
+      const resp = await fetch(`${apiBase}/api/v1/public/company-requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const body = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        throw new Error(body.message || 'No se pudo registrar la solicitud.');
+      }
+      feedback.hidden = false;
+      feedback.className = 'feedback-box success';
+      feedback.textContent = `Solicitud recibida correctamente. Código de seguimiento: ${body.trackingCode} (Estado: ${body.status}).`;
+      form.reset();
+    } catch (err) {
+      feedback.hidden = false;
+      feedback.className = 'feedback-box error';
+      feedback.textContent = (err as Error).message || 'Error de conexión con la plataforma GYM VIP.';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  const trackForm = document.getElementById('b2b-track-form') as HTMLFormElement | null;
+  const trackInput = document.getElementById('tracking-input') as HTMLInputElement | null;
+  const trackResult = document.getElementById('track-result') as HTMLDivElement | null;
+
+  trackForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!trackForm || !trackInput || !trackResult) return;
+    const apiBase = trackForm.dataset.apiBase || 'https://gymvip-backend.onrender.com';
+    const code = trackInput.value.trim();
+    if (!code) return;
+    trackResult.hidden = true;
+    try {
+      const resp = await fetch(`${apiBase}/api/v1/public/company-requests/${encodeURIComponent(code)}`);
+      const body = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(body.message || 'Código no encontrado.');
+      trackResult.hidden = false;
+      trackResult.className = 'feedback-box success';
+      trackResult.textContent = `${body.businessName} · Plan ${body.requestedPlanCode} · Estado: ${body.status}${body.reviewNotes ? ` (${body.reviewNotes})` : ''}`;
+    } catch (err) {
+      trackResult.hidden = false;
+      trackResult.className = 'feedback-box error';
+      trackResult.textContent = (err as Error).message || 'No se pudo consultar el seguimiento.';
+    }
+  });
+</script>
+
+<style>
+  .saas-hero { padding: 56px 16px 28px; text-align: center; }
+  .saas-title { font-size: clamp(2rem, 4vw, 3rem); margin: 12px 0; }
+  .saas-subtitle { max-width: 720px; margin: 0 auto; color: var(--text-secondary); }
+  .saas-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; padding: 20px 16px 40px; }
+  .plan-b2b-card { padding: 24px; border: 1px solid var(--border-color); }
+  .plan-b2b-card.featured { border-color: var(--accent-gold); }
+  .plan-price { font-size: 1.8rem; font-weight: 800; color: var(--accent-gold); margin: 8px 0 16px; }
+  .plan-price span { font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; }
+  .plan-b2b-card ul { padding-left: 18px; display: grid; gap: 8px; color: var(--text-secondary); }
+  .saas-form-section { padding: 0 16px 64px; display: grid; gap: 24px; }
+  .form-card, .tracking-card { padding: 28px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; }
+  input, select, textarea { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-primary); }
+  .full-width { margin-bottom: 16px; }
+  .consent-checkbox { flex-direction: row; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+  .consent-checkbox input { width: auto; margin-top: 4px; }
+  .track-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .track-row input { flex: 1; min-width: 200px; }
+  .feedback-box { margin-top: 16px; padding: 14px; border-radius: 8px; font-weight: 600; }
+  .feedback-box.success { background: rgba(46, 189, 133, 0.14); border: 1px solid #2ebd85; }
+  .feedback-box.error { background: rgba(229, 83, 83, 0.14); border: 1px solid #e55353; }
+</style>

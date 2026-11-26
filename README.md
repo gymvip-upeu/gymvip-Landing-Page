@@ -11,7 +11,7 @@
 > **Ubicación en el Workspace:** `gymvip-publico/`  
 > **Organización Oficial:** [gymvip-upeu/gymvip-Landing-Page](https://github.com/gymvip-upeu/gymvip-Landing-Page)  
 > **Documentación Centralizada:** `../documentos/`  
-> **Fecha de Actualización:** 26 de Noviembre de 2026 | Revisión Limpia (`develop`, `0` hints, 8/8 tests)
+> **Fecha de Actualización:** 26 de Noviembre de 2026 | Revisión GYM VIP 2.0 Dual B2B2C (`/unete`, `Ley 29733 + D.S. 016-2024-JUS`, `0` hints, 10/10 tests)
 
 ---
 
