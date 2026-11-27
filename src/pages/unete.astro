@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.onrender.com';
+const adminPortalUrl = import.meta.env.PUBLIC_ADMIN_PORTAL_URL || 'https://gymvip-frontend.vercel.app';
 ---
 
 <BaseLayout
@@ -154,6 +155,9 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
         <button type="submit" class="btn btn-secondary">Consultar Estado</button>
       </form>
       <div id="track-result" class="feedback-box" hidden></div>
+      <a id="active-company-portal" class="btn btn-outline" href={adminPortalUrl} hidden>
+        Entrar al portal para administrar mis sedes
+      </a>
     </div>
   </section>
 </BaseLayout>
@@ -214,6 +218,9 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
   const trackInput = document.getElementById('tracking-input') as HTMLInputElement | null;
   const trackResult = document.getElementById('track-result') as HTMLDivElement | null;
 
+  const portal = document.getElementById('active-company-portal');
+  const trackButton = trackForm?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
   trackForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!trackForm || !trackInput || !trackResult) return;
@@ -221,6 +228,8 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
     const code = trackInput.value.trim();
     if (!code) return;
     trackResult.hidden = true;
+    if (portal) portal.hidden = true;
+    if (trackButton) trackButton.disabled = true;
     try {
       const resp = await fetch(`${apiBase}/api/v1/public/company-requests/${encodeURIComponent(code)}`);
       const body = await resp.json().catch(() => ({}));
@@ -232,16 +241,19 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
         EN_REVISION: 'El equipo está revisando la solicitud.',
         OBSERVADA: 'La solicitud requiere revisión adicional. El equipo se comunicará contigo.',
         APROBADA: 'Empresa aprobada. La invitación de activación está pendiente.',
-        INVITACION_ENVIADA: 'Revisa el correo de la empresa para activar la cuenta.',
-        ACTIVADA: 'La cuenta de la empresa ya está activa.',
+        INVITACION_ENVIADA: 'Abre el enlace de invitación en el correo que registraste. Si hace falta, revisa la carpeta de correo no deseado.',
+        ACTIVADA: 'Tu cuenta está activa. En Empresas y Sedes puedes abrir una sede asignada o registrar una nueva.',
         RECHAZADA: 'La solicitud no fue aprobada.',
         ARCHIVADA: 'La solicitud fue archivada.',
       };
       trackResult.textContent = statuses[body.status] || 'Consulta el estado con el equipo GYM VIP.';
+      if (portal && body.status === 'ACTIVADA') portal.hidden = false;
     } catch (err) {
       trackResult.hidden = false;
       trackResult.className = 'feedback-box error';
       trackResult.textContent = (err as Error).message || 'No se pudo consultar el seguimiento.';
+    } finally {
+      if (trackButton) trackButton.disabled = false;
     }
   });
 </script>
