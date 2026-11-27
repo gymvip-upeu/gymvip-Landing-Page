@@ -22,6 +22,8 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
 
 <script>
   type Gym = {
+    id: string;
+    slug?: string;
     name: string;
     headline?: string;
     description?: string;
@@ -65,6 +67,11 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
             location.textContent = [branch.name, branch.district, branch.city, branch.address].filter(Boolean).join(' · ');
             item.append(location);
           }
+          const link = document.createElement('a');
+          link.className = 'btn btn-primary';
+          link.href = '/gimnasios/ficha?gym=' + encodeURIComponent(gym.slug || gym.id);
+          link.textContent = 'Ver gimnasio';
+          item.append(link);
           results.append(item);
         }
         status.textContent = gyms.length ? '' : 'No hay gimnasios publicados para esta búsqueda.';

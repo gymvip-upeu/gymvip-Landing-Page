@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.onrender.com';
+---
+
+<BaseLayout title="Ficha del gimnasio" description="Consulta la información publicada por el gimnasio." canonicalPath="/gimnasios/ficha">
+  <main class="container gym-detail" data-gym-detail data-api-base={apiBase}>
+    <a href="/gimnasios">← Volver a gimnasios</a>
+    <p role="status" data-status>Cargando ficha…</p>
+    <article hidden>
+      <header>
+        <img data-cover hidden alt="" />
+        <h1></h1>
+        <p data-summary></p>
+        <nav data-contact aria-label="Contacto comercial"></nav>
+      </header>
+      <section data-section="branches"><h2>Sedes</h2><div data-items></div></section>
+      <section data-section="services"><h2>Servicios</h2><ul data-items></ul></section>
+      <section data-section="hours"><h2>Horarios de atención</h2><ul data-items></ul></section>
+      <section data-section="photos"><h2>Fotos</h2><div data-items></div></section>
+      <section data-section="reviews"><h2>Reseñas verificadas</h2><div data-items></div></section>
+    </article>
+    <noscript>Activa JavaScript para consultar la ficha pública.</noscript>
+  </main>
+</BaseLayout>
+
+<script>
+  type PublicGym = {
+    name: string;
+    headline?: string;
+    tagline?: string;
+    aboutText?: string;
+    description?: string;
+    contactWhatsapp?: string;
+    instagramHandle?: string;
+    websiteUrl?: string;
+    amenitiesJson?: unknown;
+    scheduleJson?: unknown;
+    galleryUrlsJson?: unknown;
+    branches?: Array<{ name: string; address: string; district: string; city: string; scheduleSummary?: string }>;
+    reviews?: Array<{ ratingOverall: number; comment: string; gymReply?: string }>;
+  };
+
+  const root = document.querySelector<HTMLElement>('[data-gym-detail]');
+  const labels: Record<string, string> = {
+    weekdays: 'Lunes a viernes', monday: 'Lunes', tuesday: 'Martes', wednesday: 'Miércoles',
+    thursday: 'Jueves', friday: 'Viernes', saturday: 'Sábado', sunday: 'Domingo',
+  };
+
+  function readJson(value: unknown): unknown {
+    try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; }
+  }
+  function httpsUrl(value: unknown) {
+    if (typeof value !== 'string' || !value) return null;
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && !url.username && !url.password ? url.href : null;
+    } catch { return null; }
+  }
+  function element(tag: string, value: string) {
+    const node = document.createElement(tag);
+    node.textContent = value;
+    return node;
+  }
+  function safePhoto(url: string, target: HTMLImageElement) {
+    target.referrerPolicy = 'no-referrer';
+    target.addEventListener('error', () => { target.hidden = true; }, { once: true });
+    target.src = url;
+    target.hidden = false;
+  }
+
+  async function load() {
+    if (!root) return;
+    const article = root.querySelector('article')!;
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const key = new URLSearchParams(window.location.search).get('gym') || '';
+    if (!/^[a-z0-9-]{1,100}$/i.test(key)) {
+      status.textContent = 'Selecciona un gimnasio del directorio.';
+      return;
+    }
+    try {
+      const response = await fetch(new URL('/api/v1/public/gyms/' + encodeURIComponent(key), root.dataset.apiBase));
+      if (response.status === 404) {
+        status.textContent = 'Esta ficha no está publicada.';
+        return;
+      }
+      if (!response.ok) throw new Error();
+      const gym: PublicGym = await response.json();
+      const section = (id: string, nodes: HTMLElement[]) => {
+        const container = root.querySelector<HTMLElement>('[data-section="' + id + '"]')!;
+        container.hidden = nodes.length === 0;
+        container.querySelector('[data-items]')!.append(...nodes);
+      };
+      article.querySelector('h1')!.textContent = gym.headline || gym.name;
+      article.querySelector<HTMLElement>('[data-summary]')!.textContent = [gym.tagline, gym.aboutText || gym.description].filter(Boolean).join(' ');
+
+      const contacts = article.querySelector('[data-contact]')!;
+      const phone = String(gym.contactWhatsapp || '').replace(/\D/g, '');
+      const instagram = String(gym.instagramHandle || '').replace(/^@/, '');
+      const links = [
+        [/^\d{8,15}$/.test(phone) ? 'https://wa.me/' + phone : null, 'WhatsApp'],
+        [/^[a-z0-9._]{1,30}$/i.test(instagram) ? 'https://www.instagram.com/' + instagram : null, 'Instagram'],
+        [httpsUrl(gym.websiteUrl), 'Sitio web'],
+      ];
+      for (const [url, label] of links) {
+        if (url && label) {
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = label;
+          link.className = 'btn btn-primary';
+          link.rel = 'noopener noreferrer';
+          contacts.append(link);
+        }
+      }
+      const services = readJson(gym.amenitiesJson);
+      section('services', Array.isArray(services) ? services.filter((item) => typeof item === 'string').map((item) => element('li', item)) : []);
+      const hours = readJson(gym.scheduleJson);
+      section('hours', hours && typeof hours === 'object' ? Object.entries(labels).flatMap(([day, label]) => {
+        const value = (hours as Record<string, unknown>)[day];
+        return typeof value === 'string' && value ? [element('li', label + ' · ' + value)] : [];
+      }) : []);
+      const gallery = readJson(gym.galleryUrlsJson);
+      const photos = Array.isArray(gallery) ? gallery.map(httpsUrl).filter((url): url is string => Boolean(url)) : [];
+      if (photos[0]) safePhoto(photos[0], article.querySelector<HTMLImageElement>('[data-cover]')!);
+      section('photos', photos.slice(1).map((url) => {
+        const photo = document.createElement('img');
+        photo.alt = 'Instalaciones del gimnasio';
+        photo.loading = 'lazy';
+        safePhoto(url, photo);
+        return photo;
+      }));
+      section('branches', (Array.isArray(gym.branches) ? gym.branches : []).map((branch) => {
+        const card = element('div', '');
+        card.className = 'card detail-card';
+        card.append(element('h3', branch.name), element('p', [branch.address, branch.district, branch.city].filter(Boolean).join(' · ')));
+        if (branch.scheduleSummary) card.append(element('p', branch.scheduleSummary));
+        return card;
+      }));
+      section('reviews', (Array.isArray(gym.reviews) ? gym.reviews : []).map((review) => {
+        const card = element('div', '');
+        card.className = 'card detail-card';
+        card.append(element('strong', '★ ' + review.ratingOverall + '/5'), element('p', review.comment || ''));
+        if (review.gymReply) card.append(element('p', 'Respuesta del gimnasio · ' + review.gymReply));
+        return card;
+      }));
+      article.hidden = false;
+      status.hidden = true;
+    } catch {
+      status.textContent = 'La ficha no está disponible en este momento. Intenta nuevamente.';
+    }
+  }
+  void load();
+</script>
+
+<style>
+  .gym-detail { padding-block: 2.5rem 4rem; }
+  header { margin-block: 1.25rem 2rem; }
+  h1 { margin-block: .75rem; }
+  header p { max-width: 70ch; }
+  nav { display: flex; gap: .75rem; flex-wrap: wrap; margin-block: 1.25rem; }
+  section { margin-top: 2rem; }
+  h2 { margin-bottom: .75rem; }
+  img { width: 100%; max-height: 24rem; object-fit: cover; border-radius: 1rem; }
+  [data-section="photos"] [data-items], [data-section="branches"] [data-items], [data-section="reviews"] [data-items] {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: .75rem;
+  }
+  :global(.detail-card) { padding: 1rem; }
+</style>
