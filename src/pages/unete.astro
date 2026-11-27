@@ -155,7 +155,7 @@ const adminPortalUrl = import.meta.env.PUBLIC_ADMIN_PORTAL_URL || 'https://gymvi
         <button type="submit" class="btn btn-secondary">Consultar Estado</button>
       </form>
       <div id="track-result" class="feedback-box" hidden></div>
-      <a id="active-company-portal" class="btn btn-outline" href={adminPortalUrl} hidden>
+      <a id="active-company-portal" class="btn btn-outline-gold" href={adminPortalUrl} hidden>
         Entrar al portal para administrar mis sedes
       </a>
     </div>
@@ -270,6 +270,7 @@ const adminPortalUrl = import.meta.env.PUBLIC_ADMIN_PORTAL_URL || 'https://gymvi
   .plan-b2b-card ul { padding-left: 18px; display: grid; gap: 8px; color: var(--text-secondary); }
   .saas-form-section { padding: 0 16px 64px; display: grid; gap: 24px; }
   .form-card, .tracking-card { padding: 28px; }
+  #active-company-portal[hidden] { display: none; }
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 16px; }
   label { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; }
   input, select, textarea { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-primary); }
