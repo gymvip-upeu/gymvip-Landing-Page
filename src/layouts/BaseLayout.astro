@@ -15,8 +15,7 @@ const {
   canonicalPath = ''
 } = Astro.props;
 
-const siteUrl = 'https://gymvip.vercel.app';
-const canonicalUrl = `${siteUrl}${canonicalPath}`;
+const canonicalUrl = new URL(canonicalPath || '/', Astro.site).toString();
 ---
 
 <!DOCTYPE html>

@@ -7,7 +7,7 @@ import { GitHubReleaseAdapter } from '../core/adapters/GitHubReleaseAdapter';
 const releaseUseCase = new GetAndroidReleaseUseCase(new GitHubReleaseAdapter());
 const release = await releaseUseCase.execute();
 
-const canonicalDownloadUrl = 'https://gymvip.vercel.app/descargar';
+const canonicalDownloadUrl = new URL('/descargar', Astro.site).toString();
 ---
 
 <BaseLayout
@@ -34,7 +34,7 @@ const canonicalDownloadUrl = 'https://gymvip.vercel.app/descargar';
               <h2 class="app-name">GYM VIP Mobile</h2>
               <p class="app-version">Versión {release.version} ({release.releaseTag})</p>
               <span class={`status-pill ${release.isAvailable ? 'status-available' : 'status-coming-soon'}`}>
-                {release.isAvailable ? '● Paquete de Producción Verificado' : '⏳ Compilado Localmente / Próximamente en Releases'}
+                {release.isAvailable ? 'Paquete oficial disponible' : 'Descarga aún no disponible'}
               </span>
             </div>
           </div>
@@ -63,14 +63,11 @@ const canonicalDownloadUrl = 'https://gymvip.vercel.app/descargar';
               <div class="coming-soon-box alert alert-info">
                 <div class="coming-soon-header">
                   <span class="coming-soon-badge">Estado del Artefacto</span>
-                  <h3>Listo para Publicación en GitHub Releases</h3>
+                  <h3>Descarga pendiente</h3>
                 </div>
                 <p class="coming-soon-desc">
-                  El paquete oficial firmado para producción <strong>{release.apkName}</strong> ({release.apkSizeFormatted}) ha sido generado, firmado con esquema v2 y verificado en <code>entregables/android/</code>.
+                  {release.statusMessage}
                 </p>
-                <div class="pending-notice">
-                  <strong>Acción pendiente requerida:</strong> Cargar el archivo APK en el tag <code>{release.releaseTag}</code> del repositorio público de distribución en GitHub para activar la descarga directa vía CDN.
-                </div>
               </div>
             )}
           </div>
