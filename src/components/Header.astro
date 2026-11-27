@@ -7,7 +7,7 @@ interface Props {
 
 const { currentPath = '/' } = Astro.props;
 
-const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
+const WEB_APP_URL = import.meta.env.PUBLIC_ADMIN_URL || 'https://gymvip-frontend.vercel.app/inicio';
 ---
 
 <PromoBanner />
@@ -28,6 +28,7 @@ const WEB_APP_URL = 'https://gymvip-frontend.vercel.app/inicio';
     <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
       <a href="/#instalaciones" class="nav-link">Instalaciones</a>
       <a href="/#planes" class="nav-link">Socios</a>
+      <a href="/gimnasios" class="nav-link" aria-current={currentPath === '/gimnasios' ? 'page' : undefined}>Encuentra un gimnasio</a>
       <a href="/unete" class={`nav-link ${currentPath === '/unete' ? 'active' : ''}`}>Para Gimnasios (SaaS)</a>
       <a href="/#app" class="nav-link">App Móvil</a>
       <a href="/descargar" class={`nav-link ${currentPath === '/descargar' ? 'active' : ''}`}>Descargar APK</a>

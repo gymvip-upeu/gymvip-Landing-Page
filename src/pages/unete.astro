@@ -11,10 +11,22 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
 >
   <section class="saas-hero container">
     <span class="badge">GYM VIP 2.0 · PARA EMPRESAS Y GIMNASIOS</span>
-    <h1 class="saas-title">Digitaliza tu gimnasio con arquitectura multiempresa</h1>
+    <h1 class="saas-title">Afília tu gimnasio a GYM VIP</h1>
     <p class="saas-subtitle">
       Administra sedes, socios, membresías, inventario, rutinas de entrenamiento y vitrina pública en una sola plataforma SaaS diseñada para el mercado peruano.
     </p>
+  </section>
+
+  <section class="container saas-form-section" aria-label="Proceso de afiliación">
+    <article class="card form-card">
+      <h2>Cómo unirte</h2>
+      <ol>
+        <li>Completa la solicitud con el RUC y el correo de la persona que administrará la empresa.</li>
+        <li>Guarda tu código de seguimiento. El equipo GYM VIP revisará la solicitud.</li>
+        <li>Si se aprueba, activa tu cuenta con la invitación que recibirás por correo. Desde el portal podrás registrar tus sedes o elegir una sede ya asignada a tu empresa.</li>
+      </ol>
+      <a href="#solicitud">Solicitar afiliación</a>
+    </article>
   </section>
 
   <section class="container saas-plans-grid" aria-label="Planes SaaS para Gimnasios">
@@ -62,7 +74,7 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
   </section>
 
   <section class="container saas-form-section">
-    <div class="card form-card">
+    <div class="card form-card" id="solicitud">
       <h2>Solicitud de Afiliación B2B</h2>
       <p class="form-desc">
         Registra los datos de tu empresa para evaluarla desde nuestra consola de plataforma y habilitar tu entorno de prueba de 14 días.
@@ -138,7 +150,7 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
       <h3>Seguimiento de Solicitud</h3>
       <p>Ingresa tu código de seguimiento (ej. <code>GYM-A1B2C3D4</code>) para consultar el estado en línea.</p>
       <form id="b2b-track-form" class="track-row" data-api-base={API_BASE_URL}>
-        <input type="text" id="tracking-input" placeholder="GYM-XXXXXXXX" required />
+        <input type="text" id="tracking-input" placeholder="Pega tu código GYM-…" maxlength="32" autocomplete="off" required />
         <button type="submit" class="btn btn-secondary">Consultar Estado</button>
       </form>
       <div id="track-result" class="feedback-box" hidden></div>
@@ -215,7 +227,17 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-back
       if (!resp.ok) throw new Error(body.message || 'Código no encontrado.');
       trackResult.hidden = false;
       trackResult.className = 'feedback-box success';
-      trackResult.textContent = `${body.businessName} · Plan ${body.requestedPlanCode} · Estado: ${body.status}${body.reviewNotes ? ` (${body.reviewNotes})` : ''}`;
+      const statuses: Record<string, string> = {
+        RECIBIDA: 'Solicitud recibida.',
+        EN_REVISION: 'El equipo está revisando la solicitud.',
+        OBSERVADA: 'La solicitud requiere revisión adicional. El equipo se comunicará contigo.',
+        APROBADA: 'Empresa aprobada. La invitación de activación está pendiente.',
+        INVITACION_ENVIADA: 'Revisa el correo de la empresa para activar la cuenta.',
+        ACTIVADA: 'La cuenta de la empresa ya está activa.',
+        RECHAZADA: 'La solicitud no fue aprobada.',
+        ARCHIVADA: 'La solicitud fue archivada.',
+      };
+      trackResult.textContent = statuses[body.status] || 'Consulta el estado con el equipo GYM VIP.';
     } catch (err) {
       trackResult.hidden = false;
       trackResult.className = 'feedback-box error';

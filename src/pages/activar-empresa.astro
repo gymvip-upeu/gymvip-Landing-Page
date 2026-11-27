@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.onrender.com';
+const portalUrl = import.meta.env.PUBLIC_ADMIN_PORTAL_URL || 'https://gymvip-frontend.vercel.app';
+---
+
+<BaseLayout title="Activa tu empresa" description="Crea la contraseña para administrar tu empresa." canonicalPath="/activar-empresa">
+  <section class="container activation" data-activation data-api-base={apiBase}>
+    <h1>Activa tu empresa</h1>
+    <p data-feedback role="status">Abre el enlace enviado al correo de tu empresa.</p>
+    <form hidden>
+      <label for="company-password">Nueva contraseña</label>
+      <input id="company-password" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+      <label for="company-repeat-password">Confirma la contraseña</label>
+      <input id="company-repeat-password" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+      <button class="btn btn-primary" type="submit">Activar cuenta</button>
+    </form>
+    <a data-portal class="btn btn-primary" href={portalUrl} hidden>Entrar al portal</a>
+    <a href="/unete">Consultar mi solicitud de afiliación</a>
+  </section>
+</BaseLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-activation]');
+  const form = root?.querySelector('form');
+  const feedback = root?.querySelector<HTMLElement>('[data-feedback]');
+  const button = form?.querySelector('button');
+  const password = form?.querySelector<HTMLInputElement>('#company-password');
+  const repeat = form?.querySelector<HTMLInputElement>('#company-repeat-password');
+  const token = window.location.hash.slice(1);
+  if (token) window.history.replaceState(null, '', window.location.pathname);
+  if (root && form && feedback && button && password && repeat && /^[a-f0-9]{64}$/.test(token)) {
+    form.hidden = false;
+    feedback.textContent = 'Usa una contraseña nueva para acceder al portal y administrar tus sedes.';
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (password.value !== repeat.value) {
+        feedback.textContent = 'Las contraseñas deben coincidir.';
+        return;
+      }
+      button.disabled = true;
+      try {
+        const url = new URL('/api/v1/public/company-activation', root.dataset.apiBase);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token, password: password.value }),
+          cache: 'no-store',
+        });
+        if (response.status === 204) {
+          form.reset();
+          form.hidden = true;
+          feedback.textContent = 'Tu cuenta está activa. Ingresa al portal con el correo de tu empresa.';
+          root.querySelector<HTMLElement>('[data-portal]')?.removeAttribute('hidden');
+        } else if (response.status === 404) {
+          form.reset();
+          form.hidden = true;
+          feedback.textContent = 'El enlace venció o ya se utilizó. Contacta al equipo GYM VIP para solicitar otro.';
+        } else if (response.status === 400) {
+          const error = await response.json().catch(() => null);
+          feedback.textContent = error?.message || 'Revisa la contraseña y vuelve a intentarlo.';
+        } else {
+          throw new Error();
+        }
+      } catch {
+        feedback.textContent = 'No pudimos completar la activación. Intenta nuevamente.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .activation { max-width: 40rem; padding-block: 3rem; }
+  form { display: grid; gap: .75rem; margin-block: 1.5rem; }
+  [hidden] { display: none; }
+  input { width: 100%; padding: .75rem; font: inherit; }
+  a { display: block; margin-top: 1rem; }
+</style>

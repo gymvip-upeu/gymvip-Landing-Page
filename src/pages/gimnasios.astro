@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.onrender.com';
+---
+
+<BaseLayout title="Encuentra un gimnasio" description="Explora los gimnasios y sedes publicados en GYM VIP." canonicalPath="/gimnasios">
+  <section class="container directory" data-directory data-api-base={apiBase}>
+    <h1>Encuentra un gimnasio</h1>
+    <form>
+      <label for="gym-query">Nombre, sede o ubicación</label>
+      <div class="search-row">
+        <input type="search" id="gym-query" name="q" maxlength="100" />
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </div>
+    </form>
+    <p role="status" data-status></p>
+    <ul class="results" data-results></ul>
+    <noscript>Activa JavaScript para consultar las sedes publicadas.</noscript>
+    <a href="/unete">Afília tu empresa a GYM VIP</a>
+  </section>
+</BaseLayout>
+
+<script>
+  type Gym = {
+    id: string;
+    slug?: string;
+    name: string;
+    headline?: string;
+    description?: string;
+    branches?: Array<{ name: string; city?: string; district?: string; address?: string }>;
+  };
+
+  const directory = document.querySelector<HTMLElement>('[data-directory]');
+  const form = directory?.querySelector('form');
+  const status = directory?.querySelector<HTMLElement>('[data-status]');
+  const results = directory?.querySelector<HTMLUListElement>('[data-results]');
+  if (directory && form && status && results) {
+    const apiBase = directory.dataset.apiBase || '';
+    let pending: AbortController | undefined;
+    const load = async () => {
+      pending?.abort();
+      const request = new AbortController();
+      pending = request;
+      status.textContent = 'Consultando gimnasios…';
+      results.replaceChildren();
+      try {
+        const url = new URL('/api/v1/public/gyms', apiBase);
+        const query = new FormData(form).get('q')?.toString().trim();
+        if (query) url.searchParams.set('q', query);
+        const response = await fetch(url, { signal: request.signal });
+        if (!response.ok) throw new Error('Directory unavailable');
+        const gyms: Gym[] = await response.json();
+        if (pending !== request || !Array.isArray(gyms)) return;
+        for (const gym of gyms) {
+          const item = document.createElement('li');
+          item.className = 'card gym-card';
+          const title = document.createElement('h2');
+          title.textContent = gym.name;
+          item.append(title);
+          if (gym.headline || gym.description) {
+            const intro = document.createElement('p');
+            intro.textContent = gym.headline || gym.description || '';
+            item.append(intro);
+          }
+          for (const branch of gym.branches || []) {
+            const location = document.createElement('p');
+            location.textContent = [branch.name, branch.district, branch.city, branch.address].filter(Boolean).join(' · ');
+            item.append(location);
+          }
+          const link = document.createElement('a');
+          link.className = 'btn btn-primary';
+          link.href = '/gimnasios/ficha?gym=' + encodeURIComponent(gym.slug || gym.id);
+          link.textContent = 'Ver gimnasio';
+          item.append(link);
+          results.append(item);
+        }
+        status.textContent = gyms.length ? '' : 'No hay gimnasios publicados para esta búsqueda.';
+      } catch {
+        if (!request.signal.aborted && pending === request) {
+          results.replaceChildren();
+          status.textContent = 'No pudimos consultar los gimnasios. Vuelve a buscar en unos momentos.';
+        }
+      }
+    };
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void load();
+    });
+    void load();
+  }
+</script>
+
+<style>
+  .directory { padding-block: 3rem; }
+  .search-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: .5rem 1rem; }
+  .search-row input { flex: 1; min-width: 12rem; padding: .75rem; font: inherit; }
+  .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: 1rem; list-style: none; padding: 0; }
+  .gym-card { padding: 1.25rem; }
+</style>
