@@ -10,8 +10,18 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
       <label for="gym-query">Nombre, sede o ubicación</label>
       <div class="search-row">
         <input type="search" id="gym-query" name="q" maxlength="100" />
-        <button type="submit" class="btn btn-primary">Buscar</button>
       </div>
+      <details>
+        <summary>Filtros de búsqueda</summary>
+        <div class="search-row">
+          <label>Ciudad <input name="city" maxlength="100" /></label>
+          <label>Distrito <input name="district" maxlength="100" /></label>
+          <label>Precio desde (S/) <input name="minPricePen" type="number" min="0" step=".01" /></label>
+          <label>Precio hasta (S/) <input name="maxPricePen" type="number" min="0" step=".01" /></label>
+          <label>Servicio o instalación <input name="amenity" maxlength="100" /></label>
+        </div>
+      </details>
+      <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
     <p role="status" data-status></p>
     <ul class="results" data-results></ul>
@@ -25,6 +35,7 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
     id: string;
     slug?: string;
     name: string;
+    minPricePen?: number | null;
     headline?: string;
     description?: string;
     branches?: Array<{ name: string; city?: string; district?: string; address?: string }>;
@@ -45,8 +56,16 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
       results.replaceChildren();
       try {
         const url = new URL('/api/v1/public/gyms', apiBase);
-        const query = new FormData(form).get('q')?.toString().trim();
-        if (query) url.searchParams.set('q', query);
+        const fields = new FormData(form);
+        const min = fields.get('minPricePen')?.toString();
+        const max = fields.get('maxPricePen')?.toString();
+        if (min && max && Number(min) > Number(max)) {
+          status.textContent = 'El precio mínimo debe ser menor o igual al máximo.';
+          return;
+        }
+        for (const [key, value] of fields.entries()) {
+          if (typeof value === 'string' && value.trim()) url.searchParams.set(key, value.trim());
+        }
         const response = await fetch(url, { signal: request.signal });
         if (!response.ok) throw new Error('Directory unavailable');
         const gyms: Gym[] = await response.json();
@@ -57,6 +76,13 @@ const apiBase = import.meta.env.PUBLIC_API_BASE_URL || 'https://gymvip-backend.o
           const title = document.createElement('h2');
           title.textContent = gym.name;
           item.append(title);
+          if (typeof gym.minPricePen === 'number') {
+            const price = document.createElement('p');
+            price.textContent = 'Planes desde ' + new Intl.NumberFormat('es-PE', {
+              style: 'currency', currency: 'PEN'
+            }).format(gym.minPricePen);
+            item.append(price);
+          }
           if (gym.headline || gym.description) {
             const intro = document.createElement('p');
             intro.textContent = gym.headline || gym.description || '';
